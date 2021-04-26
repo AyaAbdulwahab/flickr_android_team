@@ -193,6 +193,9 @@ class _SignUpState extends State<SignUp> {
                         //letterSpacing: 1.0
                       )),
                   InkWell(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
                     child: addText('Log in here', true),
                   ),
                 ])
