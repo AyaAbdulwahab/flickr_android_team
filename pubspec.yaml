@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.1
   charcode: ^1.2.0
   g_captcha: ^1.0.0
+  flutter_recaptcha_v2: ^0.1.0
   font_awesome_flutter: '>= 4.7.0'
   email_validator: '^1.0.6'
 
@@ -71,7 +72,7 @@ flutter:
     - family: Frutiger
       fonts:
         - asset: fonts/Frutiger.ttf
-        - asset: fonts/Frutiger_bold.ttf
+        - asset: fonts/Frutiger_Next_Heavy.ttf
           weight: 700
 
     - family: ProximaNova
@@ -79,6 +80,8 @@ flutter:
         - asset: fonts/FontsFree-Net-Proxima-Nova-Sbold.otf
         - asset: fonts/FontsFree-Net-Proxima-Nova-Bold.otf
           weight: 700
+        - asset: fonts/FontsFree-Net-ProximaNova-Regular.ttf
+          weight: 200
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

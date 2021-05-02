@@ -34,6 +34,12 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(children: [
@@ -46,7 +52,7 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                   fit: StackFit.expand,
                   children: [
                     Container(
-                      height: 220.0,
+                      height: 100.0,
                       width: MediaQuery.of(context).size.width,
                       child: Image.asset(
                         coverPhoto,
@@ -58,7 +64,7 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                       color: Colors.black.withOpacity(0.6),
                     ),
                     Positioned(
-                      top: MediaQuery.of(context).size.height * 0.08,
+                      top: MediaQuery.of(context).size.height * 0.04,
                       left: MediaQuery.of(context).size.width * 0.42,
                       child: GestureDetector(
                         child: ClipRRect(
@@ -73,7 +79,7 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,13 +88,15 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                           Column(children: [
                             SizedBox(
                               height:
-                                  MediaQuery.of(context).size.height * 0.08 +
-                                      45,
+                                  MediaQuery.of(context).size.height * 0.05 +
+                                      47,
                             ),
                             Text(_username,
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 25.0,
+                                  fontFamily: 'ProximaNova',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 23.0,
                                 )),
                             SizedBox(height: 8.0),
                             Text(
@@ -96,11 +104,16 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                                   String.fromCharCode($mdash) +
                                   ' ${noOfFollowering.toString()} Following',
                               style: TextStyle(
-                                  color: Colors.white, fontSize: 16.0),
+                                  // fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 15.0),
                             )
                           ]),
                           IconButton(
-                            icon: Icon(Icons.more_vert),
+                            icon: Icon(
+                              Icons.more_vert,
+                              size: 25.0,
+                            ),
                             color: Colors.white,
                             onPressed: () => showModalBottomSheet(
                                 context: context,
@@ -113,7 +126,7 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                     ),
                   ],
                 )),
-                expandedHeight: 240.0,
+                expandedHeight: 230.0,
                 toolbarHeight: 0.0,
                 backgroundColor: Colors.white,
                 bottom: PreferredSize(
@@ -132,8 +145,8 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                         unselectedLabelColor: Colors.grey,
                         labelStyle: TextStyle(
                             fontFamily: 'ProximaNova',
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.bold),
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.w700),
                         indicatorColor: Colors.black87,
                         controller: _tabController,
                         tabs: [
@@ -169,7 +182,7 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
         ),
       if (_isSelected)
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.08,
+          top: MediaQuery.of(context).size.height * 0.04,
           left: MediaQuery.of(context).size.width * 0.42,
           child: GestureDetector(
             child: ClipRRect(
@@ -186,7 +199,7 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
       if (_isSelected)
         Column(children: [
           SizedBox(
-            height: 55.0 + MediaQuery.of(context).size.height * 0.08,
+            height: 55.0 + MediaQuery.of(context).size.height * 0.04,
           ),
           Stack(
             children: [

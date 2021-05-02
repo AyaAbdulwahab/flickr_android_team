@@ -1,4 +1,5 @@
 import 'package:flickr/Views/about_menu.dart';
+import 'package:flickr/Views/nav.dart';
 import 'package:flickr/Views/sign_up.dart';
 import 'package:flickr/Views/you.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +27,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           fontFamily: 'ProximaNova'),
       //home: YouPage(),
-      initialRoute: '/you_page',
+      initialRoute: '/sign_up',
       routes: {
-        // '/':(context)=>  //WelcomePage
+        '/': (context) => NavBar(), //WelcomePage
         '/sign_up': (context) => SignUp(),
         '/you_page': (context) => YouPage(),
         '/About_Menu': (context) => AboutMenu()
