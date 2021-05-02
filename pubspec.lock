@@ -50,6 +50,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+
   crypto:
     dependency: transitive
     description:
@@ -126,6 +127,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+
   http:
     dependency: transitive
     description:
@@ -140,11 +142,14 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.4"
+
   integration_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
-    version: "0.0.0"
+
+    version: "0.9.2+2"
+
   matcher:
     dependency: transitive
     description:
@@ -166,13 +171,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
-  pedantic:
-    dependency: transitive
-    description:
-      name: pedantic
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.10.0-nullsafety.3"
+
   platform:
     dependency: transitive
     description:
@@ -186,7 +185,9 @@ packages:
       name: process
       url: "https://pub.dartlang.org"
     source: hosted
+
     version: "4.2.1"
+
   sky_engine:
     dependency: transitive
     description: flutter
@@ -199,6 +200,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
+
   stack_trace:
     dependency: transitive
     description:
@@ -241,6 +243,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
+]
   typed_data:
     dependency: transitive
     description:
@@ -262,6 +265,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.0+1"
+
   webdriver:
     dependency: transitive
     description:
@@ -276,6 +280,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.24"
+
 sdks:
   dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.5"
