@@ -360,14 +360,13 @@ class _SignUpState extends State<SignUp> {
                                   fontSize: 13.0,
                                 )),
                             InkWell(
-                              onTap: (){
-                      Navigator.pop(context);
-                    },
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
                               child: addText('Log in here', true),
                             ),
                           ])
                     ],
-
                   ),
                 ),
               ),

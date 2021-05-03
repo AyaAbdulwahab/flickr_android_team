@@ -1,5 +1,7 @@
+import 'package:flickr/main.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -64,6 +66,10 @@ class _SettingsState extends State<Settings> {
         ),
         Divider(),
         ListTile(
+          onTap: () {
+            Provider.of<MyModel>(context, listen: false).unAuthUser();
+            Navigator.popUntil(context, ModalRoute.withName('/'));
+          },
           title: Text(
             'Sign Out',
             style: TextStyle(color: Colors.grey),
