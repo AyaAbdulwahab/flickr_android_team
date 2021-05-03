@@ -1,4 +1,6 @@
 import 'package:flickr/Views/sign_up.dart';
+import 'package:flickr/Views/home.dart';
+import 'package:flickr/Views/About.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: SignUp(),
+      home: About(),
     );
   }
 }

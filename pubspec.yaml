@@ -36,6 +36,7 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
+#  video_player:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -73,6 +74,17 @@ flutter:
     - family: ProximaNova
       fonts:
         - asset: fonts/Proxima_Nova_Alt_Light.otf
+
+    - family: Righteous
+      fonts:
+        - asset: fonts/Righteous-Regular.ttf
+
+    - family: OpenSansCondensed
+      fonts:
+        - asset: fonts/OpenSansCondensed-Bold.ttf
+        - asset: fonts/OpenSansCondensed-Light.ttf
+        - asset: fonts/OpenSansCondensed-LightItalic.ttf
+
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
