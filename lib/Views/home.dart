@@ -81,6 +81,7 @@ class Post extends StatelessWidget {
               ],
             ),
           ),
+          //
           Container(
             child: Image(
               image: NetworkImage(
