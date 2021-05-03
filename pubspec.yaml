@@ -30,6 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.1
   g_captcha: ^1.0.0
   email_validator: '^1.0.6'
+  smooth_page_indicator: ^0.2.3
+
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +54,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/flickr-logo.png
+    - assets/image_part_001.jpg
+    - assets/image_part_002.jpg
+    - assets/image_part_003.jpg
+    - assets/image_part_004.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
