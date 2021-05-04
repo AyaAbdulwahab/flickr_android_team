@@ -3,9 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'sign_up.dart';
 
+
+String savedEmail="shorouk@gmail.com";
+String savedPassword="hello123";
+
 const style =TextStyle(
   fontFamily: 'ProximaNova', fontWeight: FontWeight.bold,
 );
+
+
+class PasswordValidation {
+  static String validate(String val) {
+    return val.isEmpty
+        ? "Required"
+        : val[0] == " " || val.length < 12
+        ? "Invalid Password"
+        : null;
+  }
+}
+
+
 void main() {
   return runApp(
     MaterialApp(
@@ -47,9 +64,12 @@ class _LoginState extends State<Login> {
   bool _showWidgets=false;
   String _submitTitle='Next';
   String _email;
+  String _password;
   bool _hidePassword=true;
+  bool _invalidAlert=false;
   bool valueFirst = false;
-  // bool valueSecond = false;
+  final _formKey = GlobalKey<FormState>();
+
   wrongEmailAlert(BuildContext context)
   {
     return showDialog(
@@ -80,7 +100,6 @@ class _LoginState extends State<Login> {
   checkEmail()
   {
     _email=_email.trim();
-    print(_email);
     bool check=EmailValidator.validate(_email);
     if (check==true)
     {
@@ -92,70 +111,117 @@ class _LoginState extends State<Login> {
       wrongEmailAlert(context);
     }
   }
+
+  checkAccount()
+  {
+    if (_email==savedEmail)
+    {
+      if (_password==savedPassword)
+      {
+        //TODO: Navigate to explore page
+        // print("Account valid");
+        _invalidAlert=false;
+      }
+    }
+    else
+    {
+      _invalidAlert=true;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top:25.0),
       child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Image(
-              image: AssetImage("assets/flickr-logo.png"),
-              height: 17,
-              width: 55,
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                    'Log in to Flickr',
-                    style:TextStyle(
-                      fontFamily: 'ProximaNova',
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.bold,
-                    )
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Container(
-              padding: EdgeInsets.only(left:20.0,right:20.0 ),
-              child: TextField(
-                onChanged: (email){
-                  _email=email;
-                },
-                onSubmitted: (email){
-                  setState(() {
-                    if (_email!="" && _email!=null) {
-                      checkEmail();
-                      FocusScope.of(context).requestFocus(FocusNode());
-                    }
-
-                  });
-                },
-                decoration: InputDecoration(
-                    labelText:'Email address',
-                    labelStyle: style,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(3.0)),
-                      borderSide: BorderSide(color:Colors.pink),
-                    )
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              Image(
+                image: AssetImage("assets/flickr-logo.png"),
+                height: 17,
+                width: 55,
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                      'Log in to Flickr',
+                      style:TextStyle(
+                        fontFamily: 'ProximaNova',
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      )
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Visibility(
+                  visible: _invalidAlert,
+                  child: Container(
+                      width: 370.0,
+                      height:40.0,
+                      decoration: BoxDecoration(
+                          color: Colors.red.shade100,
+                          border: Border.all(
+                            color: Colors.red[100],
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(4))),
+                      padding: EdgeInsets.only(left:20.0,right:20.0 ),
+                      child: Center(
+                        child: Text(
+                          "Invalid email or password.",
+                        ),
+                      )
+                  )
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Container(
+                padding: EdgeInsets.only(left:20.0,right:20.0),
+                child: TextField(
+                  onChanged: (email){
+                    setState(() {
+                      _email=email;
+                      _invalidAlert=false;
+                    });
+                  },
+                  onSubmitted: (email){
+                    setState(() {
+                      if (_email!="" && _email!=null && _showWidgets==false) {
+                        checkEmail();
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      }
+                      else if (_showWidgets==true)
+                      {
+                        checkAccount();
+                      }
+                    });
+                  },
+                  decoration: InputDecoration(
+                      labelText:'Email address',
+                      labelStyle: style,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(3.0)),
+                        borderSide: BorderSide(color:Colors.pink),
+                      )
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 7.0,
-            ),
-            Visibility (
-              visible: _showWidgets,
-              child:Container(
-                padding: EdgeInsets.only(left:20.0,right:20.0 ),
-                child: TextField(
+              SizedBox(
+                height: 7.0,
+              ),
+              Visibility (
+                visible: _showWidgets,
+                child:Container(
+                  padding: EdgeInsets.only(left:20.0,right:20.0 ),
+                  child: TextFormField(
                     enableSuggestions: false,
                     autocorrect: false,
                     obscureText: _hidePassword,
@@ -173,105 +239,118 @@ class _LoginState extends State<Login> {
                         labelStyle: style,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(3.0)),)
-                    )
-                ),
-              ),
-            ),
-            Visibility(
-              visible: _showWidgets,
-              child: Row(
-                  children:<Widget> [
-                    Container(
-                      padding: EdgeInsets.only(left:5.0),
-                      child: Checkbox(
-                          value: this.valueFirst,
-                          onChanged: (bool value) {
-                            setState(() {
-                              this.valueFirst = value;
-                            });
-                          }
-                      ),
                     ),
-                    Text('Remember email address', style:style),
-                  ]
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Container(
-              padding: EdgeInsets.only(left:20.0,right:20.0),
-              width: double.infinity ,
-              height: 40.0,
-              child: TextButton(
-                onPressed: (){
-                  setState(() {
-                    checkEmail();
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  });
-                },
-                child: Text(
-                  _submitTitle,
-                  style: TextStyle(
-                    fontFamily: 'ProximaNova',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17.0,
+                    onChanged: (password){
+                      _password=password;
+                    },
+                    validator: (val) => val.isEmpty?"Required":_email==savedEmail&&_password!=savedPassword?"Invalid Password":null ,
                   ),
                 ),
-                style: TextButton.styleFrom(
-                  primary: Colors.white,
-                  backgroundColor: Colors.blue,
+              ),
+              Visibility(
+                visible: _showWidgets,
+                child: Row(
+                    children:<Widget> [
+                      Container(
+                        padding: EdgeInsets.only(left:5.0),
+                        child: Checkbox(
+                            value: this.valueFirst,
+                            onChanged: (bool value) {
+                              setState(() {
+                                this.valueFirst = value;
+                              });
+                            }
+                        ),
+                      ),
+                      Text('Remember email address', style:style),
+                    ]
                 ),
               ),
-            ),
-            Visibility(
-                visible: _showWidgets,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget> [
-                      TextButton(
-                        onPressed:(){
-                          //TODO: Navigate to forgot password page, & pass the email to it.
-                        },
-                        child: Text('Forgot passowrd?',style:style),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left:20.0,right:20.0),
-                        child: Divider(
-                          color: Colors.black,
-                        ),
-                      )
-                    ]
-                )
-            ),
-            Visibility(
-              visible: !_showWidgets,
-              child: SizedBox(
-                height: 15.0,
+              SizedBox(
+                height: 20.0,
               ),
-            ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget> [
-                  Text('Not a Flickr member?', style: style),
-                  TextButton(
-                      onPressed: (){
-                        //TODO: Navigate to sign up page
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context)  {
-                              return SignUp();
-                            },
+              Container(
+                padding: EdgeInsets.only(left:20.0,right:20.0),
+                width: double.infinity ,
+                height: 40.0,
+                child: TextButton(
+                  onPressed: (){
+                    if (_formKey.currentState.validate()){};
+                    setState(() {
+                      if (_email!="" && _email!=null && _showWidgets==false) {
+                        checkEmail();
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      }
+                      else if (_showWidgets==true)
+                      {
+                        checkAccount();
+                      }
+
+                    });
+                  },
+                  child: Text(
+                    _submitTitle,
+                    style: TextStyle(
+                      fontFamily: 'ProximaNova',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17.0,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                    backgroundColor: Colors.blue,
+                  ),
+                ),
+              ),
+              Visibility(
+                  visible: _showWidgets,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget> [
+                        TextButton(
+                          onPressed:(){
+                            //TODO: Navigate to forgot password page, & pass the email to it.
+                          },
+                          child: Text('Forgot passowrd?',style:style),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left:20.0,right:20.0),
+                          child: Divider(
+                            color: Colors.black,
                           ),
-                        );
-                      },
-                      child: Text(' Sign up here.', style:style)
-                    // style :
+                        )
+                      ]
                   )
-                ]
-            )
-          ],
+              ),
+              Visibility(
+                visible: !_showWidgets,
+                child: SizedBox(
+                  height: 15.0,
+                ),
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget> [
+                    Text('Not a Flickr member?', style: style),
+                    TextButton(
+                        onPressed: (){
+                          //TODO: Navigate to sign up page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context)  {
+                                return SignUp();
+                              },
+                            ),
+                          );
+                        },
+                        child: Text(' Sign up here.', style:style)
+                      // style :
+                    )
+                  ]
+              )
+            ],
+          ),
         ),
       ),
     );
