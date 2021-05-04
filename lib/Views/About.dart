@@ -16,10 +16,10 @@ import 'package:flutter/material.dart';
 
 class About extends StatefulWidget {
   @override
-  _About_testState createState() => _About_testState();
+  _AboutTestState createState() => _AboutTestState();
 }
 
-class _About_testState extends State<About> {
+class _AboutTestState extends State<About> {
   String occupation = 'Add Occupation... ';
   String oc = 'Add Occupation... ';
   String description = 'Add Description... ';
@@ -49,6 +49,7 @@ class _About_testState extends State<About> {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -420,9 +421,10 @@ class _About_testState extends State<About> {
                       thickness: 1.0,
                     ),
                   ],
+
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),
