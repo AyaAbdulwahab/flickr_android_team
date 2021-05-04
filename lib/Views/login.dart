@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
-import 'sign_up.dart';
 
 const style = TextStyle(
   fontFamily: 'ProximaNova',
@@ -62,6 +61,7 @@ class _LoginState extends State<Login> {
             actions: <Widget>[
               TextButton(
                 child: Text('Continue to Yahoo'),
+                onPressed: () {},
               ),
               TextButton(
                 onPressed: () {
@@ -269,4 +269,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-//

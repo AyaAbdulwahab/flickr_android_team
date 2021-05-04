@@ -1,9 +1,5 @@
 import 'package:flickr/Views/sign_up.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-// import 'test.dart';
-
-import 'package:flickr/main.dart';
 
 void main() {
   test('SignUp Test', () {

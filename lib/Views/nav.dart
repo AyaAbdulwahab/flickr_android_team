@@ -35,7 +35,7 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Color(0xFF212124), //or set color with: Color(0xFF0000FF)
+      statusBarColor: Color(0xFF212124),
     ));
     return Scaffold(
         // backgroundColor: Color(0xFF212124),
@@ -51,7 +51,6 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
                   child: Material(
                     color: Color(0xFF212124),
                     child: TabBar(
-                      // indicatorPadding: EdgeInsets.only(bottom: 20.0),
                       labelColor: Colors.white,
                       unselectedLabelColor: Colors.grey,
                       indicatorColor: Colors.transparent,

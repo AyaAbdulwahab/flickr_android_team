@@ -1,14 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flickr/Widgets/text_field_widget.dart';
-
-// String visibleTo = 'Anyone';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flickr/Widgets/text_field_widget.dart';
-
-
 
 class Email extends StatefulWidget {
   String visibleTo = 'Anyone';
@@ -22,7 +13,7 @@ class _State extends State<Email> {
   String button = 'Edit';
   bool check = false;
   String changed;
-  List <String> data;
+  List<String> data;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +39,7 @@ class _State extends State<Email> {
                 ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                          (states) => Colors.transparent),
+                      (states) => Colors.transparent),
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
                       side: BorderSide(color: Colors.white, width: 2.0),
@@ -98,12 +89,12 @@ class _State extends State<Email> {
               //       ),
               //     ),
               Container(
-                  color: Colors.grey[300],
-                  child: ListTile(
-                    title: Text(widget.email),
-                  ),
+                color: Colors.grey[300],
+                child: ListTile(
+                  title: Text(widget.email),
+                ),
               ),
-                // ],
+              // ],
               // ),
               // Divider(
               //   color: Colors.grey[300],
@@ -122,8 +113,10 @@ class _State extends State<Email> {
                               children: [
                                 ListTile(
                                   title: Center(
-                                    child: Text('Visible to:',
-                                      style: TextStyle(color: Colors.grey),),
+                                    child: Text(
+                                      'Visible to:',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
                                   ),
                                 ),
                                 Divider(
@@ -131,8 +124,9 @@ class _State extends State<Email> {
                                   thickness: 2.0,
                                 ),
                                 ListTile(
-                                  title: Text('Anyone', style: TextStyle(
-                                      color: Colors.grey[900])),
+                                  title: Text('Anyone',
+                                      style:
+                                          TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
                                       widget.visibleTo = 'Anyone';
@@ -147,12 +141,13 @@ class _State extends State<Email> {
                                 ),
                                 ListTile(
                                   title: Text('Any Flickr member',
-                                      style: TextStyle(
-                                          color: Colors.grey[900])),
+                                      style:
+                                          TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
                                       widget.visibleTo = 'Any Flickr member';
-                                      Navigator.pop(context, 'Any Flickr member');
+                                      Navigator.pop(
+                                          context, 'Any Flickr member');
                                     });
                                   },
                                 ),
@@ -162,12 +157,13 @@ class _State extends State<Email> {
                                 ),
                                 ListTile(
                                   title: Text('People you follow',
-                                      style: TextStyle(
-                                          color: Colors.grey[900])),
+                                      style:
+                                          TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
                                       widget.visibleTo = 'People you follow';
-                                      Navigator.pop(context,'People you follow');
+                                      Navigator.pop(
+                                          context, 'People you follow');
                                     });
                                   },
                                 ),
@@ -177,12 +173,13 @@ class _State extends State<Email> {
                                 ),
                                 ListTile(
                                   title: Text('Friends and family',
-                                      style: TextStyle(
-                                          color: Colors.grey[900])),
+                                      style:
+                                          TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
                                       widget.visibleTo = 'Friends and family';
-                                      Navigator.pop(context, 'Friends and family');
+                                      Navigator.pop(
+                                          context, 'Friends and family');
                                     });
                                   },
                                 ),
@@ -190,8 +187,7 @@ class _State extends State<Email> {
                             );
                           });
                     }
-                  }
-              ),
+                  }),
               //
               // Divider(
               //   color: Colors.grey[300],

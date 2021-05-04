@@ -1,6 +1,3 @@
-
-import 'package:flickr/Views/current_city.dart';
-
 import 'package:flickr/Views/about_menu.dart';
 import 'package:flickr/Views/credits.dart';
 import 'package:flickr/Views/login.dart';

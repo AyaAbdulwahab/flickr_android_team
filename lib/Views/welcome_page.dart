@@ -47,9 +47,6 @@ class Page extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          // SizedBox(
-          // height: 80.0,
-          // ),
         ],
       ),
     );
@@ -157,29 +154,19 @@ class GetStarted extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.only(top: 630.0, left: 10.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.camera_alt,
-                        color: Colors.white,
-                        size: 15.0,
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        'Ben Flasher',
-                        style: TextStyle(color: Colors.white, fontSize: 14.0),
-                      ),
-                    ],
-
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.camera_alt,
+                    color: Colors.white,
+                    size: 15.0,
                   ),
                   SizedBox(
                     width: 5.0,
                   ),
                   Text(
                     'Ben Flasher',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white, fontSize: 14.0),
                   ),
                 ],
               ),

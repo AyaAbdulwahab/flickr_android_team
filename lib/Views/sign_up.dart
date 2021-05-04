@@ -2,9 +2,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flickr/Widgets/authentication_app_bar.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_recaptcha_v2/flutter_recaptcha_v2.dart';
+//import 'package:flutter_recaptcha_v2/flutter_recaptcha_v2.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:g_captcha/g_captcha.dart';
+//import 'package:g_captcha/g_captcha.dart';
 // import '../ViewModels/cap.java';
 
 class NameValidation {
@@ -51,30 +51,27 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  bool notRobot = false;
   final _formKey = GlobalKey<FormState>();
-  String _firstName = "";
-  String _lastName = "";
   String _age = "";
   String _email = "";
+  String _firstName = "";
+  String _lastName = "";
   String _password = "";
+  bool checkNoOfChars = false;
+  bool checkSpace = false;
+  bool notRobot = false;
   bool _obscureText = true;
   bool passwordHint = false;
-  bool checkSpace = false;
-  bool checkNoOfChars = false;
-  String captchaSiteKey = "6LeePrkaAAAAAF1Tx8KEoVpDqCrHJDfwKPmsX5vX";
   String verifyResult = "";
 
-  RecaptchaV2Controller recaptchaV2Controller = RecaptchaV2Controller();
+  // String captchaSiteKey = "6LeePrkaAAAAAF1Tx8KEoVpDqCrHJDfwKPmsX5vX";
+  // RecaptchaV2Controller recaptchaV2Controller = RecaptchaV2Controller();
 
-  FocusNode f1;
-  FocusNode f2;
   final f3 = FocusNode();
   final f4 = FocusNode();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // recaptchaV2Controller.show();
     f3.addListener(() {
@@ -137,7 +134,6 @@ class _SignUpState extends State<SignUp> {
                         height: 9.0,
                       ),
                       TextFormField(
-                        // focusNode: f2,
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Last Name', labelStyle: addTextStyle),
                         onChanged: (val) => _lastName = val,
@@ -148,7 +144,6 @@ class _SignUpState extends State<SignUp> {
                       ),
                       TextFormField(
                         focusNode: f3,
-                        // autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (val) => _age = val,
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Your age', labelStyle: addTextStyle),
@@ -267,19 +262,9 @@ class _SignUpState extends State<SignUp> {
                         height: 9.0,
                       ),
                       // RaisedButton(
-                      //     onPressed: () => recaptchaV2Controller.show(),
-                      //     child: Text('reCaptcha')),
-                      RaisedButton(
-                        onPressed: () => _openReCaptcha(),
-                        child: Text("I'm not a robot"),
-                      ),
-                      // CheckboxListTile(
-
-                      //     value: notRobot,
-                      //     tileColor: Colors.grey[200],
-                      //     controlAffinity: ListTileControlAffinity.leading,
-                      //     title: Text("I'm not a robot"),
-                      //     onChanged: (val) => _openReCaptcha),
+                      //   onPressed: () => _openReCaptcha(),
+                      //   child: Text("I'm not a robot"),
+                      // ),
                       SizedBox(
                         height: 9.0,
                       ),
@@ -381,11 +366,11 @@ class _SignUpState extends State<SignUp> {
   }
 }
 
-_openReCaptcha() async {
-  String tokenResult =
-      await GCaptcha.reCaptcha("6LfJDMMaAAAAAHHYPOlHzw7oBjHTNj3m2Xt9qrhR");
-  print('tokenResult: $tokenResult');
-}
+// _openReCaptcha() async {
+//   String tokenResult =
+//       await GCaptcha.reCaptcha("6LfJDMMaAAAAAHHYPOlHzw7oBjHTNj3m2Xt9qrhR");
+//   print('tokenResult: $tokenResult');
+// }
 
 const addTextStyle = TextStyle(
   fontSize: 15.0,
