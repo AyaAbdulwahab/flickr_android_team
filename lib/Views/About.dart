@@ -13,24 +13,6 @@ import 'package:flickr/Views/twitter.dart';
 import 'package:flickr/Views/website.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:g_captcha/g_captcha.dart';
-
-// class Home extends StatefulWidget {
-//   @override
-//   _SignUpState createState() => _SignUpState();
-// }
-//
-// class _SignUpState extends State<Home> {
-//   bool notRobot = false;
-//   final _formKey = GlobalKey<FormState>();
-//   String _firstName = "";
-//   String _lastName = "";
-//   String _age = "";
-//   String _email = "";
-//   String _password = "";
-//   bool _obscureText = true;
-//   bool passwordHint=false;
-//   String CAPTCHA_SITE_KEY = "6LeePrkaAAAAAF1Tx8KEoVpDqCrHJDfwKPmsX5vX";
 
 class About extends StatefulWidget {
   @override
@@ -38,6 +20,7 @@ class About extends StatefulWidget {
 }
 
 class _About_testState extends State<About> {
+  String occupation = 'Add occupation...';
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(
@@ -60,7 +43,7 @@ class _About_testState extends State<About> {
                   child: ListTile(
                     title: Text('Description',
                       style: TextStyle(fontSize: 18.0, color: Colors.black),),
-                    subtitle: Text('Add Description...',
+                    subtitle: Text('description',
                       style: TextStyle(fontSize: 18.0, color: Colors.grey),),
                     trailing: Icon(Icons.keyboard_arrow_right_rounded),
                     onTap: () {
@@ -92,16 +75,18 @@ class _About_testState extends State<About> {
                   child: ListTile(
                     title: Text('Occupation',
                       style: TextStyle(fontSize: 18.0, color: Colors.black),),
-                    subtitle: Text('Add Occupation...',
+                    subtitle: Text(occupation,
                       style: TextStyle(fontSize: 18.0, color: Colors.grey),),
                     trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Occupation()),
-                    );
-                    },
+                  onTap: (){
+                      setState(()async{
+                        occupation = await(Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Occupation()),
+                        ));
+                      },);
+                  }
                   ),
                 ),
                 Card(
