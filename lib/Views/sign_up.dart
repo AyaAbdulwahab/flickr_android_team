@@ -7,6 +7,44 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:g_captcha/g_captcha.dart';
 // import '../ViewModels/cap.java';
 
+class NameValidation {
+  static String validate(String val) {
+    return val.isEmpty ? "Required" : null;
+  }
+}
+
+class AgeValidation {
+  static String validate(String val) {
+    return val.isEmpty
+        ? "Required"
+        : double.tryParse(val) == null
+            ? "Please enter a valid no"
+            : double.tryParse(val).truncateToDouble() < 13
+                ? "In order to sign up you must be 13 or older"
+                : null;
+  }
+}
+
+class EmailValidation {
+  static String validate(String val) {
+    return val.isEmpty
+        ? "Required"
+        : EmailValidator.validate(val.trim())
+            ? null
+            : 'Invalid email';
+  }
+}
+
+class PasswordValidation {
+  static String validate(String val) {
+    return val.isEmpty
+        ? "Required"
+        : val[0] == " " || val.length < 12
+            ? "Invalid Password"
+            : null;
+  }
+}
+
 class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
@@ -89,9 +127,10 @@ class _SignUpState extends State<SignUp> {
                         height: 15.0,
                       ),
                       TextFormField(
+                        key: Key('firstName'),
                         decoration: textInputDecoration.copyWith(
                             labelText: 'First name', labelStyle: addTextStyle),
-                        validator: (val) => val.isEmpty ? "Required" : null,
+                        validator: NameValidation.validate,
                         onChanged: (val) => _firstName = val,
                       ),
                       SizedBox(
@@ -102,7 +141,7 @@ class _SignUpState extends State<SignUp> {
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Last Name', labelStyle: addTextStyle),
                         onChanged: (val) => _lastName = val,
-                        validator: (val) => val.isEmpty ? "Required" : null,
+                        validator: NameValidation.validate,
                       ),
                       SizedBox(
                         height: 9.0,
@@ -113,23 +152,13 @@ class _SignUpState extends State<SignUp> {
                         onChanged: (val) => _age = val,
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Your age', labelStyle: addTextStyle),
-                        validator: (val) => val.isEmpty
-                            ? "Required"
-                            : double.tryParse(val) == null
-                                ? "Please enter a valid no"
-                                : double.tryParse(val).truncateToDouble() < 13
-                                    ? "In order to sign up you must be 13 or older"
-                                    : null,
+                        validator: AgeValidation.validate,
                       ),
                       SizedBox(
                         height: 9.0,
                       ),
                       TextFormField(
-                        validator: (val) => val.isEmpty
-                            ? "Required"
-                            : EmailValidator.validate(_email)
-                                ? null
-                                : 'Invalid email',
+                        validator: EmailValidation.validate,
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Email address',
                             labelStyle: addTextStyle),
@@ -145,7 +174,7 @@ class _SignUpState extends State<SignUp> {
                           });
                         },
                         focusNode: f4,
-                        validator: (val) => val.isEmpty ? "Required" : null,
+                        validator: PasswordValidation.validate,
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Password',
                             labelStyle: addTextStyle,
