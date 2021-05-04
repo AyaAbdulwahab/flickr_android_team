@@ -58,6 +58,8 @@ List<String> groupsPhotos = ["91", "16.2k", "54", "9k", "10", "143"];
 // ------------------------------------------------------------------------ //
 
 class Search extends StatefulWidget {
+  Function(bool) callback;
+  Search(this.callback);
   @override
   _SearchState createState() => _SearchState();
 }
@@ -135,197 +137,209 @@ class _SearchState extends State<Search>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.grey.shade800, actions: <Widget>[
-        Expanded(
-            child: IconButton(
-          icon: Icon(Icons.search, color: _searchColor),
-          onPressed: () {
-            if (_searchKey != "") {
-              //TODO: Request for result
-              setState(() {
-                _searchedImagesGrid = true;
-                FocusScope.of(context).requestFocus(FocusNode());
-              });
-            }
-          },
-        )),
-        Expanded(
-          flex: 6,
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: TextFormField(
-              controller: searchHolder,
-              onTap: () {
-                setState(() {
-                  _searchColor = Colors.white;
-                  _cancelButton = true;
-                  _viewtabs = true;
-                });
-              },
-              onChanged: (searchKey) {
-                setState(() {
-                  if (searchKey == "") {
-                    _removeText = false;
-                  } else {
-                    _removeText = true;
-                  }
-
-                  _searchKey = searchKey;
-                });
-              },
-              onFieldSubmitted: (searchKey) {
-                setState(() {
-                  _searchedImagesGrid = true;
-                });
-              },
-              style: TextStyle(color: Colors.white),
-              decoration: textInputDecoration.copyWith(
-                hintText: 'Search Flickr',
-                hintStyle: TextStyle(color: Colors.grey.shade600),
-                disabledBorder: InputBorder.none,
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-            flex: 1,
-            child: Visibility(
-              visible: _removeText,
-              child: IconButton(
-                  icon: Icon(Icons.cancel,
-                      color: Colors.grey.shade600, size: 19.0),
-                  onPressed: () {
-                    setState(() {
-                      searchHolder.clear();
-                      _removeText = false;
-                    });
-                  }),
-            )),
-        Expanded(
-          flex: 3,
-          child: Visibility(
-            visible: _cancelButton,
-            child: Padding(
-              padding: const EdgeInsets.all(13.0),
-              child: OutlinedButton(
-                onPressed: () {
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      child: SafeArea(
+        child: Scaffold(
+          appBar:
+              AppBar(backgroundColor: Colors.grey.shade800, actions: <Widget>[
+            Expanded(
+                child: IconButton(
+              icon: Icon(Icons.search, color: _searchColor),
+              onPressed: () {
+                if (_searchKey != "") {
+                  //TODO: Request for result
                   setState(() {
-                    searchHolder.clear();
-                    _cancelButton = false;
-                    _removeText = false;
-                    _searchColor = Colors.grey.shade600;
-                    _viewtabs = false;
-                    _searchedImagesGrid = false;
+                    _searchedImagesGrid = true;
                     FocusScope.of(context).requestFocus(FocusNode());
                   });
-                },
-                child: Text("Cancel",
-                    style: TextStyle(
-                      fontSize: 13.0,
-                      color: Colors.white,
-                    )),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.all(1.0),
-                  side: BorderSide(
-                    width: 2.0,
-                    color: Colors.white,
-                    style: BorderStyle.solid,
+                }
+              },
+            )),
+            Expanded(
+              flex: 6,
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: TextFormField(
+                  controller: searchHolder,
+                  onTap: () {
+                    setState(() {
+                      _searchColor = Colors.white;
+                      _cancelButton = true;
+                      _viewtabs = true;
+                      widget.callback(_viewtabs);
+                    });
+                  },
+                  onChanged: (searchKey) {
+                    setState(() {
+                      if (searchKey == "") {
+                        _removeText = false;
+                      } else {
+                        _removeText = true;
+                      }
+
+                      _searchKey = searchKey;
+                    });
+                  },
+                  onFieldSubmitted: (searchKey) {
+                    setState(() {
+                      _searchedImagesGrid = true;
+                    });
+                  },
+                  style: TextStyle(color: Colors.white),
+                  decoration: textInputDecoration.copyWith(
+                    hintText: 'Search Flickr',
+                    hintStyle: TextStyle(color: Colors.grey.shade600),
+                    disabledBorder: InputBorder.none,
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
                   ),
                 ),
               ),
             ),
-          ),
-        )
-      ]),
-      // ),
-      body: Stack(children: <Widget>[
-        Visibility(visible: !_viewtabs, child: ImagesGrid(images: images)),
-        Visibility(
-          visible: _viewtabs,
-          child: Container(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    height: 50,
-                    // margin: EdgeInsets.only(left: 60),
-                    child: TabBar(
-                      tabs: [
-                        Container(
+            Expanded(
+                flex: 1,
+                child: Visibility(
+                  visible: _removeText,
+                  child: IconButton(
+                      icon: Icon(Icons.cancel,
+                          color: Colors.grey.shade600, size: 19.0),
+                      onPressed: () {
+                        setState(() {
+                          searchHolder.clear();
+                          _removeText = false;
+                        });
+                      }),
+                )),
+            Expanded(
+              flex: 3,
+              child: Visibility(
+                visible: _cancelButton,
+                child: Padding(
+                  padding: const EdgeInsets.all(13.0),
+                  child: OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        searchHolder.clear();
+                        _cancelButton = false;
+                        _removeText = false;
+                        _searchColor = Colors.grey.shade600;
+                        _viewtabs = false;
+                        widget.callback(_viewtabs);
+                        _searchedImagesGrid = false;
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      });
+                    },
+                    child: Text("Cancel",
+                        style: TextStyle(
+                          fontSize: 13.0,
                           color: Colors.white,
-                          child: Text(_tabs[0], style: TextStyle(fontSize: 15)),
-                        ),
-                        Container(
-                          color: Colors.white,
-                          width: 75.0,
-                          child: Text(
-                            _tabs[1],
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ),
-                        Container(
-                          color: Colors.white,
-                          width: 75.0,
-                          child: Text(
-                            _tabs[2],
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ),
-                      ],
-                      unselectedLabelColor: Colors.grey.shade700,
-                      indicatorColor: Colors.black,
-                      labelColor: Colors.black,
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicatorPadding: EdgeInsets.all(10),
-                      isScrollable: false,
-                      controller: _tabController,
+                        )),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.all(1.0),
+                      side: BorderSide(
+                        width: 2.0,
+                        color: Colors.white,
+                        style: BorderStyle.solid,
+                      ),
                     ),
                   ),
-                  Visibility(
-                    visible: _searchedImagesGrid,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height - 106,
-                      child: TabBarView(
-                          controller: _tabController,
-                          children: <Widget>[
-                            ImagesGrid(images: searchedImages),
+                ),
+              ),
+            )
+          ]),
+          // ),
+          body: Stack(children: <Widget>[
+            Visibility(visible: !_viewtabs, child: ImagesGrid(images: images)),
+            Visibility(
+              visible: _viewtabs,
+              child: Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        height: 50,
+                        // margin: EdgeInsets.only(left: 60),
+                        child: TabBar(
+                          tabs: [
                             Container(
-                              //TODO: Request People
-                              child: ListView.builder(
-                                padding: const EdgeInsets.all(8),
-                                itemCount: peopleNames.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return buildListTile(index, 60, 60);
-                                },
+                              color: Colors.white,
+                              child: Text(_tabs[0],
+                                  style: TextStyle(fontSize: 15)),
+                            ),
+                            Container(
+                              color: Colors.white,
+                              width: 75.0,
+                              child: Text(
+                                _tabs[1],
+                                style: TextStyle(fontSize: 15),
                               ),
                             ),
                             Container(
-                              //TODO: Request Groups
-                              child: ListView.separated(
-                                itemCount: groupsNames.length,
-                                padding: const EdgeInsets.all(8),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return SearchGroupCard(index: index);
-                                },
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        SizedBox(height: 10),
+                              color: Colors.white,
+                              width: 75.0,
+                              child: Text(
+                                _tabs[2],
+                                style: TextStyle(fontSize: 15),
                               ),
-                            )
-                          ]),
-                    ),
+                            ),
+                          ],
+                          unselectedLabelColor: Colors.grey.shade700,
+                          indicatorColor: Colors.black,
+                          labelColor: Colors.black,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          indicatorPadding: EdgeInsets.all(10),
+                          isScrollable: false,
+                          controller: _tabController,
+                        ),
+                      ),
+                      Visibility(
+                        visible: _searchedImagesGrid,
+                        child: Container(
+                          height: MediaQuery.of(context).size.height - 106,
+                          child: TabBarView(
+                              controller: _tabController,
+                              children: <Widget>[
+                                ImagesGrid(images: searchedImages),
+                                Container(
+                                  //TODO: Request People
+                                  child: ListView.builder(
+                                    padding: const EdgeInsets.all(8),
+                                    itemCount: peopleNames.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return buildListTile(index, 60, 60);
+                                    },
+                                  ),
+                                ),
+                                Container(
+                                  //TODO: Request Groups
+                                  child: ListView.separated(
+                                    itemCount: groupsNames.length,
+                                    padding: const EdgeInsets.all(8),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return SearchGroupCard(index: index);
+                                    },
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            SizedBox(height: 10),
+                                  ),
+                                )
+                              ]),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
+          ]),
         ),
-      ]),
+      ),
     );
   }
 

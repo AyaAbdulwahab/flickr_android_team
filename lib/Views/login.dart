@@ -2,7 +2,6 @@ import 'package:flickr/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
-import 'sign_up.dart';
 import 'package:provider/provider.dart';
 import 'package:flickr/Widgets/authentication_app_bar.dart';
 
@@ -13,35 +12,6 @@ const style = TextStyle(
   fontFamily: 'ProximaNova',
   fontWeight: FontWeight.bold,
 );
-
-void main() {
-  return runApp(
-    MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Color(0xFF212124),
-          title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Image(
-                  image: AssetImage("assets/flickr-logo.png"),
-                  height: 20,
-                  width: 60,
-                ),
-                Text('flickr',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 30.0,
-                      fontFamily: 'Frutiger',
-                    )),
-              ]),
-        ),
-        body: Login(),
-      ),
-    ),
-  );
-}
 
 class Login extends StatefulWidget {
   @override
@@ -101,9 +71,9 @@ class _LoginState extends State<Login> {
   checkAccount() {
     if (_email == savedEmail) {
       if (_password == savedPassword) {
-        //TODO: Navigate to explore page
-        // print("Account valid");
         _invalidAlert = false;
+
+        /// Navigate to explore page
         Provider.of<MyModel>(context, listen: false).authUser();
         Navigator.popUntil(context, ModalRoute.withName('/'));
       }
@@ -170,6 +140,7 @@ class _LoginState extends State<Login> {
                   Container(
                     padding: EdgeInsets.only(left: 20.0, right: 20.0),
                     child: TextField(
+                      key: Key("login-email-field"),
                       onChanged: (email) {
                         setState(() {
                           _email = email;
@@ -206,6 +177,7 @@ class _LoginState extends State<Login> {
                     child: Container(
                       padding: EdgeInsets.only(left: 20.0, right: 20.0),
                       child: TextFormField(
+                        key: Key("login-psswrd-field"),
                         enableSuggestions: false,
                         autocorrect: false,
                         obscureText: _hidePassword,
@@ -265,7 +237,6 @@ class _LoginState extends State<Login> {
                     child: TextButton(
                       onPressed: () {
                         if (_formKey.currentState.validate()) {}
-                        ;
                         setState(() {
                           if (_email != "" &&
                               _email != null &&
@@ -320,8 +291,9 @@ class _LoginState extends State<Login> {
                       children: <Widget>[
                         Text('Not a Flickr member?', style: style),
                         TextButton(
+                            key: Key("signup-here-link"),
                             onPressed: () {
-                              //TODO: Navigate to sign up page
+                              /// Navigate to sign up page
                               Navigator.pushNamed(context, '/sign_up');
                             },
                             child: Text(' Sign up here.', style: style)
