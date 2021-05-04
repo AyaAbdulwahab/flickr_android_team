@@ -1,6 +1,8 @@
+import 'package:flickr/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:provider/provider.dart';
 import 'sign_up.dart';
 
 const style =TextStyle(
@@ -21,8 +23,8 @@ void main() {
                   height: 20,
                   width: 60,
                 ),
-                Text(
-                    'flickr',
+                Text('flickr',
+
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 30.0,
@@ -31,6 +33,7 @@ void main() {
                 ),
               ]
           ),
+
         ),
         body: Login(),
       ),
@@ -52,18 +55,23 @@ class _LoginState extends State<Login> {
   // bool valueSecond = false;
   wrongEmailAlert(BuildContext context)
   {
+
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Hmm... that\'s not an email address'),
+
             content: Text('Please enter your complete Flickr account email address (e.g name@domain.com). If you still log in through yahoo, click below to continue.'),
             actions: <Widget>[
               TextButton(
+                onPressed: () {},
                 child: Text('Continue to Yahoo'),
               ),
               TextButton(
+
                 onPressed: (){
+
                   Navigator.of(context).pop();
                 },
                 child: Text('Try Again'),
@@ -74,6 +82,7 @@ class _LoginState extends State<Login> {
               ),
             ],
           );
+
         }
     );
   }
@@ -89,9 +98,11 @@ class _LoginState extends State<Login> {
     }
     else
     {
+
       wrongEmailAlert(context);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -146,15 +157,10 @@ class _LoginState extends State<Login> {
                       borderSide: BorderSide(color:Colors.pink),
                     )
                 ),
+
               ),
-            ),
-            SizedBox(
-              height: 7.0,
-            ),
-            Visibility (
-              visible: _showWidgets,
-              child:Container(
-                padding: EdgeInsets.only(left:20.0,right:20.0 ),
+              Container(
+                padding: EdgeInsets.only(left: 20.0, right: 20.0),
                 child: TextField(
                     enableSuggestions: false,
                     autocorrect: false,
@@ -222,10 +228,11 @@ class _LoginState extends State<Login> {
                   primary: Colors.white,
                   backgroundColor: Colors.blue,
                 ),
+
               ),
-            ),
-            Visibility(
+              Visibility(
                 visible: _showWidgets,
+
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget> [
@@ -261,7 +268,7 @@ class _LoginState extends State<Login> {
                           context,
                           MaterialPageRoute(
                             builder: (context)  {
-                              return SignUp();
+                              Navigator.pushNamed(context, '/sign_up');
                             },
                           ),
                         );
@@ -272,6 +279,7 @@ class _LoginState extends State<Login> {
                 ]
             )
           ],
+
         ),
       ),
     );
