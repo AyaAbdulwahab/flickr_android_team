@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
-String description = '';
 
 class Description extends StatefulWidget {
+  String description;
+  Description({@required this.description});
   @override
   _State createState() => _State();
 }
@@ -19,6 +20,10 @@ class _State extends State<Description> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context, widget.description),
+          ),
           backgroundColor: Colors.grey[800],
           title: Text(
             "Description",
@@ -49,7 +54,7 @@ class _State extends State<Description> {
                     }
                     else
                     {
-                      description = changed;
+                      widget.description = changed;
                       check = false;
                       button = 'Edit';
                     }
@@ -69,7 +74,7 @@ class _State extends State<Description> {
                     padding: const EdgeInsets.only( left: 20.0, top: 7.0),
                     child: TextFormField(
                       enabled: check,
-                      initialValue: description,
+                      initialValue: widget.description,
                       decoration: textInputDecoration.copyWith(
                         hintText: "Add Description...",
                         hintStyle:
@@ -81,7 +86,9 @@ class _State extends State<Description> {
                         errorBorder: InputBorder.none,
                       ),
                       onChanged: (val) {
-                        changed = val;
+                        setState(() {
+                          changed = val;
+                        });
                       },
                     ),
                   ),

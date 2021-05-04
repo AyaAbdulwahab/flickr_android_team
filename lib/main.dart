@@ -1,7 +1,11 @@
+
+import 'package:flickr/Views/current_city.dart';
+
 import 'package:flickr/Views/about_menu.dart';
 import 'package:flickr/Views/credits.dart';
 import 'package:flickr/Views/login.dart';
 import 'package:flickr/Views/nav.dart';
+
 import 'package:flickr/Views/sign_up.dart';
 import 'package:flickr/Views/welcome_page.dart';
 import 'package:flickr/Views/splash_screen.dart';
