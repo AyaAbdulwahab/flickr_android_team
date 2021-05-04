@@ -32,7 +32,7 @@ class Page extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 25.0,
+                  fontSize: 23.0,
                 ),
               ),
             ),
@@ -43,7 +43,7 @@ class Page extends StatelessWidget {
           Center(
             child: Text(
               subtitle,
-              style: TextStyle(color: Colors.white, fontSize: 22.0),
+              style: TextStyle(color: Colors.white, fontSize: 20.0),
               textAlign: TextAlign.center,
             ),
           ),
@@ -104,7 +104,7 @@ class GetStarted extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 550.0),
+              padding: const EdgeInsets.only(top: 530.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -114,7 +114,7 @@ class GetStarted extends StatelessWidget {
                           vertical: 20.0, horizontal: 65.0),
                       child: Text(
                         'Get Started',
-                        style: TextStyle(color: Colors.white, fontSize: 18.0),
+                        style: TextStyle(color: Colors.white, fontSize: 16.0),
                       ),
                     ),
                     style: ButtonStyle(
@@ -132,7 +132,7 @@ class GetStarted extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 515.0),
+              padding: const EdgeInsets.only(top: 500.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -160,13 +160,14 @@ class GetStarted extends StatelessWidget {
                       Icon(
                         Icons.camera_alt,
                         color: Colors.white,
+                        size: 15.0,
                       ),
                       SizedBox(
                         width: 5.0,
                       ),
                       Text(
                         'Ben Flasher',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontSize: 14.0),
                       ),
                     ],
                   ),

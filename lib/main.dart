@@ -1,3 +1,4 @@
+import 'package:flickr/Views/current_city.dart';
 import 'package:flickr/Views/sign_up.dart';
 import 'package:flickr/Views/home.dart';
 import 'package:flickr/Views/About.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: GetStarted(),
     );
   }
 }

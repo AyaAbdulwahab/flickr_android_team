@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flickr/Widgets/faves_and_comments.dart';
 
 class Post extends StatefulWidget {
   Post({
@@ -115,31 +116,25 @@ class _PostState extends State<Post> {
           Padding(
             padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 10.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.star_border_outlined,
-                  size: 25.0,
-                  color: Colors.grey,
-                ),
-                Text(
-                  widget.postFaves,
-                  style: TextStyle(color: Colors.grey),
-                ),
-                SizedBox(
-                  width: 125.0,
-                ),
-                Icon(
-                  Icons.comment,
-                  size: 25.0,
-                  color: Colors.grey,
-                ),
-                Text(
-                  widget.postComments,
-                  style: TextStyle(color: Colors.grey),
-                ),
-                SizedBox(
-                  width: 125.0,
-                ),
+                FavesAndComments(chosenIcon: Icon(Icons.star_border_outlined), faves:  widget.postFaves),
+                FavesAndComments(chosenIcon: Icon(Icons.comment), faves:  widget.postComments),
+                // SizedBox(
+                //   width: 125.0,
+                // ),
+                // Icon(
+                //   Icons.comment,
+                //   size: 25.0,
+                //   color: Colors.grey,
+                // ),
+                // Text(
+                //   widget.postComments,
+                //   style: TextStyle(color: Colors.grey),
+                // ),
+                // SizedBox(
+                //   width: 125.0,
+                // ),
                 Icon(
                   Icons.share_outlined,
                   size: 25.0,

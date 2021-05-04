@@ -4,12 +4,13 @@ import 'package:flickr/Widgets/text_field_widget.dart';
 
 
 class Occupation extends StatefulWidget {
+  String occupation = '';
+  Occupation({@required this.occupation});
   @override
   _State createState() => _State();
 }
 
 class _State extends State<Occupation> {
-  String occupation = '';
   String button = 'Edit';
   bool check = false;
   String changed;
@@ -21,7 +22,7 @@ class _State extends State<Occupation> {
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context, occupation),
+            onPressed: () => Navigator.pop(context, widget.occupation),
           ),
           backgroundColor: Colors.grey[800],
           title: Text(
@@ -53,7 +54,7 @@ class _State extends State<Occupation> {
                     }
                     else
                       {
-                      occupation = changed;
+                      widget.occupation = changed;
                       check = false;
                       button = 'Edit';
                     }
@@ -73,7 +74,7 @@ class _State extends State<Occupation> {
                     padding: const EdgeInsets.only( left: 20.0, top: 7.0),
                       child: TextFormField(
                         enabled: check,
-                        initialValue: occupation,
+                        initialValue: widget.occupation,
                         decoration: textInputDecoration.copyWith(
                           hintText: "Add Occupation...",
                           hintStyle:
@@ -85,7 +86,9 @@ class _State extends State<Occupation> {
                           errorBorder: InputBorder.none,
                         ),
                         onChanged: (val) {
-                          changed = val;
+                          setState(() {
+                            changed = val;
+                          });
                         },
                       ),
                     ),
