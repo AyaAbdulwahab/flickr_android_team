@@ -11,8 +11,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.''';
 
-
-String facebookShimmer= '''BSD License
+String facebookShimmer = '''BSD License
 
 For Shimmer software
 
@@ -36,7 +35,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''';
 
-String koin ='''Copyright 2017 Arnaud GIULIANI, Laurent BARESSE
+String koin = '''Copyright 2017 Arnaud GIULIANI, Laurent BARESSE
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -47,7 +46,7 @@ You may obtain a copy of the License at
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.''';
 
-String picasso= '''Copyright 2013 Square, Inc.
+String picasso = '''Copyright 2013 Square, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -58,7 +57,8 @@ You may obtain a copy of the License at
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.''';
 
-String AWS='''Copyright 2008 Amazon.com, Inc. or its affiliates. All rights reserved.
+String aws =
+    '''Copyright 2008 Amazon.com, Inc. or its affiliates. All rights reserved.
 
 Amazon Software License
 1. Definitions
@@ -101,7 +101,7 @@ Works, including the Software, are “made available” under this License by in
 
     EXCEPT AS PROHIBITED BY APPLICABLE LAW, IN NO EVENT AND UNDER NO LEGAL THEORY, WHETHER IN TORT (INCLUDING NEGLIGENCE), CONTRACT, OR OTHERWISE SHALL ANY LICENSOR BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR RELATED TO THIS LICENSE, THE USE OR INABILITY TO USE THE WORK (INCLUDING BUT NOT LIMITED TO LOSS OF GOODWILL, BUSINESS INTERRUPTION, LOST PROFITS OR DATA, COMPUTER FAILURE OR MALFUNCTION, OR ANY OTHER COMM ERCIAL DAMAGES OR LOSSES), EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.''';
 
-String android= '''Copyright (c) 2014, The Android Open Source Project
+String android = '''Copyright (c) 2014, The Android Open Source Project
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -114,7 +114,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.''';
 
-String commons= '''Copyright 2002-2014 The Apache Software Foundation
+String commons = '''Copyright 2002-2014 The Apache Software Foundation
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -124,7 +124,8 @@ You may obtain a copy of the License at
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.''';
 
-String isoparser='''Licensed under the Apache License, Version 2.0 (the "License");
+String isoparser =
+    '''Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
@@ -133,8 +134,7 @@ You may obtain a copy of the License at
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.''';
 
-
-String gson='''Copyright (c) 2008-2009 Google Inc. 
+String gson = '''Copyright (c) 2008-2009 Google Inc. 
 
 Licensed under the Apache License, Version 2.0 (the "License"); 
 you may not use this file except in compliance with the License. 
@@ -146,7 +146,7 @@ Unless required by applicable law or agreed to in writing, software  distributed
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
 See the License for the specific language governing permissions and  limitations under the License.''';
 
-String fileUtils='''Copyright (C) 2007-2008 OpenIntents.org
+String fileUtils = '''Copyright (C) 2007-2008 OpenIntents.org
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -158,8 +158,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.''';
 
-
-String ccv='''Copyright (c) 2010, Liu Liu
+String ccv = '''Copyright (c) 2010, Liu Liu
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -224,7 +223,8 @@ MIT License - http://www.opensource.org/licenses/mit-license.php
 
 sha1: TODO''';
 
-String expat='''Copyright (c) 1998, 1999, 2000 Thai Open Source Software Center Ltd
+String expat =
+    '''Copyright (c) 1998, 1999, 2000 Thai Open Source Software Center Ltd
                                and Clark Cooper
 Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006 Expat maintainers.
 
@@ -236,8 +236,7 @@ in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.''';
 
-
-String jansson='''Copyright (c) 2009-2012 Petri Lehtinen <petri@digip.org>
+String jansson = '''Copyright (c) 2009-2012 Petri Lehtinen <petri@digip.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software isfurnished to do so, subject to the following conditions:
 
@@ -245,8 +244,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.''';
 
-
-String libjpeg='''In plain English:
+String libjpeg = '''In plain English:
 
 1. We don't promise that this software works.  (But if you find any bugs,
    please let us know!)
@@ -298,8 +296,8 @@ We are required to state that
     CompuServe Incorporated.  GIF(sm) is a Service Mark property of
     CompuServe Incorporated."''';
 
-
-String liblzf='''Copyright (c) 2000-2009 Marc Alexander Lehmann <schmorp@schmorp.de>
+String liblzf =
+    '''Copyright (c) 2000-2009 Marc Alexander Lehmann <schmorp@schmorp.de>
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
@@ -319,8 +317,8 @@ ERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF T
 Alternatively, the following files carry an additional notice that
 explicitly allows relicensing under the GPLv2: lzf.c lzf.h lzfP.h lzf_c.clzf_d.c''';
 
-
-String libvpx='''Copyright (c) 2010, The WebM Project authors. All rights reserved.
+String libvpx =
+    '''Copyright (c) 2010, The WebM Project authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
@@ -339,8 +337,7 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''';
 
-
-String openssl='''LICENSE ISSUES
+String openssl = '''LICENSE ISSUES
   ==============
 
   The OpenSSL toolkit stays under a dual license, i.e. both the conditions of
@@ -430,8 +427,7 @@ String openssl='''LICENSE ISSUES
  * This can be in the form of a textual message at program startup or
  * in doc''';
 
-
-String facebookSDK='''Copyright Facebook, Inc.
+String facebookSDK = '''Copyright Facebook, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -443,7 +439,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.''';
 
-String cropper='''Copyright 2013, Edmodo, Inc.
+String cropper = '''Copyright 2013, Edmodo, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the LICENSE file, or at:
 
@@ -452,8 +448,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an
 "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.''';
 
-
-String sliding='''Copyright (C) 2013 The Android Open Source Project
+String sliding = '''Copyright (C) 2013 The Android Open Source Project
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -465,7 +460,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.''';
 
-String breakpad='''Copyright (c) 2006, Google Inc.
+String breakpad = '''Copyright (c) 2006, Google Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -507,7 +502,7 @@ Limitations on Rights to Redistribute This Code
 Unicode, Inc. hereby grants the right to freely use the information supplied in this file in the creation of products supporting the
 Unicode Standard, and to make copies of this file in any form for internal or external distribution as long as this notice remains attached.''';
 
-String chromium='''Copyright 2014 The Chromium Authors. All rights reserved.
+String chromium = '''Copyright 2014 The Chromium Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -525,7 +520,8 @@ this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''';
 
-String libxml='''Except where otherwise noted in the source code (e.g. the files hash.c,
+String libxml =
+    '''Except where otherwise noted in the source code (e.g. the files hash.c,
 list.c and the trio files, which are covered by a similar licence but
 with different Copyright notices) all the files are:
 
@@ -541,7 +537,7 @@ DANIEL VEILLARD BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
 
 Except as contained in this notice, the name of Daniel Veillard shall not be used in advertising or otherwise to promote the sale, use or other dealings in this Software without prior written authorization from him.''';
 
-String libevent='''Copyright 2000-2007 Niels Provos 
+String libevent = '''Copyright 2000-2007 Niels Provos 
 Copyright 2007-2009 Niels Provos and Nick Mathewson
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions
@@ -558,7 +554,7 @@ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED WAR
 OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
 IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''';
 
-String modp_b64='''MODP_B64 - High performance base64 encoder/decoder
+String modpB64 = '''MODP_B64 - High performance base64 encoder/decoder
 Version 1.3 -- 17-Mar-2006
 http://modp.com/release/base64
 
@@ -581,10 +577,11 @@ met:
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''';
 
+String npr =
+    '''This work may use NSS and NSPR, which are covered by the Mozilla Public License Version 2.0.''';
 
-String npr='''This work may use NSS and NSPR, which are covered by the Mozilla Public License Version 2.0.''';
-
-String zlib='''zlib.h -- interface of the 'zlib' general purpose compression library
+String zlib =
+    '''zlib.h -- interface of the 'zlib' general purpose compression library
 version 1.2.4, March 14th, 2010
 
 Copyright (C) 1995-2010 Jean-loup Gailly and Mark Adler
@@ -604,8 +601,8 @@ Permission is granted to anyone to use this software for any purpose, including 
 Jean-loup Gailly
 Mark Adler''';
 
-
-String protobuf='''[2:28 am, 25/04/2021] Shorouk Roshdy: Copyright 2008, Google Inc.
+String protobuf =
+    '''[2:28 am, 25/04/2021] Shorouk Roshdy: Copyright 2008, Google Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -623,7 +620,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 Code generated by the Protocol Buffer compiler is owned by the owner of the input file used when generating it.  This code is not standalone and requires a support library to be linked with it.  This support library is itself covered by the above license.''';
 
-String colorama ='''Copyright (c) 2010 Jonathan Hartley
+String colorama = '''Copyright (c) 2010 Jonathan Hartley
 All rights reserved.
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -646,8 +643,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''';
 
-
-String ashmem='''Apache License
+String ashmem = '''Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
@@ -847,8 +843,7 @@ String ashmem='''Apache License
    See the License for the specific language governing permissions and
    limitations under the License.''';
 
-
-String icu='''ICU License - ICU 1.8.1 and later
+String icu = '''ICU License - ICU 1.8.1 and later
 
 COPYRIGHT AND PERMISSION NOTICE
 

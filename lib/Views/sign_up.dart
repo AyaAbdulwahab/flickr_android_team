@@ -1,10 +1,49 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:flickr/Widgets/authentication_app_bar.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_recaptcha_v2/flutter_recaptcha_v2.dart';
+//import 'package:flutter_recaptcha_v2/flutter_recaptcha_v2.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:g_captcha/g_captcha.dart';
+//import 'package:g_captcha/g_captcha.dart';
 // import '../ViewModels/cap.java';
+
+class NameValidation {
+  static String validate(String val) {
+    return val.isEmpty ? "Required" : null;
+  }
+}
+
+class AgeValidation {
+  static String validate(String val) {
+    return val.isEmpty
+        ? "Required"
+        : double.tryParse(val) == null
+            ? "Please enter a valid no"
+            : double.tryParse(val).truncateToDouble() < 13
+                ? "In order to sign up you must be 13 or older"
+                : null;
+  }
+}
+
+class EmailValidation {
+  static String validate(String val) {
+    return val.isEmpty
+        ? "Required"
+        : EmailValidator.validate(val.trim())
+            ? null
+            : 'Invalid email';
+  }
+}
+
+class PasswordValidation {
+  static String validate(String val) {
+    return val.isEmpty
+        ? "Required"
+        : val[0] == " " || val.length < 12
+            ? "Invalid Password"
+            : null;
+  }
+}
 
 class SignUp extends StatefulWidget {
   @override
@@ -12,30 +51,27 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  bool notRobot = false;
   final _formKey = GlobalKey<FormState>();
-  String _firstName = "";
-  String _lastName = "";
   String _age = "";
   String _email = "";
+  String _firstName = "";
+  String _lastName = "";
   String _password = "";
+  bool checkNoOfChars = false;
+  bool checkSpace = false;
+  bool notRobot = false;
   bool _obscureText = true;
   bool passwordHint = false;
-  bool checkSpace = false;
-  bool checkNoOfChars = false;
-  String captchaSiteKey = "6LeePrkaAAAAAF1Tx8KEoVpDqCrHJDfwKPmsX5vX";
   String verifyResult = "";
 
-  RecaptchaV2Controller recaptchaV2Controller = RecaptchaV2Controller();
+  // String captchaSiteKey = "6LeePrkaAAAAAF1Tx8KEoVpDqCrHJDfwKPmsX5vX";
+  // RecaptchaV2Controller recaptchaV2Controller = RecaptchaV2Controller();
 
-  FocusNode f1;
-  FocusNode f2;
   final f3 = FocusNode();
   final f4 = FocusNode();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // recaptchaV2Controller.show();
     f3.addListener(() {
@@ -54,34 +90,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        toolbarHeight: MediaQuery.of(context).size.height * 0.07,
-        backgroundColor: Colors.black.withOpacity(0.81),
-        leadingWidth: MediaQuery.of(context).size.width * 0.5,
-        leading: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          // padding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 20.0),
-          children: [
-            Image(
-              image: AssetImage('assets/flickr-logo.png'),
-              //height: MediaQuery.of(context).size.height * 0.07,
-              width: 25.0,
-              height: 25.0,
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'flickr',
-              style: TextStyle(
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Frutiger'),
-            ),
-          ],
-        ),
-      ),
+      appBar: authAppBar(context),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -115,47 +124,36 @@ class _SignUpState extends State<SignUp> {
                         height: 15.0,
                       ),
                       TextFormField(
+                        key: Key('firstName'),
                         decoration: textInputDecoration.copyWith(
                             labelText: 'First name', labelStyle: addTextStyle),
-                        validator: (val) => val.isEmpty ? "Required" : null,
+                        validator: NameValidation.validate,
                         onChanged: (val) => _firstName = val,
                       ),
                       SizedBox(
                         height: 9.0,
                       ),
                       TextFormField(
-                        // focusNode: f2,
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Last Name', labelStyle: addTextStyle),
                         onChanged: (val) => _lastName = val,
-                        validator: (val) => val.isEmpty ? "Required" : null,
+                        validator: NameValidation.validate,
                       ),
                       SizedBox(
                         height: 9.0,
                       ),
                       TextFormField(
                         focusNode: f3,
-                        // autovalidateMode: AutovalidateMode.onUserInteraction,
                         onChanged: (val) => _age = val,
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Your age', labelStyle: addTextStyle),
-                        validator: (val) => val.isEmpty
-                            ? "Required"
-                            : double.tryParse(val) == null
-                                ? "Please enter a valid no"
-                                : double.tryParse(val).truncateToDouble() < 13
-                                    ? "In order to sign up you must be 13 or older"
-                                    : null,
+                        validator: AgeValidation.validate,
                       ),
                       SizedBox(
                         height: 9.0,
                       ),
                       TextFormField(
-                        validator: (val) => val.isEmpty
-                            ? "Required"
-                            : EmailValidator.validate(_email)
-                                ? null
-                                : 'Invalid email',
+                        validator: EmailValidation.validate,
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Email address',
                             labelStyle: addTextStyle),
@@ -171,7 +169,7 @@ class _SignUpState extends State<SignUp> {
                           });
                         },
                         focusNode: f4,
-                        validator: (val) => val.isEmpty ? "Required" : null,
+                        validator: PasswordValidation.validate,
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Password',
                             labelStyle: addTextStyle,
@@ -264,19 +262,9 @@ class _SignUpState extends State<SignUp> {
                         height: 9.0,
                       ),
                       // RaisedButton(
-                      //     onPressed: () => recaptchaV2Controller.show(),
-                      //     child: Text('reCaptcha')),
-                      RaisedButton(
-                        onPressed: () => _openReCaptcha(),
-                        child: Text("I'm not a robot"),
-                      ),
-                      // CheckboxListTile(
-
-                      //     value: notRobot,
-                      //     tileColor: Colors.grey[200],
-                      //     controlAffinity: ListTileControlAffinity.leading,
-                      //     title: Text("I'm not a robot"),
-                      //     onChanged: (val) => _openReCaptcha),
+                      //   onPressed: () => _openReCaptcha(),
+                      //   child: Text("I'm not a robot"),
+                      // ),
                       SizedBox(
                         height: 9.0,
                       ),
@@ -378,11 +366,11 @@ class _SignUpState extends State<SignUp> {
   }
 }
 
-_openReCaptcha() async {
-  String tokenResult =
-      await GCaptcha.reCaptcha("6LfJDMMaAAAAAHHYPOlHzw7oBjHTNj3m2Xt9qrhR");
-  print('tokenResult: $tokenResult');
-}
+// _openReCaptcha() async {
+//   String tokenResult =
+//       await GCaptcha.reCaptcha("6LfJDMMaAAAAAHHYPOlHzw7oBjHTNj3m2Xt9qrhR");
+//   print('tokenResult: $tokenResult');
+// }
 
 const addTextStyle = TextStyle(
   fontSize: 15.0,

@@ -2,21 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Constants/credits_details.dart';
 
-// void main() {
-//   return runApp(
-//   MaterialApp(
-//       home: Scaffold(
-//           backgroundColor: Colors.white,
-//           appBar: AppBar(
-//             title: Text('Credits'),
-//             backgroundColor:Color(0xFF212124) ,
-//           ),
-//           body: Credits(),
-//       ),
-//     ),
-//   );
-// }
-
 class Credits extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -57,7 +42,7 @@ class Credits extends StatelessWidget {
                 CreditSection(
                   label: 'Notices for libraries:',
                   bulletPoint: '     • AWS Cognito Identity Provider',
-                  details: AWS,
+                  details: aws,
                 ),
                 CreditSection(
                   label: 'Notices for files:',
@@ -149,7 +134,7 @@ class Credits extends StatelessWidget {
                 CreditSection(
                   label: 'Notices for files:',
                   bulletPoint: '     • modp_b64',
-                  details: modp_b64,
+                  details: modpB64,
                 ),
                 CreditSection(
                   label: 'Notices for files:',

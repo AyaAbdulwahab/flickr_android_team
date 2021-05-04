@@ -1,6 +1,9 @@
+import 'package:flickr/Views/home.dart';
+import 'package:flickr/Views/search.dart';
 import 'package:flickr/Views/you.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/services.dart';
 
 class NavBar extends StatefulWidget {
   @override
@@ -31,52 +34,64 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Color(0xFF212124),
+    ));
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.5),
-        child: SafeArea(
-          child: Container(
-            height: 57.0,
-            child: Material(
-              color: Colors.black87,
-              child: TabBar(
-                // indicatorPadding: EdgeInsets.only(bottom: 20.0),
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.grey,
-                indicatorColor: Colors.transparent,
-                controller: _tabController,
-                tabs: [
-                  Tab(
-                    icon: Icon(Icons.home),
+        // backgroundColor: Color(0xFF212124),
+        body: NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+            flexibleSpace: PreferredSize(
+              preferredSize: Size.fromHeight(60.5),
+              child: SafeArea(
+                child: Container(
+                  height: 57.0,
+                  child: Material(
+                    color: Color(0xFF212124),
+                    child: TabBar(
+                      labelColor: Colors.white,
+                      unselectedLabelColor: Colors.grey,
+                      indicatorColor: Colors.transparent,
+                      controller: _tabController,
+                      tabs: [
+                        Tab(
+                          icon: Icon(Icons.home),
+                        ),
+                        Tab(
+                          icon: Icon(Icons.search),
+                        ),
+                        Tab(icon: Icon(FontAwesomeIcons.userCircle)),
+                        Tab(
+                          icon: Icon(Icons.notifications),
+                        ),
+                        Tab(
+                          icon: Icon(Icons.camera_alt),
+                        ),
+                      ],
+                    ),
                   ),
-                  Tab(
-                    icon: Icon(Icons.search),
-                  ),
-                  Tab(icon: Icon(FontAwesomeIcons.userCircle)),
-                  Tab(
-                    icon: Icon(Icons.notifications),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.camera_alt),
-                  ),
-                ],
+                ),
               ),
             ),
+            pinned: false,
           ),
-        ),
-      ),
+        ];
+      },
       body: TabBarView(controller: _tabController, children: [
-        for (var i = 0; i < youBar.length; i++)
-          i != 2
-              ? Container(
-                  width: 10.0,
-                  height: 50.0,
-                  child: Center(
-                    child: Text('A place holder for the ${youBar[i]} Page'),
-                  ),
-                )
-              : YouPage(),
+        Home(),
+        Search(),
+        YouPage(),
+        for (var i = 3; i < youBar.length; i++)
+          Container(
+            width: 10.0,
+            height: 50.0,
+            child: Center(
+              child: Text('A place holder for the ${youBar[i]} Page'),
+            ),
+          )
       ]),
-    );
+    ));
   }
 }

@@ -2,13 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'sign_up.dart';
-
+import 'package:provider/provider.dart';
+import 'package:flickr/Widgets/authentication_app_bar.dart';
 
 String savedEmail="shorouk@gmail.com";
 String savedPassword="hello123";
 
 const style =TextStyle(
   fontFamily: 'ProximaNova', fontWeight: FontWeight.bold,
+
 );
 
 
@@ -19,8 +21,8 @@ void main() {
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor:Color(0xFF212124) ,
-          title: Row (
+          backgroundColor: Color(0xFF212124),
+          title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Image(
@@ -28,8 +30,10 @@ void main() {
                   height: 20,
                   width: 60,
                 ),
+
                 Text(
                     'flickr',
+
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 30.0,
@@ -38,6 +42,7 @@ void main() {
                 ),
               ]
           ),
+
         ),
         body: Login(),
       ),
@@ -51,8 +56,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  bool _showWidgets=false;
-  String _submitTitle='Next';
+  bool _showWidgets = false;
+  String _submitTitle = 'Next';
   String _email;
   String _password;
   bool _hidePassword=true;
@@ -62,18 +67,22 @@ class _LoginState extends State<Login> {
 
   wrongEmailAlert(BuildContext context)
   {
+
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Hmm... that\'s not an email address'),
             content: Text('Please enter your complete Flickr account email address (e.g name@domain.com). If you still log in through yahoo, click below to continue.'),
+
             actions: <Widget>[
               TextButton(
                 child: Text('Continue to Yahoo'),
+                onPressed: () {},
               ),
               TextButton(
                 onPressed: (){
+
                   Navigator.of(context).pop();
                 },
                 child: Text('Try Again'),
@@ -98,8 +107,10 @@ class _LoginState extends State<Login> {
     }
     else
     {
+
       wrongEmailAlert(context);
     }
+    return check;
   }
 
   checkAccount()
@@ -111,6 +122,8 @@ class _LoginState extends State<Login> {
         //TODO: Navigate to explore page
         // print("Account valid");
         _invalidAlert=false;
+        Provider.of<MyModel>(context, listen: false).authUser();
+                        Navigator.popUntil(context, ModalRoute.withName('/'));
       }
     }
     else
@@ -120,11 +133,15 @@ class _LoginState extends State<Login> {
   }
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top:25.0),
-      child: SingleChildScrollView(
-        child: Form(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: authAppBar(context),
+      body: Padding(
+        padding: EdgeInsets.only(top: 25.0),
+        child: SingleChildScrollView(
+          child: Form(
           key: _formKey,
+
           child: Column(
             children: <Widget>[
               Image(
@@ -146,6 +163,7 @@ class _LoginState extends State<Login> {
                         fontWeight: FontWeight.bold,
                       )
                   ),
+
                 ],
               ),
               SizedBox(
@@ -172,6 +190,7 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(
                 height: 20.0,
+
               ),
               Container(
                 padding: EdgeInsets.only(left:20.0,right:20.0),
@@ -202,6 +221,7 @@ class _LoginState extends State<Login> {
                         borderSide: BorderSide(color:Colors.pink),
                       )
                   ),
+
                 ),
               ),
               SizedBox(
@@ -234,6 +254,7 @@ class _LoginState extends State<Login> {
                       _password=password;
                     },
                     validator: (val) => val.isEmpty?"Required":_email==savedEmail&&_password!=savedPassword?"Invalid Password":null ,
+
                   ),
                 ),
               ),
@@ -305,6 +326,7 @@ class _LoginState extends State<Login> {
                         ),
                         Container(
                           padding: EdgeInsets.only(left:20.0,right:20.0),
+
                           child: Divider(
                             color: Colors.black,
                           ),
@@ -312,6 +334,7 @@ class _LoginState extends State<Login> {
                       ]
                   )
               ),
+
               Visibility(
                 visible: !_showWidgets,
                 child: SizedBox(
@@ -325,20 +348,14 @@ class _LoginState extends State<Login> {
                     TextButton(
                         onPressed: (){
                           //TODO: Navigate to sign up page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context)  {
-                                return SignUp();
-                              },
-                            ),
-                          );
+                          Navigator.pushNamed(context, '/sign_up');
                         },
                         child: Text(' Sign up here.', style:style)
                       // style :
                     )
                   ]
               )
+
             ],
           ),
         ),
@@ -346,4 +363,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-//

@@ -1,3 +1,4 @@
+import 'package:flickr/Views/About.dart';
 import 'package:flickr/Views/settings.dart';
 import 'package:flickr/Views/user_options.dart';
 import 'package:flutter/material.dart';
@@ -41,8 +42,7 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(children: [
+    return Stack(children: [
       NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
@@ -162,7 +162,8 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
             ];
           },
           body: TabBarView(controller: _tabController, children: [
-            for (var i = 0; i < youBar.length; i++)
+            About(),
+            for (var i = 1; i < youBar.length; i++)
               Center(
                 child: Text('A place holder for the ${youBar[i]} Page'),
               )
@@ -228,30 +229,6 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
             ],
           )
         ])
-    ]));
-  }
-}
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height;
-  @override
-  double get maxExtent => _tabBar.preferredSize.height;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new Container(
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
+    ]);
   }
 }
