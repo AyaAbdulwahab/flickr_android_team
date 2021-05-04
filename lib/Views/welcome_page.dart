@@ -57,7 +57,7 @@ class Page extends StatelessWidget {
 }
 
 class GetStarted extends StatelessWidget {
-  PageController _controller = new PageController();
+  final PageController _controller = new PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +126,9 @@ class GetStarted extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
                   ),
                 ],
               ),
@@ -155,22 +157,22 @@ class GetStarted extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.only(top: 630.0, left: 10.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.camera_alt,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        'Ben Flasher',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.camera_alt,
+                    color: Colors.white,
                   ),
+                  SizedBox(
+                    width: 5.0,
+                  ),
+                  Text(
+                    'Ben Flasher',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
               ),
+            ),
           ],
         ),
       ),

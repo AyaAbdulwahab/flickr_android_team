@@ -1,4 +1,5 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:flickr/Widgets/authentication_app_bar.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_recaptcha_v2/flutter_recaptcha_v2.dart';
@@ -54,34 +55,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        toolbarHeight: MediaQuery.of(context).size.height * 0.07,
-        backgroundColor: Colors.black.withOpacity(0.81),
-        leadingWidth: MediaQuery.of(context).size.width * 0.5,
-        leading: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          // padding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 20.0),
-          children: [
-            Image(
-              image: AssetImage('assets/flickr-logo.png'),
-              //height: MediaQuery.of(context).size.height * 0.07,
-              width: 25.0,
-              height: 25.0,
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-            Text(
-              'flickr',
-              style: TextStyle(
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Frutiger'),
-            ),
-          ],
-        ),
-      ),
+      appBar: authAppBar(context),
       body: Stack(
         children: [
           SingleChildScrollView(

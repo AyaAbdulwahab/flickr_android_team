@@ -1,41 +1,43 @@
+import 'package:flickr/Widgets/authentication_app_bar.dart';
 import 'package:flickr/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
+import 'sign_up.dart';
 
 const style = TextStyle(
   fontFamily: 'ProximaNova',
   fontWeight: FontWeight.bold,
 );
-// void main() {
-//   return runApp(
-//     MaterialApp(
-//       home: Scaffold(
-//         backgroundColor: Colors.white,
-//         appBar: AppBar(
-//           backgroundColor: Color(0xFF212124),
-//           title: Row(
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               children: <Widget>[
-//                 Image(
-//                   image: AssetImage("assets/flickr-logo.png"),
-//                   height: 20,
-//                   width: 60,
-//                 ),
-//                 Text('flickr',
-//                     style: TextStyle(
-//                       fontWeight: FontWeight.w700,
-//                       fontSize: 30.0,
-//                       fontFamily: 'Frutiger',
-//                     )),
-//               ]),
-//         ),
-//         body: Login(),
-//       ),
-//     ),
-//   );
-// }
+void main() {
+  return runApp(
+    MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Color(0xFF212124),
+          title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Image(
+                  image: AssetImage("assets/flickr-logo.png"),
+                  height: 20,
+                  width: 60,
+                ),
+                Text('flickr',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 30.0,
+                      fontFamily: 'Frutiger',
+                    )),
+              ]),
+        ),
+        body: Login(),
+      ),
+    ),
+  );
+}
 
 class Login extends StatefulWidget {
   @override
@@ -59,7 +61,6 @@ class _LoginState extends State<Login> {
                 'Please enter your complete Flickr account email address (e.g name@domain.com). If you still log in through yahoo, click below to continue.'),
             actions: <Widget>[
               TextButton(
-                onPressed: () {},
                 child: Text('Continue to Yahoo'),
               ),
               TextButton(
@@ -77,7 +78,7 @@ class _LoginState extends State<Login> {
         });
   }
 
-  checkEmail() {
+  bool checkEmail() {
     _email = _email.trim();
     print(_email);
     bool check = EmailValidator.validate(_email);
@@ -87,11 +88,14 @@ class _LoginState extends State<Login> {
     } else {
       wrongEmailAlert(context);
     }
+    return check;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: authAppBar(context),
       body: Padding(
         padding: EdgeInsets.only(top: 25.0),
         child: SingleChildScrollView(
@@ -142,29 +146,37 @@ class _LoginState extends State<Login> {
                       )),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                child: TextField(
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    obscureText: _hidePassword,
-                    decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.remove_red_eye,
-                            color:
-                                this._hidePassword ? Colors.grey : Colors.blue,
+              SizedBox(
+                height: 7.0,
+              ),
+              Visibility(
+                visible: _showWidgets,
+                child: Container(
+                  padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                  child: TextField(
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      obscureText: _hidePassword,
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              Icons.remove_red_eye,
+                              color: this._hidePassword
+                                  ? Colors.grey
+                                  : Colors.blue,
+                            ),
+                            onPressed: () {
+                              setState(() =>
+                                  this._hidePassword = !this._hidePassword);
+                            },
                           ),
-                          onPressed: () {
-                            setState(
-                                () => this._hidePassword = !this._hidePassword);
-                          },
-                        ),
-                        labelText: 'Password',
-                        labelStyle: style,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(3.0)),
-                        ))),
+                          labelText: 'Password',
+                          labelStyle: style,
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(3.0)),
+                          ))),
+                ),
               ),
               Visibility(
                 visible: _showWidgets,
@@ -192,11 +204,12 @@ class _LoginState extends State<Login> {
                 child: TextButton(
                   onPressed: () {
                     setState(() {
-                      checkEmail();
+                      bool check = checkEmail();
                       FocusScope.of(context).requestFocus(FocusNode());
-
-                      Provider.of<MyModel>(context, listen: false).authUser();
-                      Navigator.popUntil(context, ModalRoute.withName('/'));
+                      if (check) {
+                        Provider.of<MyModel>(context, listen: false).authUser();
+                        Navigator.popUntil(context, ModalRoute.withName('/'));
+                      }
                     });
                   },
                   child: Text(
@@ -243,7 +256,6 @@ class _LoginState extends State<Login> {
                     Text('Not a Flickr member?', style: style),
                     TextButton(
                         onPressed: () {
-                          //TODO: Navigate to sign up page
                           Navigator.pushNamed(context, '/sign_up');
                         },
                         child: Text(' Sign up here.', style: style)

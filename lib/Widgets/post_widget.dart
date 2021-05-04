@@ -105,7 +105,7 @@ class _PostState extends State<Post> {
             trailing: Text(widget.postDate),
           ),
           SizedBox(
-            width: 375.0,
+            width: MediaQuery.of(context).size.width,
             height: 20.0,
             child: Divider(
               color: Colors.grey,
@@ -149,6 +149,7 @@ class _PostState extends State<Post> {
             ),
           ),
           Container(
+            width: MediaQuery.of(context).size.width,
             color: Colors.grey[300],
             child: Column(
               children: [
