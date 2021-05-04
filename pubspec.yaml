@@ -32,8 +32,10 @@ dependencies:
   g_captcha: ^1.0.0
   flutter_recaptcha_v2: ^0.1.0
   font_awesome_flutter: '>= 4.7.0'
-  email_validator: '^1.0.6'
+  email_validator: ^1.0.6
   provider: ^5.0.0
+  flutter_staggered_grid_view: ^0.4.0
+
 
 
 dev_dependencies:
@@ -58,6 +60,22 @@ flutter:
     - assets/flickr-logo.png
     - assets/profile_pic.png
     - assets/cover_photo.jpg
+    - assets/p1.jpg
+    - assets/p2.png
+    - assets/Portrait.jpg
+    - assets/p4.jpg
+    - assets/p5.jpg
+    - assets/port2.jpg
+    - assets/panda.jpg
+    - assets/zootopia.jpg
+    - assets/Rick.jpg
+    - assets/hades.jpg
+    - assets/p10.jpg
+    - assets/search1.jpg
+    - assets/search2.jpg
+    - assets/search3.jpg
+    - assets/search4.jpg
+    - assets/search5.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
