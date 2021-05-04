@@ -57,7 +57,7 @@ class Page extends StatelessWidget {
 }
 
 class GetStarted extends StatelessWidget {
-  PageController _controller = new PageController();
+  final PageController _controller = new PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +126,9 @@ class GetStarted extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
                   ),
                 ],
               ),
@@ -170,8 +172,18 @@ class GetStarted extends StatelessWidget {
                         style: TextStyle(color: Colors.white, fontSize: 14.0),
                       ),
                     ],
+
                   ),
+                  SizedBox(
+                    width: 5.0,
+                  ),
+                  Text(
+                    'Ben Flasher',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
               ),
+            ),
           ],
         ),
       ),

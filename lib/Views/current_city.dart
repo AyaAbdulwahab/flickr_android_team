@@ -51,6 +51,7 @@ class _State extends State<CurrentCity> {
                     RoundedRectangleBorder(
                       side: BorderSide(color: Colors.white, width: 2.0),
                     ),
+
                   ),
                 ),
                 onPressed: () {
@@ -66,6 +67,7 @@ class _State extends State<CurrentCity> {
                   });
                 },
               ),
+
             ),
           ],
         ),

@@ -28,9 +28,17 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.1
+  charcode: ^1.2.0
   g_captcha: ^1.0.0
   email_validator: '^1.0.6'
   smooth_page_indicator: ^0.2.3
+  flutter_recaptcha_v2: ^0.1.0
+  font_awesome_flutter: '>= 4.7.0'
+  provider: ^5.0.0
+  flutter_staggered_grid_view: ^0.4.0
+  services: ^0.0.1
+  
+
 
 
 dev_dependencies:
@@ -38,6 +46,8 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
+  # test: ^1.17.3
+  
 #  video_player:
 
 # For information on the generic Dart part of this file, see the
@@ -58,6 +68,24 @@ flutter:
     - assets/image_part_002.jpg
     - assets/image_part_003.jpg
     - assets/image_part_004.jpg
+    - assets/profile_pic.png
+    - assets/cover_photo.jpg
+    - assets/p1.jpg
+    - assets/p2.png
+    - assets/Portrait.jpg
+    - assets/p4.jpg
+    - assets/p5.jpg
+    - assets/port2.jpg
+    - assets/panda.jpg
+    - assets/zootopia.jpg
+    - assets/Rick.jpg
+    - assets/hades.jpg
+    - assets/p10.jpg
+    - assets/search1.jpg
+    - assets/search2.jpg
+    - assets/search3.jpg
+    - assets/search4.jpg
+    - assets/search5.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -74,11 +102,16 @@ flutter:
     - family: Frutiger
       fonts:
         - asset: fonts/Frutiger.ttf
-        - asset: fonts/Frutiger_bold.ttf
+        - asset: fonts/Frutiger_Next_Heavy.ttf
           weight: 700
 
     - family: ProximaNova
       fonts:
+        - asset: fonts/FontsFree-Net-Proxima-Nova-Sbold.otf
+        - asset: fonts/FontsFree-Net-Proxima-Nova-Bold.otf
+          weight: 700
+        - asset: fonts/FontsFree-Net-ProximaNova-Regular.ttf
+          weight: 200
         - asset: fonts/Proxima_Nova_Alt_Light.otf
 
     - family: Righteous
@@ -90,6 +123,7 @@ flutter:
         - asset: fonts/OpenSansCondensed-Bold.ttf
         - asset: fonts/OpenSansCondensed-Light.ttf
         - asset: fonts/OpenSansCondensed-LightItalic.ttf
+
 
   #         style: italic
   #   - family: Trajan Pro
