@@ -53,8 +53,7 @@ class _State extends State<CurrentCity> {
                     if (button == 'Edit') {
                       check = true;
                       button = 'Done';
-                    }
-                    else {
+                    } else {
                       if (changed != null) {
                         widget.currentCity = changed;
                       }

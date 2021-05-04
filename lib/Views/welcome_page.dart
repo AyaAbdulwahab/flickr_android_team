@@ -146,6 +146,7 @@ class GetStarted extends StatelessWidget {
                         activeDotColor: Colors.white),
                     onDotClicked: (index) => _controller.animateToPage(index,
                         // curve: Interval(),
+                        curve: Curves.ease,
                         duration: Duration(milliseconds: 100)),
                   ), // your preferred effect
                   // onDotClicked: (index){

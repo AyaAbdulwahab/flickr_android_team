@@ -207,7 +207,7 @@ class _SearchState extends State<Search>
                   }),
             )),
         Expanded(
-          flex: 2,
+          flex: 3,
           child: Visibility(
             visible: _cancelButton,
             child: Padding(
@@ -242,6 +242,7 @@ class _SearchState extends State<Search>
           ),
         )
       ]),
+      // ),
       body: Stack(children: <Widget>[
         Visibility(visible: !_viewtabs, child: ImagesGrid(images: images)),
         Visibility(

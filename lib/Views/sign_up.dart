@@ -181,6 +181,23 @@ class _SignUpState extends State<SignUp> {
                         obscureText: _obscureText,
                         onChanged: (val) {
                           _password = val;
+                          if (val.length >= 1) {
+                            if (val.startsWith(" ")) {
+                              setState(() {
+                                checkSpace = false;
+                              });
+                            } else {
+                              if (!checkSpace)
+                                setState(() {
+                                  checkSpace = true;
+                                });
+                            }
+                          } else {
+                            setState(() {
+                              checkSpace = false;
+                            });
+                          }
+
                           if (val.length < 12) {
                             if (checkNoOfChars) {
                               setState(() {
