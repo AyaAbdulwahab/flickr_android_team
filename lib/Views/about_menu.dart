@@ -38,7 +38,9 @@ class AboutMenu extends StatelessWidget {
                 ),
             itemCount: tiles.length,
             itemBuilder: (context, index) => ListTile(
-                  onTap: () => tilesAction[index],
+                  onTap: () => index != 3
+                      ? tilesAction[index]
+                      : Navigator.pushNamed(context, '/credits'),
                   minVerticalPadding: 10.0,
                   title: Text(
                     tiles[index],

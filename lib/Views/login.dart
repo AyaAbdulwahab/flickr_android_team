@@ -12,16 +12,6 @@ const style =TextStyle(
 );
 
 
-class PasswordValidation {
-  static String validate(String val) {
-    return val.isEmpty
-        ? "Required"
-        : val[0] == " " || val.length < 12
-        ? "Invalid Password"
-        : null;
-  }
-}
-
 
 void main() {
   return runApp(
