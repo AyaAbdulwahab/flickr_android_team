@@ -54,7 +54,9 @@ class _State extends State<Hometown> {
                     }
                     else
                     {
+                    if (changed != null) {
                       widget.hometown = changed;
+                    }
                       check = false;
                       button = 'Edit';
                     }

@@ -54,7 +54,9 @@ class _State extends State<Occupation> {
                     }
                     else
                       {
-                      widget.occupation = changed;
+                      if (changed != null) {
+                        widget.occupation = changed;
+                      }
                       check = false;
                       button = 'Edit';
                     }

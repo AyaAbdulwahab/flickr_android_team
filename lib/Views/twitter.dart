@@ -54,7 +54,9 @@ class _State extends State<Twitter> {
                     }
                     else
                     {
+                    if (changed != null) {
                       widget.twitter = changed;
+                    }
                       check = false;
                       button = 'Edit';
                     }
