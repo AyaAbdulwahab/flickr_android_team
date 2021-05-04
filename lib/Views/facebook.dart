@@ -54,7 +54,9 @@ class _State extends State<Facebook> {
                     }
                     else
                     {
+                    if (changed != null) {
                       widget.facebook = changed;
+                    }
                       check = false;
                       button = 'Edit';
                     }

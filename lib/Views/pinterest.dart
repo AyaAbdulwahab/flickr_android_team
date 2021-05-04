@@ -54,7 +54,9 @@ class _State extends State<Pinterest> {
                     }
                     else
                     {
+                    if (changed != null) {
                       widget.pinterest = changed;
+                    }
                       check = false;
                       button = 'Edit';
                     }

@@ -54,7 +54,10 @@ class _State extends State<Description> {
                     }
                     else
                     {
-                      widget.description = changed;
+                      if(changed!=null)
+                        {
+                          widget.description = changed;
+                        }
                       check = false;
                       button = 'Edit';
                     }

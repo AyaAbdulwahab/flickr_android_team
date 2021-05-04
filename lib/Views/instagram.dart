@@ -54,7 +54,9 @@ class _State extends State<Instagram> {
                     }
                     else
                     {
+                    if (changed != null) {
                       widget.instagram = changed;
+                    }
                       check = false;
                       button = 'Edit';
                     }

@@ -54,7 +54,9 @@ class _State extends State<Tumblr> {
                     }
                     else
                     {
+                    if (changed != null) {
                       widget.tumblr = changed;
+                    }
                       check = false;
                       button = 'Edit';
                     }

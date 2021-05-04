@@ -54,7 +54,9 @@ class _State extends State<Website> {
                     }
                     else
                     {
+                    if (changed != null) {
                       widget.website = changed;
+                    }
                       check = false;
                       button = 'Edit';
                     }
