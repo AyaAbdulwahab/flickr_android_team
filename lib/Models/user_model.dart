@@ -1,4 +1,6 @@
 // import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
 
 class User {
   String username;
@@ -31,4 +33,15 @@ class User {
         profileurl: json['profileurl'],
         location: json['location']);
   }
+}
+
+Future<void> getUserInfo() async {
+  Future<String> getJson() async {
+    return await rootBundle.loadString('mock_data/mock_user_data.json');
+  }
+
+  var jsonString = await getJson();
+  Map<String, dynamic> userMap = jsonDecode(jsonString);
+  var user = User.fromJson(userMap);
+  print(user.firstname);
 }

@@ -86,6 +86,7 @@ flutter:
     - assets/search3.jpg
     - assets/search4.jpg
     - assets/search5.png
+    - mock_data/mock_user_data.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
