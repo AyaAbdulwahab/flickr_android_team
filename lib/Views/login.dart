@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
 import 'package:flickr/Widgets/authentication_app_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 String savedEmail = "shorouk@gmail.com";
 String savedPassword = "hello123";
@@ -12,6 +13,17 @@ const style = TextStyle(
   fontFamily: 'ProximaNova',
   fontWeight: FontWeight.bold,
 );
+
+class EValidator
+{
+    static String validate(String val){
+        return val.isEmpty
+            ? "Required"
+            :null ;
+      }
+}
+
+
 
 class Login extends StatefulWidget {
   @override
@@ -139,7 +151,7 @@ class _LoginState extends State<Login> {
                   ),
                   Container(
                     padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                    child: TextField(
+                    child: TextFormField(
                       key: Key("login-email-field"),
                       onChanged: (email) {
                         setState(() {
@@ -147,18 +159,21 @@ class _LoginState extends State<Login> {
                           _invalidAlert = false;
                         });
                       },
-                      onSubmitted: (email) {
+                      onFieldSubmitted: (email) {
                         setState(() {
+                          if (_formKey.currentState.validate()) {}
                           if (_email != "" &&
                               _email != null &&
                               _showWidgets == false) {
                             checkEmail();
                             FocusScope.of(context).requestFocus(FocusNode());
-                          } else if (_showWidgets == true) {
+
+                          } else if (_showWidgets == true && _email!="" && _email!=null && _password!=null && _password!="") {
                             checkAccount();
                           }
                         });
                       },
+                      validator:EValidator.validate,
                       decoration: InputDecoration(
                           labelText: 'Email address',
                           labelStyle: style,
@@ -201,13 +216,25 @@ class _LoginState extends State<Login> {
                                   BorderRadius.all(Radius.circular(3.0)),
                             )),
                         onChanged: (password) {
-                          _password = password;
+                          setState(() {
+                            _password = password;
+                            _invalidAlert=false;
+                          });
                         },
-                        validator: (val) => val.isEmpty
+                        onFieldSubmitted: (password){
+                          if (_formKey.currentState.validate()) {}
+                          setState(() {
+                            if ( _email!="" && _email!=null && _password!=null && _password!="") {
+                              checkAccount();
+                            }
+                          });
+
+                        },
+                        validator:(val) => val.isEmpty
                             ? "Required"
                             : _email == savedEmail && _password != savedPassword
-                                ? "Invalid Password"
-                                : null,
+                            ? "Invalid Password"
+                            : null,
                       ),
                     ),
                   ),
@@ -243,7 +270,7 @@ class _LoginState extends State<Login> {
                               _showWidgets == false) {
                             checkEmail();
                             FocusScope.of(context).requestFocus(FocusNode());
-                          } else if (_showWidgets == true) {
+                          } else if (_showWidgets == true && _email!="" && _email!=null && _password!=null && _password!="") {
                             checkAccount();
                           }
                         });
@@ -286,6 +313,34 @@ class _LoginState extends State<Login> {
                       height: 15.0,
                     ),
                   ),
+
+                  SizedBox(
+                    width: 200,
+                    child: ElevatedButton.icon(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(0.0),
+                        padding: MaterialStateProperty.all(
+                            EdgeInsets.symmetric(vertical: 9.0,horizontal: 5.0)),
+                        backgroundColor:
+                        MaterialStateProperty.all(Colors.blue[600]),
+                      ),
+                      icon: FaIcon(
+                        FontAwesomeIcons.facebook,
+                      ),
+                      label: Expanded(
+                        child: Text(
+                          'Login with facebook',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: 'ProximaNova',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.0,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -297,9 +352,9 @@ class _LoginState extends State<Login> {
                               Navigator.pushNamed(context, '/sign_up');
                             },
                             child: Text(' Sign up here.', style: style)
-                            // style :
-                            )
-                      ])
+                          // style :
+                        ),
+                      ]),
                 ],
               ),
             ),
