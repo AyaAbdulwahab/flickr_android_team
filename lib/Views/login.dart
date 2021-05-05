@@ -5,6 +5,11 @@ import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
 import 'package:flickr/Widgets/authentication_app_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
+
+import '../View_Model/networking.dart';
+import '../View_Model/networking.dart';
 
 String savedEmail = "shorouk@gmail.com";
 String savedPassword = "hello123";
@@ -80,19 +85,37 @@ class _LoginState extends State<Login> {
     return check;
   }
 
-  checkAccount() {
-    if (_email == savedEmail) {
-      if (_password == savedPassword) {
+  checkAccount() async {
+    // if (_email == savedEmail) {
+    //   if (_password == savedPassword) {
         _invalidAlert = false;
 
+        Map<String, dynamic> Body = {
+          "email":_email,
+          "password": _password
+        };
         /// Navigate to explore page
-        Provider.of<MyModel>(context, listen: false).authUser();
-        Navigator.popUntil(context, ModalRoute.withName('/'));
+        NetworkHelper req= new NetworkHelper(
+          "https://c4aca0bd-5ba0-4a26-b6a2-a6b086a3646f.mock.pstmn.io/user/sign-in"
+        );
+        var res = await req.postData(Body);
+
+        if (res.statusCode==200)
+          {
+            Provider.of<MyModel>(context, listen: false).authUser();
+            Navigator.popUntil(context, ModalRoute.withName('/'));
+          }
+        else
+          {
+            _invalidAlert = true;
+            print(res.statusCode);
+          }
       }
-    } else {
-      _invalidAlert = true;
-    }
-  }
+    // } else {
+    //
+    // }
+  // }
+
 
   @override
   Widget build(BuildContext context) {
