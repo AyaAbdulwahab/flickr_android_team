@@ -13,19 +13,26 @@ import 'package:flickr/Views/twitter.dart';
 import 'package:flickr/Views/website.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flickr/View_Model/networking.dart';
+import 'package:flickr/Constants/constants.dart';
+import 'dart:convert';
+
 
 class About extends StatefulWidget {
   @override
   _AboutTestState createState() => _AboutTestState();
 }
 
+
 class _AboutTestState extends State<About> {
-  String occupation = 'Add Occupation... ';
-  String oc = 'Add Occupation... ';
-  String description = 'Add Description... ';
-  String d = 'Add Description... ';
-  String currentCity = 'Add Current city...';
-  String hometown = 'Add Hometown...';
+
+  Map<String,dynamic> info;
+  String occupation ;
+  String oc;
+  String description ;
+  String d ;
+  String currentCity ;
+  String hometown  ;
   String h = 'Add Hometown...';
   String facebook = 'Add Facebook...';
   String f = 'Add Facebook...';
@@ -44,8 +51,49 @@ class _AboutTestState extends State<About> {
   String visibleToEmail = 'Anyone';
   String email = 'Aalaasalaheldin.99@gmail.com';
   String dateJoined = 'May 21';
+  List<String> data= [];
 
-  List<String> data = ['Add Current city...', 'Anyone'];
+  void getData()async{
+    NetworkHelper req2 = new NetworkHelper(EndPoints.mockBaseUrl+'/getinfo');
+    var res2 = await req2.getData();
+    if (res2.statusCode == 200)
+    {
+      String data=res2.body;
+      info = jsonDecode(data)['data'];
+      occupation = info["occupation"]??'Add Occupation... ';
+      oc = info['occupation']??'Add Occupation... ';
+      description = 'Add Description... ';
+      d = 'Add Description... ';
+      currentCity = info['currentCity']??'Add Current city...';
+      hometown = info['hometown'];
+      h = info['hometown']??'Add Hometown...';
+      facebook = info['occupation']??'Add Facebook...';
+      f = info['occupation']??'Add Facebook...';
+      instagram = info['occupation']??'Add Instagram...';
+      i = info['occupation']??'Add Instagram...';
+      pinterest = info['occupation']??'Add Pinterest...';
+      p = info['occupation']??'Add Pinterest...';
+      tumblr = info['occupation']??'Add Tumblr...';
+      t = info['occupation']??'Add Tumblr...';
+      twitter = info['occupation']??'Add Twitter...';
+      tw = info['occupation']??'Add Twitter...';
+      website = info['occupation']??'Add Website...';
+      w = info['occupation']??'Add Website...';
+      visibleTo = info['occupation']??'Anyone';
+      v = info['occupation']??'Anyone';
+      visibleToEmail = info['occupation']??'Anyone';
+      email = info['email']??'Aalaasalaheldin@gmail.com';
+      dateJoined = 'May 21';
+      data = info['currentCity']??['Add Current city...', 'Anyone'];
+      print(info['occupation']);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {

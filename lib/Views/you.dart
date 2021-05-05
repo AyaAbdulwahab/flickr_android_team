@@ -1,9 +1,13 @@
+import 'package:flickr/Constants/constants.dart';
 import 'package:flickr/Views/about.dart';
 import 'package:flickr/Views/settings.dart';
 import 'package:flickr/Views/user_options.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:charcode/charcode.dart';
+import 'package:flickr/View_Model/networking.dart';
+import 'dart:convert';
+
 
 class YouPage extends StatefulWidget {
   @override
