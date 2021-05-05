@@ -106,6 +106,7 @@ class GetStarted extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
+                    key: Key("get-started-btn"),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 20.0, horizontal: 65.0),
@@ -145,12 +146,9 @@ class GetStarted extends StatelessWidget {
                         dotColor: Colors.grey,
                         activeDotColor: Colors.white),
                     onDotClicked: (index) => _controller.animateToPage(index,
-                        // curve: Interval(),
                         curve: Curves.ease,
                         duration: Duration(milliseconds: 100)),
-                  ), // your preferred effect
-                  // onDotClicked: (index){
-                  // }
+                  ),
                 ],
               ),
             ),

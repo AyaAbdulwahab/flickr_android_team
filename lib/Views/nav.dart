@@ -12,6 +12,7 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
   TabController _tabController;
+  bool _viewtabs = true;
   List<String> youBar = [
     'Home',
     'Search',
@@ -19,6 +20,12 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
     'Notifications',
     'Camera Roll'
   ];
+
+  callback(bool _hideTabBar) {
+    setState(() {
+      _viewtabs = _hideTabBar;
+    });
+  }
 
   @override
   void initState() {
@@ -37,61 +44,64 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Color(0xFF212124),
     ));
-    return Scaffold(
-        // backgroundColor: Color(0xFF212124),
-        body: NestedScrollView(
-      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return <Widget>[
-          SliverAppBar(
-            flexibleSpace: PreferredSize(
-              preferredSize: Size.fromHeight(60.5),
-              child: SafeArea(
-                child: Container(
-                  height: 57.0,
-                  child: Material(
-                    color: Color(0xFF212124),
-                    child: TabBar(
-                      labelColor: Colors.white,
-                      unselectedLabelColor: Colors.grey,
-                      indicatorColor: Colors.transparent,
-                      controller: _tabController,
-                      tabs: [
-                        Tab(
-                          icon: Icon(Icons.home),
+    return SafeArea(
+      child: Scaffold(
+          // backgroundColor: Color(0xFF212124),
+          body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            if (_tabController.index != 1 || !_viewtabs)
+              SliverAppBar(
+                flexibleSpace: PreferredSize(
+                  preferredSize: Size.fromHeight(60.5),
+                  child: SafeArea(
+                    child: Container(
+                      height: 57.0,
+                      child: Material(
+                        color: Color(0xFF212124),
+                        child: TabBar(
+                          labelColor: Colors.white,
+                          unselectedLabelColor: Colors.grey,
+                          indicatorColor: Colors.transparent,
+                          controller: _tabController,
+                          tabs: [
+                            Tab(
+                              icon: Icon(Icons.home),
+                            ),
+                            Tab(
+                              icon: Icon(Icons.search),
+                            ),
+                            Tab(icon: Icon(FontAwesomeIcons.userCircle)),
+                            Tab(
+                              icon: Icon(Icons.notifications),
+                            ),
+                            Tab(
+                              icon: Icon(Icons.camera_alt),
+                            ),
+                          ],
                         ),
-                        Tab(
-                          icon: Icon(Icons.search),
-                        ),
-                        Tab(icon: Icon(FontAwesomeIcons.userCircle)),
-                        Tab(
-                          icon: Icon(Icons.notifications),
-                        ),
-                        Tab(
-                          icon: Icon(Icons.camera_alt),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
+                pinned: false,
               ),
-            ),
-            pinned: false,
-          ),
-        ];
-      },
-      body: TabBarView(controller: _tabController, children: [
-        Home(),
-        Search(),
-        YouPage(),
-        for (var i = 3; i < youBar.length; i++)
-          Container(
-            width: 10.0,
-            height: 50.0,
-            child: Center(
-              child: Text('A place holder for the ${youBar[i]} Page'),
-            ),
-          )
-      ]),
-    ));
+          ];
+        },
+        body: TabBarView(controller: _tabController, children: [
+          Home(),
+          Search(callback),
+          YouPage(),
+          for (var i = 3; i < youBar.length; i++)
+            Container(
+              width: 10.0,
+              height: 50.0,
+              child: Center(
+                child: Text('A place holder for the ${youBar[i]} Page'),
+              ),
+            )
+        ]),
+      )),
+    );
   }
 }

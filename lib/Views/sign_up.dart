@@ -124,7 +124,7 @@ class _SignUpState extends State<SignUp> {
                         height: 15.0,
                       ),
                       TextFormField(
-                        key: Key('firstName'),
+                        key: Key('signup-first-name-field'),
                         decoration: textInputDecoration.copyWith(
                             labelText: 'First name', labelStyle: addTextStyle),
                         validator: NameValidation.validate,
@@ -134,6 +134,7 @@ class _SignUpState extends State<SignUp> {
                         height: 9.0,
                       ),
                       TextFormField(
+                        key: Key('signup-last-name-field'),
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Last Name', labelStyle: addTextStyle),
                         onChanged: (val) => _lastName = val,
@@ -143,6 +144,7 @@ class _SignUpState extends State<SignUp> {
                         height: 9.0,
                       ),
                       TextFormField(
+                        key: Key('signup-age-field'),
                         focusNode: f3,
                         onChanged: (val) => _age = val,
                         decoration: textInputDecoration.copyWith(
@@ -153,6 +155,7 @@ class _SignUpState extends State<SignUp> {
                         height: 9.0,
                       ),
                       TextFormField(
+                        key: Key(' signup-email-field'),
                         validator: EmailValidation.validate,
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Email address',
@@ -163,6 +166,7 @@ class _SignUpState extends State<SignUp> {
                         height: 9.0,
                       ),
                       TextFormField(
+                        key: Key('signup-pssword-field'),
                         onTap: () async {
                           setState(() {
                             passwordHint = true;
@@ -287,13 +291,18 @@ class _SignUpState extends State<SignUp> {
                       ),
                       SizedBox(
                         width: double.infinity,
-                        child: RaisedButton(
-                            elevation: 0.0,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(0.0),
+                              padding: MaterialStateProperty.all(
+                                  EdgeInsets.symmetric(vertical: 9.0)),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.blue[600]),
+                            ),
+                            key: Key('signup-btn'),
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {}
                             },
-                            color: Colors.blue[600],
-                            padding: EdgeInsets.symmetric(vertical: 9.0),
                             child: Text(
                               'Sign up',
                               style: TextStyle(
@@ -317,12 +326,17 @@ class _SignUpState extends State<SignUp> {
                           ))
                         ],
                       ),
-                      RaisedButton.icon(
+                      ElevatedButton.icon(
                         onPressed: () {},
-                        color: Colors.blue[600],
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(0.0),
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(vertical: 9.0)),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blue[600]),
+                        ),
                         icon: FaIcon(
                           FontAwesomeIcons.facebook,
-                          // color: Colors.blue[900],
                         ),
                         label: Expanded(
                           child: Text(
