@@ -35,13 +35,13 @@ class User {
   }
 }
 
-Future<void> getUserInfo() async {
+Future<User> getUserInfo() async {
   Future<String> getJson() async {
     return await rootBundle.loadString('mock_data/mock_user_data.json');
   }
 
   var jsonString = await getJson();
   Map<String, dynamic> userMap = jsonDecode(jsonString);
-  var user = User.fromJson(userMap);
-  print(user.firstname);
+  return User.fromJson(userMap);
+  // print(user.firstname);
 }
