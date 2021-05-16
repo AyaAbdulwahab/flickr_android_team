@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<MyModel>(context);
     print(user.isAuth);
-    if (!user.isAuth) {
+    if (user.isAuth) {
       /// If the user is not authenticated direct him to the welcome page
       return GetStarted();
     } else {

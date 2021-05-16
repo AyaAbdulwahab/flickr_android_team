@@ -14,6 +14,7 @@ class _State extends State<CurrentCity> {
   String button = 'Edit';
   bool check = false;
   String changed;
+  String v = 'Anyone';
   List<String> data;
 
   @override
@@ -57,6 +58,7 @@ class _State extends State<CurrentCity> {
                       if (changed != null) {
                         widget.currentCity = changed;
                       }
+                      widget.visibleTo=v;
                       check = false;
                       button = 'Edit';
                     }
@@ -100,7 +102,7 @@ class _State extends State<CurrentCity> {
               ),
               ListTile(
                   leading: Text('Visible to:'),
-                  trailing: Text(widget.visibleTo),
+                  trailing: Text(v),
                   onTap: () {
                     if (check == true) {
                       showModalBottomSheet(
@@ -127,7 +129,7 @@ class _State extends State<CurrentCity> {
                                           TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
-                                      widget.visibleTo = 'Anyone';
+                                      v = 'Anyone';
                                       // data = [currentCity, visibleTo];
                                       Navigator.pop(context);
                                     });
@@ -143,7 +145,7 @@ class _State extends State<CurrentCity> {
                                           TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
-                                      widget.visibleTo = 'Any Flickr member';
+                                      v = 'Any Flickr member';
                                       Navigator.pop(
                                           context, 'Any Flickr member');
                                     });
@@ -159,7 +161,7 @@ class _State extends State<CurrentCity> {
                                           TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
-                                      widget.visibleTo = 'People you follow';
+                                      v = 'People you follow';
                                       Navigator.pop(
                                           context, 'People you follow');
                                     });
@@ -175,7 +177,7 @@ class _State extends State<CurrentCity> {
                                           TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
-                                      widget.visibleTo = 'Friends and family';
+                                      v = 'Friends and family';
                                       Navigator.pop(
                                           context, 'Friends and family');
                                     });

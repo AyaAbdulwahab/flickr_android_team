@@ -13,6 +13,7 @@ class _State extends State<Email> {
   String button = 'Edit';
   bool check = false;
   String changed;
+  String v = 'Anyone';
   List<String> data;
 
   @override
@@ -52,7 +53,7 @@ class _State extends State<Email> {
                       check = true;
                       button = 'Done';
                     } else {
-                      // widget.currentCity = changed;
+                      widget.visibleTo=v;
                       check = false;
                       button = 'Edit';
                     }
@@ -66,28 +67,6 @@ class _State extends State<Email> {
           color: Colors.white,
           child: Column(
             children: [
-              // Stack(
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.only(left: 20.0, top: 7.0),
-              //       child: TextFormField(
-              //         enabled: check,
-              //         initialValue: widget.currentCity,
-              //         decoration: textInputDecoration.copyWith(
-              //           hintText: "Add Current City...",
-              //           hintStyle:
-              //           TextStyle(color: Colors.grey, fontSize: 23.0),
-              //           disabledBorder: InputBorder.none,
-              //           border: InputBorder.none,
-              //           focusedBorder: InputBorder.none,
-              //           enabledBorder: InputBorder.none,
-              //           errorBorder: InputBorder.none,
-              //         ),
-              //         onChanged: (val) {
-              //           changed = val;
-              //         },
-              //       ),
-              //     ),
               Container(
                 color: Colors.grey[300],
                 child: ListTile(
@@ -102,7 +81,7 @@ class _State extends State<Email> {
               // ),
               ListTile(
                   leading: Text('Visible to:'),
-                  trailing: Text(widget.visibleTo),
+                  trailing: Text(v),
                   onTap: () {
                     if (check == true) {
                       showModalBottomSheet(
@@ -129,7 +108,7 @@ class _State extends State<Email> {
                                           TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
-                                      widget.visibleTo = 'Anyone';
+                                      v = 'Anyone';
                                       // data = [currentCity, visibleTo];
                                       Navigator.pop(context);
                                     });
@@ -145,7 +124,7 @@ class _State extends State<Email> {
                                           TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
-                                      widget.visibleTo = 'Any Flickr member';
+                                      v = 'Any Flickr member';
                                       Navigator.pop(
                                           context, 'Any Flickr member');
                                     });
@@ -161,7 +140,7 @@ class _State extends State<Email> {
                                           TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
-                                      widget.visibleTo = 'People you follow';
+                                      v = 'People you follow';
                                       Navigator.pop(
                                           context, 'People you follow');
                                     });
@@ -177,7 +156,7 @@ class _State extends State<Email> {
                                           TextStyle(color: Colors.grey[900])),
                                   onTap: () {
                                     setState(() {
-                                      widget.visibleTo = 'Friends and family';
+                                      v = 'Friends and family';
                                       Navigator.pop(
                                           context, 'Friends and family');
                                     });

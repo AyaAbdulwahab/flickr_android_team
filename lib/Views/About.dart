@@ -27,12 +27,13 @@ class About extends StatefulWidget {
 class _AboutTestState extends State<About> {
 
   Map<String,dynamic> info;
-  String occupation ;
-  String oc;
-  String description ;
-  String d ;
-  String currentCity ;
-  String hometown  ;
+  int photoCount =0;
+  String occupation ='Add Occupation...';
+  String oc = 'Add Occupation...';
+  String description = 'Add Description...';
+  String d = 'Add Description...';
+  String currentCity = 'Add Current city...';
+  String hometown  = 'Add Hometown...';
   String h = 'Add Hometown...';
   String facebook = 'Add Facebook...';
   String f = 'Add Facebook...';
@@ -51,7 +52,7 @@ class _AboutTestState extends State<About> {
   String visibleToEmail = 'Anyone';
   String email = 'Aalaasalaheldin.99@gmail.com';
   String dateJoined = 'May 21';
-  List<String> data= [];
+  // List<String> data= [];
 
   void getData()async{
     NetworkHelper req2 = new NetworkHelper(EndPoints.mockBaseUrl+'/getinfo');
@@ -60,32 +61,101 @@ class _AboutTestState extends State<About> {
     {
       String data=res2.body;
       info = jsonDecode(data)['data'];
-      occupation = info["occupation"]??'Add Occupation... ';
-      oc = info['occupation']??'Add Occupation... ';
-      description = 'Add Description... ';
-      d = 'Add Description... ';
-      currentCity = info['currentCity']??'Add Current city...';
-      hometown = info['hometown'];
-      h = info['hometown']??'Add Hometown...';
-      facebook = info['occupation']??'Add Facebook...';
-      f = info['occupation']??'Add Facebook...';
-      instagram = info['occupation']??'Add Instagram...';
-      i = info['occupation']??'Add Instagram...';
-      pinterest = info['occupation']??'Add Pinterest...';
-      p = info['occupation']??'Add Pinterest...';
-      tumblr = info['occupation']??'Add Tumblr...';
-      t = info['occupation']??'Add Tumblr...';
-      twitter = info['occupation']??'Add Twitter...';
-      tw = info['occupation']??'Add Twitter...';
-      website = info['occupation']??'Add Website...';
-      w = info['occupation']??'Add Website...';
-      visibleTo = info['occupation']??'Anyone';
-      v = info['occupation']??'Anyone';
-      visibleToEmail = info['occupation']??'Anyone';
-      email = info['email']??'Aalaasalaheldin@gmail.com';
-      dateJoined = 'May 21';
-      data = info['currentCity']??['Add Current city...', 'Anyone'];
-      print(info['occupation']);
+      setState(() {
+        photoCount = info["photoCount"]??0;
+        occupation = info["occupation"];
+        oc = '';
+        description = info["description"];
+        d = '';
+        currentCity = info['currentCity'];
+        hometown = info['hometown'];
+        h = '';
+        facebook = info['facebook'];
+        f = '';
+        instagram = info['instagram'];
+        i = '';
+        pinterest = info['pinterest'];
+        p = '';
+        tumblr = info['tumblr'];
+        t = '';
+        twitter = info['twitter'];
+        tw = '';
+        website = info['website'];
+        w = '';
+        visibleTo = info['visibleTo']??'Anyone';
+        v = 'Anyone';
+        visibleToEmail = info['visibleToEmail']??'Anyone';
+        email = info['email'];
+        String date = (info['joinDate'].split('T'))[0];
+        String m =date.split('-')[1];
+        String y =date.split('-')[0];
+        String year = (int.parse(y)%100).toString();
+        String month;
+        switch(m){
+          case '1':
+            {
+              month = 'January';
+              break;
+            }
+          case '2':
+            {
+              month = 'February';
+              break;
+            }
+          case '3':
+            {
+              month = 'March';
+              break;
+            }
+          case '4':
+            {
+              month = 'April';
+              break;
+            }
+          case '5':
+            {
+              month = 'May';
+              break;
+            }
+          case '6':
+            {
+              month = 'June';
+              break;
+            }
+          case '7':
+            {
+              month = 'July';
+              break;
+            }
+          case '8':
+            {
+              month = 'August';
+              break;
+            }
+          case '9' :
+            {
+              month = 'September';
+              break;
+            }
+          case '10':
+            {
+              month = 'October';
+              break;
+            }
+          case '11':
+            {
+              month = 'November';
+              break;
+            }
+          case '12':
+            {
+              month = 'December';
+              break;
+            }
+        }
+        dateJoined = (month+' '+year)??' ';
+        // data = info['currentCity']??['Add Current city...', 'Anyone'];
+      });
     }
   }
 
@@ -109,7 +179,7 @@ class _AboutTestState extends State<About> {
                 contentPadding:
                     EdgeInsets.only(top: 1.0, bottom: 1.0, left: 8.0),
                 title: Text(
-                  '0 Photos',
+                  photoCount.toString()+' Photos',
                   style: TextStyle(fontSize: 18.0, color: Colors.black),
                 ),
               ),
@@ -123,7 +193,7 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    description,
+                    (description == null || description.trim() == '')?'Add Description...':description,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -153,7 +223,7 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    hometown,
+                    (hometown == null || hometown.trim() == '')?'Add Hometown...':hometown,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -164,12 +234,13 @@ class _AboutTestState extends State<About> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => Hometown(
-                                    hometown: h,
+                                    hometown: hometown,
                                   )),
                         ));
                         setState(() {
                           h = hometown;
                         });
+                        //call the edit info request function
                       },
                     );
                   }),
@@ -183,7 +254,7 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    occupation,
+                      (occupation == null || occupation.trim() == '')?'Add Occupation...':occupation,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -194,7 +265,7 @@ class _AboutTestState extends State<About> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => Occupation(
-                                    occupation: oc,
+                                    occupation: occupation,
                                   )),
                         ));
                         setState(() {
@@ -214,13 +285,14 @@ class _AboutTestState extends State<About> {
                   style: TextStyle(fontSize: 18.0, color: Colors.black),
                 ),
                 subtitle: Text(
-                  currentCity + '\nVisible to: ' + visibleTo,
+                  ((currentCity == null || currentCity.trim() == '')?'Add Current City...':currentCity) + '\nVisible to: ' + visibleTo,
                   style: TextStyle(fontSize: 18.0, color: Colors.grey),
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
                 onTap: () {
                   setState(() async {
-                    data = await (Navigator.push(
+                    List temp;
+                    temp = await (Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => CurrentCity(
@@ -228,9 +300,10 @@ class _AboutTestState extends State<About> {
                       ),
                     ));
                     setState(() {
-                      currentCity = data[0];
-                      visibleTo = data[1];
+                      currentCity=temp[0];
+                      visibleTo = temp[1];
                     });
+                    // print(currentCity);
                   });
                 },
               ),
@@ -244,13 +317,14 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    website,
+                      (website == null || website.trim() == '')?'Add Website...':website,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
                   onTap: () {
                     setState(
                       () async {
+                        String temp;
                         website = await (Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -274,7 +348,7 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    tumblr,
+                      (tumblr == null || tumblr.trim() == '')?'Add Tumblr...':tumblr,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -304,7 +378,7 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    facebook,
+                      (facebook == null || facebook.trim() == '')?'Add Facebook...':facebook,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -334,7 +408,7 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    twitter,
+                      (twitter == null || twitter.trim() == '')?'Add Twitter...':twitter,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -364,7 +438,7 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    instagram,
+                      (instagram == null || instagram.trim() == '')?'Add Instagram...':instagram,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -394,7 +468,7 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    pinterest,
+                      (pinterest == null || pinterest.trim() == '')?'Add Pinterest...':pinterest,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
