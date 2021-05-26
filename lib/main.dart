@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flickr',
         theme: ThemeData(fontFamily: 'ProximaNova'),
-        initialRoute: '/',
+        initialRoute: '/welcome_page',
         routes: {
           '/': (context) => SplashScreen(), //WelcomePage
           '/welcome_page': (context) => GetStarted(),
