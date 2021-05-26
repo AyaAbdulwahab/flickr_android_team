@@ -1,3 +1,4 @@
+import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,16 +20,11 @@ const style = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-class EValidator
-{
-    static String validate(String val){
-        return val.isEmpty
-            ? "Required"
-            :null ;
-      }
+class EValidator {
+  static String validate(String val) {
+    return val.isEmpty ? "Required" : null;
+  }
 }
-
-
 
 class Login extends StatefulWidget {
   @override
@@ -88,34 +84,27 @@ class _LoginState extends State<Login> {
   checkAccount() async {
     // if (_email == savedEmail) {
     //   if (_password == savedPassword) {
-        _invalidAlert = false;
+    _invalidAlert = false;
 
-        Map<String, dynamic> Body = {
-          "email":_email,
-          "password": _password
-        };
-        /// Navigate to explore page
-        NetworkHelper req= new NetworkHelper(
-          "https://c4aca0bd-5ba0-4a26-b6a2-a6b086a3646f.mock.pstmn.io/user/sign-in?ID=1"
-        );
-        var res = await req.postData(Body);
+    Map<String, dynamic> Body = {"email": _email, "password": _password};
 
-        if (res.statusCode==200)
-          {
-            Provider.of<MyModel>(context, listen: false).authUser();
-            Navigator.popUntil(context, ModalRoute.withName('/'));
-          }
-        else
-          {
-            _invalidAlert = true;
-            print(res.statusCode);
-          }
-      }
-    // } else {
-    //
-    // }
+    /// Navigate to explore page
+    NetworkHelper req = new NetworkHelper(
+        "https://c4aca0bd-5ba0-4a26-b6a2-a6b086a3646f.mock.pstmn.io/user/sign-in?ID=1");
+    var res = await req.postData(Body);
+
+    if (res.statusCode == 200) {
+      Provider.of<MyModel>(context, listen: false).authUser();
+      Navigator.popUntil(context, ModalRoute.withName('/'));
+    } else {
+      _invalidAlert = true;
+      print(res.statusCode);
+    }
+  }
+  // } else {
+  //
   // }
-
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -190,13 +179,16 @@ class _LoginState extends State<Login> {
                               _showWidgets == false) {
                             checkEmail();
                             FocusScope.of(context).requestFocus(FocusNode());
-
-                          } else if (_showWidgets == true && _email!="" && _email!=null && _password!=null && _password!="") {
+                          } else if (_showWidgets == true &&
+                              _email != "" &&
+                              _email != null &&
+                              _password != null &&
+                              _password != "") {
                             checkAccount();
                           }
                         });
                       },
-                      validator:EValidator.validate,
+                      validator: EValidator.validate,
                       decoration: InputDecoration(
                           labelText: 'Email address',
                           labelStyle: style,
@@ -241,23 +233,25 @@ class _LoginState extends State<Login> {
                         onChanged: (password) {
                           setState(() {
                             _password = password;
-                            _invalidAlert=false;
+                            _invalidAlert = false;
                           });
                         },
-                        onFieldSubmitted: (password){
+                        onFieldSubmitted: (password) {
                           if (_formKey.currentState.validate()) {}
                           setState(() {
-                            if ( _email!="" && _email!=null && _password!=null && _password!="") {
+                            if (_email != "" &&
+                                _email != null &&
+                                _password != null &&
+                                _password != "") {
                               checkAccount();
                             }
                           });
-
                         },
-                        validator:(val) => val.isEmpty
+                        validator: (val) => val.isEmpty
                             ? "Required"
                             : _email == savedEmail && _password != savedPassword
-                            ? "Invalid Password"
-                            : null,
+                                ? "Invalid Password"
+                                : null,
                       ),
                     ),
                   ),
@@ -293,7 +287,11 @@ class _LoginState extends State<Login> {
                               _showWidgets == false) {
                             checkEmail();
                             FocusScope.of(context).requestFocus(FocusNode());
-                          } else if (_showWidgets == true && _email!="" && _email!=null && _password!=null && _password!="") {
+                          } else if (_showWidgets == true &&
+                              _email != "" &&
+                              _email != null &&
+                              _password != null &&
+                              _password != "") {
                             checkAccount();
                           }
                         });
@@ -336,17 +334,16 @@ class _LoginState extends State<Login> {
                       height: 15.0,
                     ),
                   ),
-
                   SizedBox(
                     width: 200,
                     child: ElevatedButton.icon(
                       onPressed: () {},
                       style: ButtonStyle(
                         elevation: MaterialStateProperty.all(0.0),
-                        padding: MaterialStateProperty.all(
-                            EdgeInsets.symmetric(vertical: 9.0,horizontal: 5.0)),
+                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                            vertical: 9.0, horizontal: 5.0)),
                         backgroundColor:
-                        MaterialStateProperty.all(Colors.blue[600]),
+                            MaterialStateProperty.all(Colors.blue[600]),
                       ),
                       icon: FaIcon(
                         FontAwesomeIcons.facebook,
@@ -375,8 +372,8 @@ class _LoginState extends State<Login> {
                               Navigator.pushNamed(context, '/sign_up');
                             },
                             child: Text(' Sign up here.', style: style)
-                          // style :
-                        ),
+                            // style :
+                            ),
                       ]),
                 ],
               ),
