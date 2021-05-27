@@ -89,7 +89,7 @@ class _AboutTestState extends State<About> {
         String date = (info['joinDate'].split('T'))[0];
         String m =date.split('-')[1];
         String y =date.split('-')[0];
-        String year = (int.parse(y)%100).toString();
+        // String year = (int.parse(y)%100).toString();
         String month;
         switch(m){
           case '1':
@@ -153,7 +153,7 @@ class _AboutTestState extends State<About> {
               break;
             }
         }
-        dateJoined = (month+' '+year)??' ';
+        dateJoined = (month+' '+y)??' ';
         // data = info['currentCity']??['Add Current city...', 'Anyone'];
       });
     }
@@ -418,7 +418,7 @@ class _AboutTestState extends State<About> {
                         twitter = await (Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Twitter(
+                              builder: (context, ) => Twitter(
                                     twitter: tw,
                                   )),
                         ));

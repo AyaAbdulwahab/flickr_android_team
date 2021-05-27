@@ -1,3 +1,4 @@
+import 'package:flickr/Views/photo_onclicking.dart';
 import 'package:flickr/Widgets/post_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -84,6 +85,7 @@ class _HomeState extends State<Home> {
       commentNumber: '40 of 40',
       likers: 'Person 1, Person 2 and 98 others faved',
     ),];
+  Post post;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -92,13 +94,15 @@ class _HomeState extends State<Home> {
             color: Colors.black,
             child: Column(
               children: [
-                Expanded(child: new ListView.builder(
-                  itemCount: postList.length,
-                  itemBuilder:(BuildContext context, int index)
-                  {
-                    return postList[index];
-                  },
-                )
+                Expanded(
+                  child: new ListView.builder(
+                    itemCount: postList.length,
+                    itemBuilder:(BuildContext context, int index)
+                    {
+                      post=postList[index];
+                      return postList[index];
+                    },
+                  ),
                 ),
               ],
             )

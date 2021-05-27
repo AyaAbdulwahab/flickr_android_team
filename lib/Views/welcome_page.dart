@@ -2,16 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+///The Scrollable pages widget
+///Contains the image, the title, and the subtitle
 class Page extends StatelessWidget {
+  String image;
+  String title;
+  String subtitle;
   Page({
     @required this.image,
     @required this.title,
     @required this.subtitle,
   });
-
-  final String image;
-  final String title;
-  final String subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +54,7 @@ class Page extends StatelessWidget {
   }
 }
 
+///The main widget which is Contains the PageView widget for the 4 scrollable Pages, FLickr, and the getStarted button which navigates the user to the login page
 class GetStarted extends StatelessWidget {
   final PageController _controller = new PageController();
 
@@ -64,7 +66,6 @@ class GetStarted extends StatelessWidget {
           children: [
             PageView(
               controller: _controller,
-              // scrollDirection: Axis.horizontal,
               children: [
                 Page(
                     image: 'assets/image_part_001.jpg',
@@ -85,6 +86,7 @@ class GetStarted extends StatelessWidget {
                     subtitle: 'Share with friends, family, and\nthe world.'),
               ],
             ),
+            ///Flickr title
             Padding(
               padding: const EdgeInsets.only(top: 150.0),
               child: Row(
@@ -100,6 +102,7 @@ class GetStarted extends StatelessWidget {
                 ],
               ),
             ),
+            ///The get started button
             Padding(
               padding: const EdgeInsets.only(top: 530.0),
               child: Row(
@@ -124,6 +127,7 @@ class GetStarted extends StatelessWidget {
                         ),
                       ),
                     ),
+                    ///Navigates to login page
                     onPressed: () {
                       Navigator.pushNamed(context, '/login');
                     },
@@ -131,6 +135,7 @@ class GetStarted extends StatelessWidget {
                 ],
               ),
             ),
+            ///The scrolling dots
             Padding(
               padding: const EdgeInsets.only(top: 500.0),
               child: Row(
@@ -152,6 +157,7 @@ class GetStarted extends StatelessWidget {
                 ],
               ),
             ),
+            ///The copyrights of the photographer
             Padding(
               padding: EdgeInsets.only(top: 630.0, left: 10.0),
               child: Row(
