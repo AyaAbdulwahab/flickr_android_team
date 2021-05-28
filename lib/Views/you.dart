@@ -1,6 +1,7 @@
 import 'package:flickr/Constants/constants.dart';
 import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Views/about.dart';
+import 'package:flickr/Views/loading.dart';
 import 'package:flickr/Views/settings.dart';
 import 'package:flickr/Views/user_options.dart';
 import 'package:flutter/material.dart';
@@ -264,14 +265,7 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
             ]),
           );
         } else if (snapshot.connectionState == ConnectionState.waiting)
-          //@TODO: to be replaced with the loading page
-          return Container(
-            child: SizedBox(
-              child: CircularProgressIndicator(),
-              width: 60,
-              height: 60,
-            ),
-          );
+          return LoadingPage();
         else
           return Container(
             child: Text("Error"),
