@@ -1,3 +1,4 @@
+import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flickr/main.dart';
@@ -9,8 +10,9 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MyModel>(context);
+    // print(user.getToken());
     print(user.isAuth);
-    if (user.isAuth) {
+    if (!user.isAuth) {
       /// If the user is not authenticated direct him to the welcome page
       return GetStarted();
     } else {
