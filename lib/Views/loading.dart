@@ -12,15 +12,22 @@ class LoadingPage extends StatefulWidget {
 class _LoadingPageState extends State<LoadingPage> {
   /// A boolean to change the state of the app through it
   bool change = true;
+  Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 3), (time) {
+    _timer = Timer.periodic(Duration(seconds: 3), (time) {
       setState(() {
         change = !change;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
   }
 
   @override

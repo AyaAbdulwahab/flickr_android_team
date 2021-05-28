@@ -20,7 +20,7 @@ class Page extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(image),
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
         ),
       ),
       child: Column(
