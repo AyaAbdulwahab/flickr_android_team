@@ -1,3 +1,4 @@
+import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Views/about_menu.dart';
 import 'package:flickr/Views/credits.dart';
 import 'package:flickr/Views/login.dart';
@@ -36,19 +37,5 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
-  }
-}
-
-class MyModel with ChangeNotifier {
-  bool isAuth = false;
-
-  void authUser() {
-    isAuth = true;
-    notifyListeners();
-  }
-
-  void unAuthUser() {
-    isAuth = false;
-    notifyListeners();
   }
 }
