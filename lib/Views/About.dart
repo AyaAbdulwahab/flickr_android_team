@@ -13,9 +13,12 @@ import 'package:flickr/Views/twitter.dart';
 import 'package:flickr/Views/website.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flickr/View_Model/networking.dart';
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
+// import 'package:flickr/View_Model/networking.dart';
 import 'package:flickr/Constants/constants.dart';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 
 class About extends StatefulWidget {
@@ -23,17 +26,15 @@ class About extends StatefulWidget {
   _AboutTestState createState() => _AboutTestState();
 }
 
-
 class _AboutTestState extends State<About> {
-
-  Map<String,dynamic> info;
-  int photoCount =0;
-  String occupation ='Add Occupation...';
+  Map<String, dynamic> info;
+  int photoCount = 0;
+  String occupation = 'Add Occupation...';
   String oc = 'Add Occupation...';
   String description = 'Add Description...';
   String d = 'Add Description...';
   String currentCity = 'Add Current city...';
-  String hometown  = 'Add Hometown...';
+  String hometown = 'Add Hometown...';
   String h = 'Add Hometown...';
   String facebook = 'Add Facebook...';
   String f = 'Add Facebook...';
@@ -52,17 +53,21 @@ class _AboutTestState extends State<About> {
   String visibleToEmail = 'Anyone';
   String email = 'Aalaasalaheldin.99@gmail.com';
   String dateJoined = 'May 21';
+  String token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0';
+  String id = '608d55c7e512b74ee00791de';
   // List<String> data= [];
 
-  void getData()async{
-    NetworkHelper req2 = new NetworkHelper(EndPoints.mockBaseUrl+'/getinfo');
-    var res2 = await req2.getData();
-    if (res2.statusCode == 200)
-    {
-      String data=res2.body;
+  void getData() async {
+    var req2 = await http.get(
+      (Uri.parse(EndPoints.baseUrl + '/user/' + id)),
+      headers: {"authorization": "Bearer " + token},
+    );
+    if (req2.statusCode == 200) {
+      String data = req2.body;
       info = jsonDecode(data)['data'];
       setState(() {
-        photoCount = info["photoCount"]??0;
+        photoCount = info["photoCount"] ?? 0;
         occupation = info["occupation"];
         oc = '';
         description = info["description"];
@@ -82,79 +87,12 @@ class _AboutTestState extends State<About> {
         tw = '';
         website = info['website'];
         w = '';
-        visibleTo = info['visibleTo']??'Anyone';
+        visibleTo = info['visibleTo'] ?? 'Anyone';
         v = 'Anyone';
-        visibleToEmail = info['visibleToEmail']??'Anyone';
+        visibleToEmail = info['visibleToEmail'] ?? 'Anyone';
         email = info['email'];
-        String date = (info['joinDate'].split('T'))[0];
-        String m =date.split('-')[1];
-        String y =date.split('-')[0];
-        String year = (int.parse(y)%100).toString();
-        String month;
-        switch(m){
-          case '1':
-            {
-              month = 'January';
-              break;
-            }
-          case '2':
-            {
-              month = 'February';
-              break;
-            }
-          case '3':
-            {
-              month = 'March';
-              break;
-            }
-          case '4':
-            {
-              month = 'April';
-              break;
-            }
-          case '5':
-            {
-              month = 'May';
-              break;
-            }
-          case '6':
-            {
-              month = 'June';
-              break;
-            }
-          case '7':
-            {
-              month = 'July';
-              break;
-            }
-          case '8':
-            {
-              month = 'August';
-              break;
-            }
-          case '9' :
-            {
-              month = 'September';
-              break;
-            }
-          case '10':
-            {
-              month = 'October';
-              break;
-            }
-          case '11':
-            {
-              month = 'November';
-              break;
-            }
-          case '12':
-            {
-              month = 'December';
-              break;
-            }
-        }
-        dateJoined = (month+' '+year)??' ';
-        // data = info['currentCity']??['Add Current city...', 'Anyone'];
+        String date = DateFormat.yMMMM('en_US').format(DateTime.parse(info['joinDate']));
+        dateJoined=date.toString();
       });
     }
   }
@@ -177,9 +115,9 @@ class _AboutTestState extends State<About> {
             children: <Widget>[
               ListTile(
                 contentPadding:
-                    EdgeInsets.only(top: 1.0, bottom: 1.0, left: 8.0),
+                EdgeInsets.only(top: 1.0, bottom: 1.0, left: 8.0),
                 title: Text(
-                  photoCount.toString()+' Photos',
+                  photoCount.toString() + ' Photos',
                   style: TextStyle(fontSize: 18.0, color: Colors.black),
                 ),
               ),
@@ -193,19 +131,21 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    (description == null || description.trim() == '')?'Add Description...':description,
+                    (description == null || description.trim() == '')
+                        ? 'Add Description...'
+                        : description,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
                   onTap: () {
                     setState(
-                      () async {
+                          () async {
                         description = await (Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Description(
-                                    description: d,
-                                  )),
+                                description: d,
+                              )),
                         ));
                         setState(() {
                           d = description;
@@ -223,19 +163,21 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    (hometown == null || hometown.trim() == '')?'Add Hometown...':hometown,
+                    (hometown == null || hometown.trim() == '')
+                        ? 'Add Hometown...'
+                        : hometown,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
                   onTap: () {
                     setState(
-                      () async {
+                          () async {
                         hometown = await (Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Hometown(
-                                    hometown: hometown,
-                                  )),
+                                hometown: hometown,
+                              )),
                         ));
                         setState(() {
                           h = hometown;
@@ -254,19 +196,21 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (occupation == null || occupation.trim() == '')?'Add Occupation...':occupation,
+                    (occupation == null || occupation.trim() == '')
+                        ? 'Add Occupation...'
+                        : occupation,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
                   onTap: () {
                     setState(
-                      () async {
+                          () async {
                         occupation = await (Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Occupation(
-                                    occupation: occupation,
-                                  )),
+                                occupation: occupation,
+                              )),
                         ));
                         setState(() {
                           oc = occupation;
@@ -285,7 +229,11 @@ class _AboutTestState extends State<About> {
                   style: TextStyle(fontSize: 18.0, color: Colors.black),
                 ),
                 subtitle: Text(
-                  ((currentCity == null || currentCity.trim() == '')?'Add Current City...':currentCity) + '\nVisible to: ' + visibleTo,
+                  ((currentCity == null || currentCity.trim() == '')
+                      ? 'Add Current City...'
+                      : currentCity) +
+                      '\nVisible to: ' +
+                      visibleTo,
                   style: TextStyle(fontSize: 18.0, color: Colors.grey),
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -300,7 +248,7 @@ class _AboutTestState extends State<About> {
                       ),
                     ));
                     setState(() {
-                      currentCity=temp[0];
+                      currentCity = temp[0];
                       visibleTo = temp[1];
                     });
                     // print(currentCity);
@@ -317,20 +265,22 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (website == null || website.trim() == '')?'Add Website...':website,
+                    (website == null || website.trim() == '')
+                        ? 'Add Website...'
+                        : website,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
                   onTap: () {
                     setState(
-                      () async {
+                          () async {
                         String temp;
                         website = await (Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Website(
-                                    website: w,
-                                  )),
+                                website: w,
+                              )),
                         ));
                         setState(() {
                           w = website;
@@ -348,19 +298,21 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (tumblr == null || tumblr.trim() == '')?'Add Tumblr...':tumblr,
+                    (tumblr == null || tumblr.trim() == '')
+                        ? 'Add Tumblr...'
+                        : tumblr,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
                   onTap: () {
                     setState(
-                      () async {
+                          () async {
                         tumblr = await (Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Tumblr(
-                                    tumblr: t,
-                                  )),
+                                tumblr: t,
+                              )),
                         ));
                         setState(() {
                           t = tumblr;
@@ -378,19 +330,21 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (facebook == null || facebook.trim() == '')?'Add Facebook...':facebook,
+                    (facebook == null || facebook.trim() == '')
+                        ? 'Add Facebook...'
+                        : facebook,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
                   onTap: () {
                     setState(
-                      () async {
+                          () async {
                         facebook = await (Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Facebook(
-                                    facebook: f,
-                                  )),
+                                facebook: f,
+                              )),
                         ));
                         setState(() {
                           f = facebook;
@@ -408,19 +362,21 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (twitter == null || twitter.trim() == '')?'Add Twitter...':twitter,
+                    (twitter == null || twitter.trim() == '')
+                        ? 'Add Twitter...'
+                        : twitter,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
                   onTap: () {
                     setState(
-                      () async {
+                          () async {
                         twitter = await (Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Twitter(
-                                    twitter: tw,
-                                  )),
+                                twitter: tw,
+                              )),
                         ));
                         setState(() {
                           tw = twitter;
@@ -438,19 +394,21 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (instagram == null || instagram.trim() == '')?'Add Instagram...':instagram,
+                    (instagram == null || instagram.trim() == '')
+                        ? 'Add Instagram...'
+                        : instagram,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
                   onTap: () {
                     setState(
-                      () async {
+                          () async {
                         instagram = await (Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Instagram(
-                                    instagram: i,
-                                  )),
+                                instagram: i,
+                              )),
                         ));
                         setState(() {
                           i = instagram;
@@ -468,19 +426,21 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (pinterest == null || pinterest.trim() == '')?'Add Pinterest...':pinterest,
+                    (pinterest == null || pinterest.trim() == '')
+                        ? 'Add Pinterest...'
+                        : pinterest,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
                   onTap: () {
                     setState(
-                      () async {
+                          () async {
                         pinterest = await (Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Pinterest(
-                                    pinterest: p,
-                                  )),
+                                pinterest: p,
+                              )),
                         ));
                         setState(() {
                           p = pinterest;
@@ -509,9 +469,9 @@ class _AboutTestState extends State<About> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => Email(
-                                email: email,
-                                visibleTo: visibleToEmail,
-                              )),
+                            email: email,
+                            visibleTo: visibleToEmail,
+                          )),
                     ));
                     setState(() {
                       visibleToEmail = v;
