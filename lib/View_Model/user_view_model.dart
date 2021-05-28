@@ -5,6 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:flickr/Constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'package:http/http.dart' as http;
+
+
 /// class [MyModel] // have 2 functions to check if the current user is
 /// authenticated to enter the app of not
 /// the ChangeNotifier is used to inform the root of the app i any changes
@@ -12,6 +15,16 @@ import 'package:flutter/cupertino.dart';
 class MyModel with ChangeNotifier {
   bool isAuth = false;
   String _token;
+
+  String _id;
+  void setID(String id) {
+    _id = id;
+  }
+
+  String getID() {
+    return _id;
+  }
+
   void setToken(String token) {
     _token = token;
   }
@@ -46,13 +59,51 @@ Future<Map<String, dynamic>> signUp(String firstName, String lastName, int age,
           "email": email,
           "password": password
         }));
-    if (response.data['token'] != null) {
-      return response.data;
-    } else {
-      print(response.data);
+
+    if (response.statusCode == 200) {
+      if (response.data['token'] != null) {
+        return response.data;
+      } else {
+        print(response.data);
+      }
+
     }
   } catch (error) {
     // throw HttpException(error.toString());
     print(error.toString());
   }
 }
+
+
+/// This function get the user real name through his/her [id] and [token]
+/// And if the user's name is more than 15 chars, we only take the first
+/// 15 chars and remove any whitespace
+Future<dynamic> getUsername(String id, String token) async {
+  var req = await http.get(
+    (Uri.parse(EndPoints.baseUrl + '/user/' + id + '/real-name')),
+    headers: {"authorization": "Bearer " + token},
+  );
+  if (req.statusCode == 200) {
+    String data = req.body;
+    print(data);
+    Map<String, dynamic> info = jsonDecode(data)['data'];
+    String name = info["firstName"] + " " + info["lastName"];
+    return (name.length >= 19) ? name.substring(0, 15).trim() : name.trim();
+  }
+}
+
+/// This function get the number of followers of a user through
+/// his/her [id] and [token]
+Future<dynamic> getNoOfFollowers(String id, String token) async {
+  var req = await http.get(
+    (Uri.parse(EndPoints.baseUrl + '/user/' + id + '/following')),
+    headers: {"authorization": "Bearer " + token},
+  );
+  if (req.statusCode == 200) {
+    String data = req.body;
+    print(data);
+    int noOfFollowing = jsonDecode(data)["count"];
+    return noOfFollowing;
+  }
+}
+
