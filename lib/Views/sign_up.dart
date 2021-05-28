@@ -1,18 +1,22 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Widgets/authentication_app_bar.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_recaptcha_v2/flutter_recaptcha_v2.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-//import 'package:g_captcha/g_captcha.dart';
-// import '../ViewModels/cap.java';
+import 'package:provider/provider.dart';
 
+/// Class [NameValidation] is a class that checkes if the user had entered
+/// a String or not to validate the first and last name
 class NameValidation {
   static String validate(String val) {
     return val.isEmpty ? "Required" : null;
   }
 }
 
+/// Class [AgeValidation] is a class used to validate that the entered age
+/// is correct by first checking of the user entered anything the checking
+/// that the input is a valid number then checking that
 class AgeValidation {
   static String validate(String val) {
     return val.isEmpty
@@ -25,6 +29,8 @@ class AgeValidation {
   }
 }
 
+/// Class [EmailValidation] validates that the user entered a valid email
+/// through [EmailValidator] package
 class EmailValidation {
   static String validate(String val) {
     return val.isEmpty
@@ -35,6 +41,11 @@ class EmailValidation {
   }
 }
 
+/// Class [PasswordValidation] validates the password similar to the
+/// original flickr
+/// That it contains
+/// * 12 characters or more
+/// * does not begin with a whitespace
 class PasswordValidation {
   static String validate(String val) {
     return val.isEmpty
@@ -160,7 +171,7 @@ class _SignUpState extends State<SignUp> {
                         decoration: textInputDecoration.copyWith(
                             labelText: 'Email address',
                             labelStyle: addTextStyle),
-                        onChanged: (val) {},
+                        onChanged: (val) => _email = val,
                       ),
                       SizedBox(
                         height: 9.0,
@@ -301,7 +312,26 @@ class _SignUpState extends State<SignUp> {
                             ),
                             key: Key('signup-btn'),
                             onPressed: () async {
-                              if (_formKey.currentState.validate()) {}
+                              var _displayName = _email.split("@");
+                              if (_formKey.currentState.validate()) {
+                                var response = await signUp(
+                                    _firstName,
+                                    _lastName,
+                                    int.parse(_age),
+                                    _email,
+                                    _password,
+                                    _displayName[0]);
+
+                                if (response != null) {
+                                  final user = Provider.of<MyModel>(context,
+                                      listen: false);
+                                  user.setToken(response['token']);
+                                  user.authUser();
+
+                                  Navigator.popUntil(
+                                      context, ModalRoute.withName('/'));
+                                }
+                              }
                             },
                             child: Text(
                               'Sign up',
@@ -397,12 +427,7 @@ class _SignUpState extends State<SignUp> {
   }
 }
 
-// _openReCaptcha() async {
-//   String tokenResult =
-//       await GCaptcha.reCaptcha("6LfJDMMaAAAAAHHYPOlHzw7oBjHTNj3m2Xt9qrhR");
-//   print('tokenResult: $tokenResult');
-// }
-
+/// To adjust the style of all the labels of the TextFieldForms
 const addTextStyle = TextStyle(
   fontSize: 15.0,
   color: Colors.grey,

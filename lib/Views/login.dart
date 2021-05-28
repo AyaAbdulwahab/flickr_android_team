@@ -1,3 +1,4 @@
+import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ const style = TextStyle(
 );
 
 
+
 /// Validator class for email TextFormField
 class EValidator
 {
@@ -26,8 +28,6 @@ class EValidator
             :null ;
       }
 }
-
-
 
 class Login extends StatefulWidget {
   @override
@@ -100,6 +100,7 @@ class _LoginState extends State<Login> {
   }
 
 
+
 /// Sends a post request containing [_email] and [_password] to the url
 ///
 /// Sends the request in the try block, and catches hthe error and prints it. It parses the response body as JSON
@@ -153,6 +154,19 @@ class _LoginState extends State<Login> {
     }
   }
 
+
+    if (res.statusCode == 200) {
+      Provider.of<MyModel>(context, listen: false).authUser();
+      Navigator.popUntil(context, ModalRoute.withName('/'));
+    } else {
+      _invalidAlert = true;
+      print(res.statusCode);
+    }
+  }
+  // } else {
+  //
+  // }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -236,13 +250,15 @@ class _LoginState extends State<Login> {
                             checkEmail();
                             FocusScope.of(context).requestFocus(FocusNode());
 
+
                           }});
                         if (_showWidgets == true && _email!="" && _email!=null && _password!=null && _password!="") {
                            logIn(_email,_password);
+
                           }
 
                       },
-                      validator:EValidator.validate,
+                      validator: EValidator.validate,
                       decoration: InputDecoration(
                           labelText: 'Email address',
                           labelStyle: style,
@@ -289,11 +305,12 @@ class _LoginState extends State<Login> {
                         onChanged: (password) {
                           setState(() {
                             _password = password;
-                            _invalidAlert=false;
+                            _invalidAlert = false;
                           });
                         },
-                        onFieldSubmitted: (password){
+                        onFieldSubmitted: (password) {
                           if (_formKey.currentState.validate()) {}
+
 
                           if ( _email!="" && _email!=null && _password!=null && _password!="") {
                                logIn(_email,_password);
@@ -343,9 +360,11 @@ class _LoginState extends State<Login> {
                               _showWidgets == false) {
                             checkEmail();
                             FocusScope.of(context).requestFocus(FocusNode());
+
                           } });
                           if (_showWidgets == true && _email!="" && _email!=null && _password!=null && _password!="") {
                              logIn(_email,_password);
+
                           }
                       },
                       child: Text(
@@ -386,17 +405,16 @@ class _LoginState extends State<Login> {
                       height: 15.0,
                     ),
                   ),
-
                   SizedBox(
                     width: 200,
                     child: ElevatedButton.icon(
                       onPressed: () {},
                       style: ButtonStyle(
                         elevation: MaterialStateProperty.all(0.0),
-                        padding: MaterialStateProperty.all(
-                            EdgeInsets.symmetric(vertical: 9.0,horizontal: 5.0)),
+                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                            vertical: 9.0, horizontal: 5.0)),
                         backgroundColor:
-                        MaterialStateProperty.all(Colors.blue[600]),
+                            MaterialStateProperty.all(Colors.blue[600]),
                       ),
                       icon: FaIcon(
                         FontAwesomeIcons.facebook,
@@ -426,8 +444,8 @@ class _LoginState extends State<Login> {
                               Navigator.pushNamed(context, '/sign_up');
                             },
                             child: Text(' Sign up here.', style: style)
-                          // style :
-                        ),
+                            // style :
+                            ),
                       ]),
                 ],
               ),
