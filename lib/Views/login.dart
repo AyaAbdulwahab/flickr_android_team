@@ -329,6 +329,7 @@ class _LoginState extends State<Login> {
                     width: double.infinity,
                     height: 40.0,
                     child: TextButton(
+                      key: Key("log-in-nxt-btn"),
                       onPressed: () {
                         if (_formKey.currentState.validate()) {}
                         setState(() {
@@ -385,8 +386,8 @@ class _LoginState extends State<Login> {
                       height: 15.0,
                     ),
                   ),
-                  SizedBox(
-                    width: 200,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: ElevatedButton.icon(
                       onPressed: () {},
                       style: ButtonStyle(

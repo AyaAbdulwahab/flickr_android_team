@@ -40,8 +40,11 @@ class _LoadingPageState extends State<LoadingPage> {
       children: [
         AnimatedPositioned(
             duration: Duration(milliseconds: 500),
-            top: MediaQuery.of(context).size.height / 2,
-            left: change ? (width / 2 + 25.0) : (width / 2 - 25.0),
+            top: MediaQuery.of(context).size.height / 2 -
+                MediaQuery.of(context).size.height * 0.03,
+            left: change
+                ? (width / 2 + width * 0.04)
+                : (width / 2 - width * 0.04),
             child: Container(
               height: 30.0,
               width: 30.0,
@@ -50,8 +53,11 @@ class _LoadingPageState extends State<LoadingPage> {
             )),
         AnimatedPositioned(
             duration: Duration(milliseconds: 500),
-            top: MediaQuery.of(context).size.height / 2,
-            left: change ? (width / 2 - 25.0) : (width / 2 + 25.0),
+            top: MediaQuery.of(context).size.height / 2 -
+                MediaQuery.of(context).size.height * 0.03,
+            left: change
+                ? (width / 2 - width * 0.04)
+                : (width / 2 + width * 0.04),
             child: Container(
               height: 30.0,
               width: 30.0,

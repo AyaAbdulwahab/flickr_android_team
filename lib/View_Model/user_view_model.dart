@@ -58,6 +58,7 @@ Future<Map<String, dynamic>> signUp(String firstName, String lastName, int age,
           "email": email,
           "password": password
         }));
+    print(response);
 
     if (response.statusCode == 200) {
       if (response.data['token'] != null) {

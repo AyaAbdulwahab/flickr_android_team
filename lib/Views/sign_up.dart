@@ -409,6 +409,7 @@ class _SignUpState extends State<SignUp> {
                                   fontSize: 13.0,
                                 )),
                             InkWell(
+                              key: Key("log-in-here-btn"),
                               onTap: () {
                                 Navigator.pop(context);
                               },

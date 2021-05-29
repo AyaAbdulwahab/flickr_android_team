@@ -1,8 +1,14 @@
 import 'package:flickr/View_Model/user_view_model.dart';
-import 'package:flickr/main.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+
+/// This Widget shows the bottom sheet giving some actions the user can perform
+/// such as:
+/// * Join Pro                  * Privacy and Safety
+/// * Notifications             * Use Native Video Camera
+/// * Feedback                  * About
+/// * Help                      * Sign Out
 
 class Settings extends StatefulWidget {
   @override
@@ -56,6 +62,7 @@ class _SettingsState extends State<Settings> {
           onTap: () {},
         ),
         ListTile(
+          key: Key("About-menu-btn"),
           title: Text('About'),
           onTap: () {
             Navigator.pushNamed(context, '/About_Menu');
@@ -67,8 +74,12 @@ class _SettingsState extends State<Settings> {
         ),
         Divider(),
         ListTile(
+          key: Key("Sign-out-btn"),
           onTap: () {
-            Provider.of<MyModel>(context, listen: false).unAuthUser();
+            final user = Provider.of<MyModel>(context, listen: false);
+            user.setToken(null);
+            user.setID(null);
+            user.unAuthUser();
             Navigator.popUntil(context, ModalRoute.withName('/'));
           },
           title: Text(
