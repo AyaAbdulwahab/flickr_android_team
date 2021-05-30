@@ -2,6 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Constants/credits_details.dart';
 
+
+/// The [Credits] Page contains the Credits and Notices for the app
+///
+/// Contains multiple calls of [CreditSection], each hold a different set of credits
 class Credits extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -175,14 +179,19 @@ class Credits extends StatelessWidget {
   }
 }
 
+
+/// The [CreditSection] is a customized widget to hold the label and the body of each credits section
 class CreditSection extends StatelessWidget {
   CreditSection(
       {@required this.label,
-      @required this.bulletPoint,
-      @required this.details});
+        @required this.bulletPoint,
+        @required this.details});
 
+  /// The label of the section
   final String label;
+  /// The bullet points of the section
   final String bulletPoint;
+  /// The body and details of the section
   final String details;
 
   @override
