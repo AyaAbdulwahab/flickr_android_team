@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+/// This Menu contains the following options for the user
+/// * Community Guidelines
+/// * Terms and Services
+/// * Privacy Policy
+/// * Credits
+/// * Cover Photo
+/// * Build Version
+/// * Build ID
 class AboutMenu extends StatelessWidget {
   final List<String> tiles = [
     'Community Guidelines',

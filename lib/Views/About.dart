@@ -1,5 +1,4 @@
-// import 'package:email_validator/email_validator.dart';
-// import 'package:flickr/Widgets/text_field_widget.dart';
+import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Views/current_city.dart';
 import 'package:flickr/Views/email.dart';
 import 'package:flickr/Views/description.dart';
@@ -13,27 +12,28 @@ import 'package:flickr/Views/twitter.dart';
 import 'package:flickr/Views/website.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flickr/View_Model/networking.dart';
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:flickr/Constants/constants.dart';
 import 'dart:convert';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-
+///The [About] class allows the user to view his information and update it through directing the user to the chosen field's page
 class About extends StatefulWidget {
   @override
   _AboutTestState createState() => _AboutTestState();
 }
 
-
 class _AboutTestState extends State<About> {
-
-  Map<String,dynamic> info;
-  int photoCount =0;
-  String occupation ='Add Occupation...';
+  Map<String, dynamic> info;
+  int photoCount = 0;
+  String occupation = 'Add Occupation...';
   String oc = 'Add Occupation...';
   String description = 'Add Description...';
   String d = 'Add Description...';
   String currentCity = 'Add Current city...';
-  String hometown  = 'Add Hometown...';
+  String hometown = 'Add Hometown...';
   String h = 'Add Hometown...';
   String facebook = 'Add Facebook...';
   String f = 'Add Facebook...';
@@ -49,24 +49,34 @@ class _AboutTestState extends State<About> {
   String w = 'Add Website...';
   String visibleTo = 'Anyone';
   String v = 'Anyone';
+  String country = ' ';
   String visibleToEmail = 'Anyone';
   String email = 'Aalaasalaheldin.99@gmail.com';
   String dateJoined = 'May 21';
+  String token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0';
+  String id = '608d55c7e512b74ee00791de';
+
   // List<String> data= [];
 
-  void getData()async{
-    NetworkHelper req2 = new NetworkHelper(EndPoints.mockBaseUrl+'/getinfo');
-    var res2 = await req2.getData();
-    if (res2.statusCode == 200)
-    {
-      String data=res2.body;
+  /// The function getData gets the user information using token
+  void getData() async {
+    final user = Provider.of<MyModel>(context, listen: false);
+    print(user.getID());
+    print(user.getToken());
+    var req2 = await http.get(
+      (Uri.parse(EndPoints.baseUrl + '/user/' + user.getID())),
+      headers: {"authorization": "Bearer " + user.getToken()},
+    );
+    if (req2.statusCode == 200) {
+      String data = req2.body;
+      int vC, vE;
       info = jsonDecode(data)['data'];
+      // print("INFOOOOOOO: " + data);
       setState(() {
-        photoCount = info["photoCount"]??0;
+        photoCount = info["photoCount"] ?? 0;
         occupation = info["occupation"];
         oc = '';
-        description = info["description"];
-        d = '';
         currentCity = info['currentCity'];
         hometown = info['hometown'];
         h = '';
@@ -82,87 +92,172 @@ class _AboutTestState extends State<About> {
         tw = '';
         website = info['website'];
         w = '';
-        visibleTo = info['visibleTo']??'Anyone';
-        v = 'Anyone';
-        visibleToEmail = info['visibleToEmail']??'Anyone';
         email = info['email'];
-        String date = (info['joinDate'].split('T'))[0];
-        String m =date.split('-')[1];
-        String y =date.split('-')[0];
-        String year = (int.parse(y)%100).toString();
-        String month;
-        switch(m){
-          case '1':
-            {
-              month = 'January';
-              break;
-            }
-          case '2':
-            {
-              month = 'February';
-              break;
-            }
-          case '3':
-            {
-              month = 'March';
-              break;
-            }
-          case '4':
-            {
-              month = 'April';
-              break;
-            }
-          case '5':
-            {
-              month = 'May';
-              break;
-            }
-          case '6':
-            {
-              month = 'June';
-              break;
-            }
-          case '7':
-            {
-              month = 'July';
-              break;
-            }
-          case '8':
-            {
-              month = 'August';
-              break;
-            }
-          case '9' :
-            {
-              month = 'September';
-              break;
-            }
-          case '10':
-            {
-              month = 'October';
-              break;
-            }
-          case '11':
-            {
-              month = 'November';
-              break;
-            }
-          case '12':
-            {
-              month = 'December';
-              break;
-            }
+        country = info['country'];
+        vC = info['privacySettings']['global']['infoVisibility']['currentCity'];
+        vE = info['privacySettings']['global']['infoVisibility']['email'];
+        /////current city visibility
+        if (vC == 1) {
+          visibleTo = 'Any Flickr member';
+        } else if (vC == 2) {
+          visibleTo = 'People you follow';
+        } else if (vC == 3) {
+          visibleTo = 'Friends and family';
+        } else {
+          visibleTo = 'Anyone';
         }
-        dateJoined = (month+' '+year)??' ';
-        // data = info['currentCity']??['Add Current city...', 'Anyone'];
+        /////email visibility
+        if (vE == 1) {
+          visibleToEmail = 'Any Flickr member';
+        } else if (vE == 2) {
+          visibleToEmail = 'People you follow';
+        } else if (vE == 3) {
+          visibleToEmail = 'Friends and family';
+        } else {
+          visibleToEmail = 'Anyone';
+        }
+        String date =
+            DateFormat.yMMMM('en_US').format(DateTime.parse(info['joinDate']));
+        dateJoined = date.toString();
       });
     }
   }
 
+  ///The function getDescription gets the user information using the user's id
+  void getDescription() async {
+    final user = Provider.of<MyModel>(context, listen: false);
+    var req2 = await http.get(
+      (Uri.parse(EndPoints.baseUrl + '/user/' + user.getID() + '/about-me')),
+    );
+    if (req2.statusCode == 200) {
+      String data = req2.body;
+      info = jsonDecode(data)['data'];
+      setState(() {
+        description = info["aboutMe"];
+        d = '';
+      });
+    }
+  }
+
+  ///The function updateInfo updates the user info and it is called whenever a field is edited
+  Future<Map<String, dynamic>> updateInfo(String oc, String h, String c,
+      String d, String cV, String eV, String country) async {
+    try {
+      int visibilityC, visibilityE;
+      ///////currentCityVisibility
+      if (cV == 'Anyone') {
+        visibilityC = 1;
+      } else if (cV == 'Any Flickr member') {
+        visibilityC = 1;
+      } else if (cV == 'People you follow') {
+        visibilityC = 2;
+      } else if (cV == 'Friends and family') {
+        visibilityC = 3;
+      }
+      ///////emailVisibility
+      if (eV == 'Anyone') {
+        visibilityE = 1;
+      } else if (eV == 'Any Flickr member') {
+        visibilityE = 1;
+      } else if (eV == 'People you follow') {
+        visibilityE = 2;
+      } else if (eV == 'Friends and family') {
+        visibilityE = 3;
+      }
+      print(oc);
+      print(h);
+      print(c);
+
+      final user = Provider.of<MyModel>(context, listen: false);
+      Map<String, dynamic> n = {
+        "occupation": oc ?? "",
+        "hometown": h ?? "",
+        "currentCity": c ?? "",
+        "country": country ?? "",
+        "emailVisibility": visibilityE.toString() ?? "0",
+        "currentCityVisibility": visibilityC.toString() ?? "0"
+      };
+      final response = await http.patch(Uri.parse(EndPoints.baseUrl + '/user'),
+          headers: {"authorization": "Bearer " + user.getToken()}, body: n);
+      Map<String, dynamic> mm = {"aboutMe": d};
+      final response2 = await http.patch(
+          Uri.parse(EndPoints.baseUrl + '/user/about-me'),
+          headers: {"authorization": "Bearer " + user.getToken()},
+          body: {"aboutMe": d});
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  // ///The function updateVisibility updates the user's current city visibility using token
+  // void updateVisibility(String v) async {
+  //   int visibility;
+  //   if (v == 'Anyone')
+  //     {
+  //       visibility=1;
+  //     }
+  //   else if (v == 'Any Flickr member')
+  //     {
+  //       visibility=2;
+  //     }
+  //   else if (v == 'People you follow')
+  //   {
+  //     visibility=3;
+  //   }
+  //   else if (v == 'Friends and family')
+  //   {
+  //     visibility=4;
+  //   }
+  //
+  //   Map<String, String> body = {
+  //     data: json.encode({
+  //       'currentCityVisibility': visibility,
+  //     }),
+  //   };
+  //   var req2 = await http.patch(
+  //     Uri.parse(EndPoints.baseUrl + '/user/'),
+  //     headers: {"authorization": "Bearer " + token},
+  //     body: body,
+  //   );
+  // }
+  //
+  // ///The function updateEmailVisibility updates the user's email visibility using token
+  // void updateEmailVisibility(String v) async {
+  //   int visibility;
+  //   if (v == 'Anyone')
+  //   {
+  //     visibility=1;
+  //   }
+  //   else if (v == 'Any Flickr member')
+  //   {
+  //     visibility=2;
+  //   }
+  //   else if (v == 'People you follow')
+  //   {
+  //     visibility=3;
+  //   }
+  //   else if (v == 'Friends and family')
+  //   {
+  //     visibility=4;
+  //   }
+  //   Map<String, String> body = {
+  //     'data': json.encode({
+  //       'emailVisibility': visibility,
+  //     }),
+  //   };
+  //   var req2 = await http.patch(
+  //     Uri.parse(EndPoints.baseUrl + '/user/'),
+  //     headers: {"authorization": "Bearer " + token},
+  //     body: body,
+  //   );
+  // }
+
+  ///The functions getData, getVisibility, and getDescription are all called in the initial state function to get all the user's info
   @override
   void initState() {
     super.initState();
     getData();
+    getDescription();
   }
 
   @override
@@ -179,7 +274,7 @@ class _AboutTestState extends State<About> {
                 contentPadding:
                     EdgeInsets.only(top: 1.0, bottom: 1.0, left: 8.0),
                 title: Text(
-                  photoCount.toString()+' Photos',
+                  photoCount.toString() + ' Photos',
                   style: TextStyle(fontSize: 18.0, color: Colors.black),
                 ),
               ),
@@ -188,12 +283,15 @@ class _AboutTestState extends State<About> {
                 thickness: 1.0,
               ),
               ListTile(
+                  key: Key("description-tile"),
                   title: Text(
                     'Description',
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    (description == null || description.trim() == '')?'Add Description...':description,
+                    (description == null || description.trim() == '')
+                        ? 'Add Description...'
+                        : description,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -209,6 +307,8 @@ class _AboutTestState extends State<About> {
                         ));
                         setState(() {
                           d = description;
+                          updateInfo(occupation, hometown, currentCity,
+                              description, visibleTo, visibleToEmail, country);
                         });
                       },
                     );
@@ -218,12 +318,15 @@ class _AboutTestState extends State<About> {
                 thickness: 1.0,
               ),
               ListTile(
+                  key: Key("hmtwn-tile"),
                   title: Text(
                     'Hometown',
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                    (hometown == null || hometown.trim() == '')?'Add Hometown...':hometown,
+                    (hometown == null || hometown.trim() == '')
+                        ? 'Add Hometown...'
+                        : hometown,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -239,6 +342,8 @@ class _AboutTestState extends State<About> {
                         ));
                         setState(() {
                           h = hometown;
+                          updateInfo(occupation, hometown, currentCity,
+                              description, visibleTo, visibleToEmail, country);
                         });
                         //call the edit info request function
                       },
@@ -249,12 +354,15 @@ class _AboutTestState extends State<About> {
                 thickness: 1.0,
               ),
               ListTile(
+                  key: Key("ocp-tile"),
                   title: Text(
                     'Occupation',
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (occupation == null || occupation.trim() == '')?'Add Occupation...':occupation,
+                    (occupation == null || occupation.trim() == '')
+                        ? 'Add Occupation...'
+                        : occupation,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -270,6 +378,8 @@ class _AboutTestState extends State<About> {
                         ));
                         setState(() {
                           oc = occupation;
+                          updateInfo(occupation, hometown, currentCity,
+                              description, visibleTo, visibleToEmail, country);
                         });
                       },
                     );
@@ -279,13 +389,18 @@ class _AboutTestState extends State<About> {
                 thickness: 1.0,
               ),
               ListTile(
+                key: Key("crn-city-tile"),
                 isThreeLine: true,
                 title: Text(
                   'Current city',
                   style: TextStyle(fontSize: 18.0, color: Colors.black),
                 ),
                 subtitle: Text(
-                  ((currentCity == null || currentCity.trim() == '')?'Add Current City...':currentCity) + '\nVisible to: ' + visibleTo,
+                  ((currentCity == null || currentCity.trim() == '')
+                          ? 'Add Current City...'
+                          : currentCity) +
+                      '\nVisible to: ' +
+                      visibleTo,
                   style: TextStyle(fontSize: 18.0, color: Colors.grey),
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -300,8 +415,10 @@ class _AboutTestState extends State<About> {
                       ),
                     ));
                     setState(() {
-                      currentCity=temp[0];
+                      currentCity = temp[0];
                       visibleTo = temp[1];
+                      updateInfo(occupation, hometown, currentCity, description,
+                          visibleTo, visibleToEmail, country);
                     });
                     // print(currentCity);
                   });
@@ -312,12 +429,15 @@ class _AboutTestState extends State<About> {
                 thickness: 1.0,
               ),
               ListTile(
+                  key: Key("wbst-tile"),
                   title: Text(
                     'Website',
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (website == null || website.trim() == '')?'Add Website...':website,
+                    (website == null || website.trim() == '')
+                        ? 'Add Website...'
+                        : website,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -343,12 +463,15 @@ class _AboutTestState extends State<About> {
                 thickness: 1.0,
               ),
               ListTile(
+                  key: Key("tmblr-tile"),
                   title: Text(
                     'Tumblr',
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (tumblr == null || tumblr.trim() == '')?'Add Tumblr...':tumblr,
+                    (tumblr == null || tumblr.trim() == '')
+                        ? 'Add Tumblr...'
+                        : tumblr,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -373,12 +496,15 @@ class _AboutTestState extends State<About> {
                 thickness: 1.0,
               ),
               ListTile(
+                  key: Key("fb-tile"),
                   title: Text(
                     'Facebook',
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (facebook == null || facebook.trim() == '')?'Add Facebook...':facebook,
+                    (facebook == null || facebook.trim() == '')
+                        ? 'Add Facebook...'
+                        : facebook,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -403,12 +529,15 @@ class _AboutTestState extends State<About> {
                 thickness: 1.0,
               ),
               ListTile(
+                  key: Key("twtr-tile"),
                   title: Text(
                     'Twitter',
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (twitter == null || twitter.trim() == '')?'Add Twitter...':twitter,
+                    (twitter == null || twitter.trim() == '')
+                        ? 'Add Twitter...'
+                        : twitter,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -433,12 +562,15 @@ class _AboutTestState extends State<About> {
                 thickness: 1.0,
               ),
               ListTile(
+                  key: Key("instgm-tile"),
                   title: Text(
                     'Instagram',
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (instagram == null || instagram.trim() == '')?'Add Instagram...':instagram,
+                    (instagram == null || instagram.trim() == '')
+                        ? 'Add Instagram...'
+                        : instagram,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -463,12 +595,15 @@ class _AboutTestState extends State<About> {
                 thickness: 1.0,
               ),
               ListTile(
+                  key: Key("pntrst-tile"),
                   title: Text(
                     'Pinterest',
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   subtitle: Text(
-                      (pinterest == null || pinterest.trim() == '')?'Add Pinterest...':pinterest,
+                    (pinterest == null || pinterest.trim() == '')
+                        ? 'Add Pinterest...'
+                        : pinterest,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -493,6 +628,7 @@ class _AboutTestState extends State<About> {
                 thickness: 1.0,
               ),
               ListTile(
+                key: Key("eml-tile"),
                 isThreeLine: true,
                 title: Text(
                   'Email',
@@ -515,6 +651,8 @@ class _AboutTestState extends State<About> {
                     ));
                     setState(() {
                       visibleToEmail = v;
+                      updateInfo(occupation, hometown, currentCity, description,
+                          visibleTo, visibleToEmail, country);
                     });
                   });
                 },
@@ -540,7 +678,6 @@ class _AboutTestState extends State<About> {
             ],
           ),
         ),
-        // ],
       ),
     );
   }

@@ -2,16 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+///The [Page] class contains the Scrollable parts of the [GetStarted] page
+///Contains the image, the title, and the subtitle
 class Page extends StatelessWidget {
+  String image;
+  String title;
+  String subtitle;
   Page({
     @required this.image,
     @required this.title,
     @required this.subtitle,
   });
-
-  final String image;
-  final String title;
-  final String subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class Page extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(image),
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
         ),
       ),
       child: Column(
@@ -53,6 +54,7 @@ class Page extends StatelessWidget {
   }
 }
 
+///The [GetStarted] class widget which Contains the PageView widget for the 4 scrollable Pages, FLickr, and the getStarted button which navigates the user to the login page
 class GetStarted extends StatelessWidget {
   final PageController _controller = new PageController();
 
@@ -64,7 +66,6 @@ class GetStarted extends StatelessWidget {
           children: [
             PageView(
               controller: _controller,
-              // scrollDirection: Axis.horizontal,
               children: [
                 Page(
                     image: 'assets/image_part_001.jpg',

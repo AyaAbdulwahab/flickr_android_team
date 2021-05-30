@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/faves_and_comments.dart';
+import 'package:flickr/Views/photo_onclicking.dart';
 
 class Post extends StatefulWidget {
   Post({
@@ -40,53 +41,18 @@ class _PostState extends State<Post> {
       color: Colors.white,
       child: Column(
         children: [
-          //Flickr FAQs bar
-          // Container(
-          //   color: Colors.white,
-          //   width: double.infinity,
-          //   height: 50.0,
-          //   child: Row(
-          //     children: [
-          //       Padding(
-          //         padding: const EdgeInsets.all(10.0),
-          //         child: OutlinedButton(
-          //           child: Center(
-          //             child: Row(children: [
-          //               Text(
-          //                 'flick',
-          //                 style: TextStyle(
-          //                     color: Colors.blue,
-          //                     fontFamily: 'Righteous-Regular.ttf', fontSize: 20.0),
-          //               ),
-          //               Text(
-          //                 'r ',
-          //                 style: TextStyle(
-          //                     color: Colors.pink,
-          //                     fontFamily: 'Righteous-Regular.ttf', fontSize: 20.0),
-          //               ),
-          //               Text(
-          //                 'FAQs',
-          //                 style: TextStyle(
-          //                   color: Colors.black,
-          //                   fontFamily: 'OpenSansCondensed-Light300.ttf', fontSize: 15.0, ),
-          //                 // textAlign: Alignment.bottomCenter,
-          //               ),
-          //             ]),
-          //           ),
-          //           onPressed: () {},
-          //         ),
-          //       ),
-          //       SizedBox(
-          //         width: 8.0,
-          //       ),
-          //       Text('Sharing on Flickr.'),
-          //     ],
-          //   ),
-          // ),
-          //
           Container(
-            child: Image(
-              image: NetworkImage(widget.postImage),
+            child: GestureDetector(
+              child: Image(
+                image: NetworkImage(widget.postImage),
+              ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PhotoOnClicking(image:widget.postImage,userImage:widget.userImage, username: widget.username, caption: widget.caption, faves: widget.postFaves, comments: widget.postComments)),
+                );
+              },
             ),
             margin: EdgeInsets.all(5.0),
           ),
@@ -120,21 +86,6 @@ class _PostState extends State<Post> {
               children: [
                 FavesAndComments(chosenIcon: Icon(Icons.star_border_outlined), faves:  widget.postFaves),
                 FavesAndComments(chosenIcon: Icon(Icons.comment), faves:  widget.postComments),
-                // SizedBox(
-                //   width: 125.0,
-                // ),
-                // Icon(
-                //   Icons.comment,
-                //   size: 25.0,
-                //   color: Colors.grey,
-                // ),
-                // Text(
-                //   widget.postComments,
-                //   style: TextStyle(color: Colors.grey),
-                // ),
-                // SizedBox(
-                //   width: 125.0,
-                // ),
                 Icon(
                   Icons.share_outlined,
                   size: 25.0,
