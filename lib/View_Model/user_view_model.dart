@@ -219,8 +219,10 @@ Future<PrivacyInfo> getPrivacy() async {
   }
 }
 
-
-
+/// Sends a GET request with [searchText], [limit] and [page] as query parameters in the URL, and [token] in the headers
+///
+/// Users in the results are paginated according to page number [page], and limit per page [limit]
+/// Returns the result as a list of [SearchedUser]
   searchByUser(String searchText, int limit, int page)  async{
   //TODO: Add userID ?
   String lim="$limit";
@@ -234,10 +236,12 @@ Future<PrivacyInfo> getPrivacy() async {
   // var uri =
   // Uri.https(EndPoints.mockBaseUrl, '/user/search', queryParameters);
 
-  String queryString = Uri(queryParameters: queryParams).query;
-  var requestUrl = EndPoints.mockBaseUrl + '?' + queryString; // result - https://www.myurl.com/api/v1/user?param1=1&param2=2
-  final response = await http.get(Uri.parse(requestUrl));
+  // String queryString = Uri(queryParameters: queryParams).query;
+  // var requestUrl = EndPoints.mockBaseUrl + '?' + queryString; // result - https://www.myurl.com/api/v1/user?param1=1&param2=2
+  // final response = await http.get(Uri.parse(requestUrl));
 
+  final response =
+  await http.get(Uri.parse( 'https://run.mocky.io/v3/c5d3f319-22eb-4f9f-8ab0-28247e6df2b1'));
 
   if (response.statusCode == 200) {
     print("200 OK");
@@ -260,20 +264,28 @@ Future<PrivacyInfo> getPrivacy() async {
 }
 
 
-
+/// Sends a GET request with [searchText], [limit] and [page] as query parameters in the URL, and [token] in the headers
+///
+/// Photos in the results are paginated according to page number [page], and limit per page [limit]
+/// /// Returns the result as a list of [SearchedPhoto]
 searchByPhoto(String searchText, int limit, int page)  async{
   //TODO: Add userID ?
   String lim="$limit";
   String pg="$page";
   print("Searching for photos...");
+
   Map<String, String> queryParams = {
     'searchText': searchText,
     'limit': lim,
     'page':pg,
   };
-  String queryString = Uri(queryParameters: queryParams).query;
-  var requestUrl = EndPoints.mockBaseUrl + '?' + queryString;
-  final response = await http.get(Uri.parse(requestUrl));
+  // String queryString = Uri(queryParameters: queryParams).query;
+  // var requestUrl = EndPoints.mockBaseUrl + '?' + queryString;
+  // final response = await http.get(Uri.parse(requestUrl));
+
+
+  final response =
+  await http.get(Uri.parse( 'https://run.mocky.io/v3/193dba15-7fb1-4a65-bc6f-21aae157fd40'));
 
   if (response.statusCode == 200) {
     print("200 OK");
@@ -312,7 +324,7 @@ forgotPassword(String email) async{
 
 }
 
-
+/// Sends Get Request to obtain current users' albums in the profile page
 Future <List<UserAlbum>> getUserAlbums() async {
 
 //TODO: Add token
@@ -341,9 +353,6 @@ Future <List<UserAlbum>> getUserAlbums() async {
 
     throw Exception('An error occurred during GET albums');
   }
-
-
-
 }
 
 Future<dynamic> getFollowers(String id, String token) async {
@@ -358,4 +367,5 @@ Future<dynamic> getFollowers(String id, String token) async {
     return noOfFollowing;
   }
 }
+
 
