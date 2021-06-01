@@ -10,10 +10,11 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flickr/Constants/constants.dart';
 
-const style = TextStyle(
-  fontFamily: 'ProximaNova',
-  fontWeight: FontWeight.bold,
-);
+
+
+
+
+
 
 /// Validator class for email TextFormField
 class EValidator {
@@ -22,6 +23,8 @@ class EValidator {
   }
 }
 
+
+/// The [Login] Page is where the user enters their [email] and [password] to access their account in the app
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -96,34 +99,22 @@ class _LoginState extends State<Login> {
     } else {
       wrongEmailAlert(context);
     }
-    // return check;
   }
 
-  /// Sends a post request containing [_email] and [_password] to the url
-  ///
-  /// Sends the request in the try block, and catches hthe error and prints it. It parses the response body as JSON
+  /// Sends the request in the try block, and catches the error and prints it. It parses the response body as JSON
   ///Checks for the response code and the message in the JSON
   /// Navigates to the next view with the [token] in the route if response status code is 200
   /// Changes [_invalidAlert] to true if otherwise to display alert message
-  logIn(String email, String password) async {
-    try {
-      final response = await Dio().post(EndPoints.baseUrl + '/user/sign-in',
-          options: Options(
-              validateStatus: (_) {
-                return true;
-              },
-              responseType: ResponseType.json),
-          data: jsonEncode({
-            "email": email,
-            "password": password,
-          }));
-      print(response);
-      var responseBody = response.data;
+  checkResponse(String email, String password) async {
+    try{
+      var response = await logIn(email,password);
+      var responseBody = jsonDecode(response.data);
       if (responseBody['token'] != null && response.statusCode == 200) {
         final user = Provider.of<MyModel>(context, listen: false);
         user.authUser();
         user.setToken(responseBody['token']);
         user.setID(responseBody["data"]["user"]["_id"]);
+
         List a = await getFollowers(user.getID(), user.getToken());
 
         user.setFollowers(a);
@@ -155,6 +146,7 @@ class _LoginState extends State<Login> {
       print(error);
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -243,7 +235,7 @@ class _LoginState extends State<Login> {
                             _email != null &&
                             _password != null &&
                             _password != "") {
-                          logIn(_email, _password);
+                          checkResponse(_email, _password);
                         }
                       },
                       validator: EValidator.validate,
@@ -252,7 +244,7 @@ class _LoginState extends State<Login> {
                           labelStyle: style,
                           border: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(3.0)),
+                            BorderRadius.all(Radius.circular(3.0)),
                             borderSide: BorderSide(color: Colors.pink),
                           )),
                     ),
@@ -281,14 +273,14 @@ class _LoginState extends State<Login> {
                                 ),
                                 onPressed: () {
                                   setState(() =>
-                                      this._hidePassword = !this._hidePassword);
+                                  this._hidePassword = !this._hidePassword);
                                 },
                               ),
                               labelText: 'Password',
                               labelStyle: style,
                               border: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(3.0)),
+                                BorderRadius.all(Radius.circular(3.0)),
                               )),
                           onChanged: (password) {
                             setState(() {
@@ -303,14 +295,14 @@ class _LoginState extends State<Login> {
                                 _email != null &&
                                 _password != null &&
                                 _password != "") {
-                              logIn(_email, _password);
+                              checkResponse(_email, _password);
                             }
                           },
                           validator: (val) => val.isEmpty ? "Required" : null
-                          // : _email == savedEmail && _password != savedPassword
-                          // ? "Invalid Password"
-                          // : null,
-                          ),
+                        // : _email == savedEmail && _password != savedPassword
+                        // ? "Invalid Password"
+                        // : null,
+                      ),
                     ),
                   ),
                   Visibility(
@@ -338,7 +330,6 @@ class _LoginState extends State<Login> {
                     width: double.infinity,
                     height: 40.0,
                     child: TextButton(
-                      key: Key("log-in-nxt-btn"),
                       onPressed: () {
                         if (_formKey.currentState.validate()) {}
                         setState(() {
@@ -360,7 +351,7 @@ class _LoginState extends State<Login> {
                             _email != null &&
                             _password != null &&
                             _password != "") {
-                          logIn(_email, _password);
+                          checkResponse(_email, _password);
                         }
                       },
                       child: Text(
@@ -401,8 +392,8 @@ class _LoginState extends State<Login> {
                       height: 15.0,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  SizedBox(
+                    width: 200,
                     child: ElevatedButton.icon(
                       onPressed: () {},
                       style: ButtonStyle(
@@ -410,7 +401,7 @@ class _LoginState extends State<Login> {
                         padding: MaterialStateProperty.all(EdgeInsets.symmetric(
                             vertical: 9.0, horizontal: 5.0)),
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.blue[600]),
+                        MaterialStateProperty.all(Colors.blue[600]),
                       ),
                       icon: FaIcon(
                         FontAwesomeIcons.facebook,
@@ -430,7 +421,7 @@ class _LoginState extends State<Login> {
                   ),
                   Row(
 
-                      ///A widget to navigate to the signUp page
+                    ///A widget to navigate to the signUp page
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text('Not a Flickr member?', style: style),
@@ -441,8 +432,8 @@ class _LoginState extends State<Login> {
                               Navigator.pushNamed(context, '/sign_up');
                             },
                             child: Text(' Sign up here.', style: style)
-                            // style :
-                            ),
+                          // style :
+                        ),
                       ]),
                 ],
               ),
@@ -451,3 +442,9 @@ class _LoginState extends State<Login> {
         ));
   }
 }
+
+
+const style = TextStyle(
+  fontFamily: 'ProximaNova',
+  fontWeight: FontWeight.bold,
+);

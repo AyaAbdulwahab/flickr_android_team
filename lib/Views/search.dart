@@ -1,139 +1,160 @@
+import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '../Models/user_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flickr/Constants/constants.dart';
+import 'dart:io';
 
-// Static Images to be changed later
-List<String> images = [
-  "assets/p1.jpg",
-  "assets/p2.png",
-  "assets/Portrait.jpg",
-  "assets/port2.jpg",
-  "assets/p4.jpg",
-  "assets/p5.jpg",
-  "assets/panda.jpg",
-  "assets/zootopia.jpg",
-  "assets/Rick.jpg",
-  "assets/hades.jpg",
-  "assets/p10.jpg"
-];
-List<String> searchedImages = [
-  "assets/search1.jpg",
-  "assets/search2.jpg",
-  "assets/search3.jpg",
-  "assets/search4.jpg",
-  "assets/search5.png",
-  "assets/p10.jpg",
-  "assets/hades.jpg",
-  "assets/p2.png"
-];
-List<String> peopleNames = [
-  "Spongebob",
-  "Donald Duck",
-  "Buzz Lightyear",
-  "Monalisa",
-  "Nemo",
-  "Timon"
-];
-List<String> profilePhotos = [
-  "https://pyxis.nymag.com/v1/imgs/310/524/bfe62024411af0a9d9cd23447121704d7a-11-spongebob-squarepants.rsquare.w1200.jpg",
-  "https://upload.wikimedia.org/wikipedia/en/a/a5/Donald_Duck_angry_transparent_background.png",
-  "https://i.pinimg.com/originals/0e/81/53/0e8153e8a2c62459ca24a06ca9fb7069.png",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/1200px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
-  "https://stickershop.line-scdn.net/stickershop/v1/product/1348/LINEStorePC/main.png;compress=true",
-  "https://i1.sndcdn.com/avatars-000514838841-sk6ksb-t500x500.jpg"
-];
-List<String> photosNumber = ["50", "13", "120", "3", "5", "89"];
-List<String> followers = ["1.3K", "14k", "15K", "200", "983", "15K"];
-List<String> groupsNames = [
-  "Group1",
-  "Group2",
-  "Group3",
-  "Group4",
-  "Group5",
-  "Group6"
-];
-List<String> groupsMembers = ["100", "10k", "564", "9k", "10", "34"];
-List<String> groupsDiscussions = ["13", "110", "54", "45", "123", "78"];
-List<String> groupsPhotos = ["91", "16.2k", "54", "9k", "10", "143"];
+
+
+
+
+
+
+void main() {
+  return runApp(
+      MaterialApp(
+          home: Search()
+      )
+  );
+}
+
+
+
+
 // ------------------------------------------------------------------------ //
-
+/// The [Search] page allows user search for photos, people, and groups, returns the search results filtered in 3 different tabs
 class Search extends StatefulWidget {
-  Function(bool) callback;
-  Search(this.callback);
+  // Function(bool) callback;
+  // Search(this.callback);
   @override
   _SearchState createState() => _SearchState();
 }
 
 class _SearchState extends State<Search>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin<Search> {
+    with SingleTickerProviderStateMixin{
   TabController _tabController;
   bool _removeText = false;
   bool _cancelButton = false;
-  bool _viewtabs = false;
+  bool _viewTabs = false;
   bool _searchedImagesGrid = false;
   Color _searchColor = Colors.grey.shade600;
   String _searchKey = "";
-  List<String> _followButton = [
-    "+ Follow",
-    "+ Follow",
-    "+ Follow",
-    "+ Follow",
-    "+ Follow",
-    "+ Follow"
-  ];
+  List<SearchedUser> _usersResult= [];
+  List <SearchedUser> _fetchedUsers= [];
+  List <SearchedPhoto> _fetchedPhotos=[];
+  List<SearchedPhoto> _photosResult= [];
+  bool _hasMore;
+  int _usersPageNumber;
+  int _photosPageNumber;
+  bool _usersError;
+  bool _photosError;
+  bool _loading;
+  bool _photosLoading=false;
+  final int _userPerCount = 16;
+  final int _photosPerCount=12;
+  final int _nextPhotosThreshold=5;
+  final int _nextUsersThreshold = 5;
+
+
+  ScrollController _scrollController;
   final searchHolder = TextEditingController();
   final List<String> _tabs = ['Photos', 'People', 'Groups'];
-  final List<String> entries = <String>[
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'h',
-    'I',
-    'g',
-    'g',
-    'j'
-  ];
-  final List<int> colorCodes = <int>[
-    600,
-    500,
-    100,
-    100,
-    500,
-    100,
-    100,
-    500,
-    100,
-    100,
-    500,
-    100
-  ];
 
   // ------------------------------------------------------------------------ //
-  toggleFollow(index) {
-    if (_followButton[index] == "✓") {
-      _followButton[index] = "+ Follow";
-    } else {
-      _followButton[index] = "✓";
+
+  Future viewUsers() async{
+    try {
+      print("---------------------->  viewUsers()");
+      print(_usersPageNumber);
+      print(_userPerCount);
+      print(_searchKey);
+      _fetchedUsers = await searchByUser(_searchKey, _userPerCount, _usersPageNumber);
+      // print(_fetchedUsers);
+      //
+      setState(() {
+        _usersResult.addAll(_fetchedUsers);
+        // _hasMore = fetchedPhotos.length == _defaultPhotosPerPageCount;
+
+        _loading = false;
+        _usersPageNumber = _usersPageNumber + 1;
+        print("----------------> Returning from viewUsers()");
+        // notifyListeners();
+        return 1;
+      });
+    }catch(e) {
+      print(e);
+      _loading = false;
+      _usersError = true;
     }
   }
 
+
+  Future viewPhotos() async {
+    try {
+      print("---------------------->  viewPhotos()");
+      print(_photosPageNumber);
+      print(_photosPerCount);
+      print(_searchKey);
+      _fetchedPhotos = await searchByPhoto(_searchKey, _photosPerCount, _photosPageNumber);
+      // print(_fetchedUsers);
+      setState(() {
+        _photosResult.addAll(_fetchedPhotos);
+        _photosLoading = false;
+        _photosPageNumber = _photosPageNumber + 1;
+        print("----------------> Returning from viewPhotos()");
+        // notifyListeners();
+        return 1;
+      });
+    }catch(e) {
+      print(e);
+      _photosLoading = false;
+      _photosError = true;
+    }
+  }
+
+  _scrollListener() {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      setState(() {
+        // print("comes to bottom $_photosLoading");
+        _photosLoading = true;
+
+        if (_photosLoading) {
+          // print("RUNNING LOAD MORE");
+          viewPhotos();
+        }
+      });
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
+    print("Ana fl init state");
     _tabController = new TabController(length: _tabs.length, vsync: this);
+    _scrollController = new ScrollController(initialScrollOffset: 5.0)
+      ..addListener(_scrollListener);
+    _hasMore = true;
+    _usersPageNumber = 1;
+    _usersError = false;
+    _loading = true;
+    _photosPageNumber=1;
+    _photosError=false;
   }
+
+
 
   @override
   void dispose() {
     _tabController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -147,9 +168,20 @@ class _SearchState extends State<Search>
             Expanded(
                 child: IconButton(
               icon: Icon(Icons.search, color: _searchColor),
-              onPressed: () {
+              onPressed: () async{
                 if (_searchKey != "") {
                   //TODO: Request for result
+                  _hasMore = true;
+                  _usersPageNumber = 1;
+                  _usersError = false;
+                  _loading = true;
+                  _usersResult=[];
+                  _photosResult=[];
+                  _photosPageNumber=1;
+                  _photosError=false;
+                  await viewUsers();
+                  await viewPhotos();
+                  print("Button pressed");
                   setState(() {
                     _searchedImagesGrid = true;
                     FocusScope.of(context).requestFocus(FocusNode());
@@ -167,8 +199,8 @@ class _SearchState extends State<Search>
                     setState(() {
                       _searchColor = Colors.white;
                       _cancelButton = true;
-                      _viewtabs = true;
-                      widget.callback(_viewtabs);
+                      _viewTabs = true;
+                      // widget.callback(_viewTabs);
                     });
                   },
                   onChanged: (searchKey) {
@@ -182,8 +214,19 @@ class _SearchState extends State<Search>
                       _searchKey = searchKey;
                     });
                   },
-                  onFieldSubmitted: (searchKey) {
+                  onFieldSubmitted: (searchKey) async{
+                    _hasMore = true;
+                    _usersPageNumber = 1;
+                    _usersError = false;
+                    _loading = true;
+                    _usersResult=[];
+                    _photosResult=[];
+                    _photosPageNumber=1;
+                    _photosError=false;
+                    await viewUsers();
+                    await viewPhotos();
                     setState(() {
+
                       _searchedImagesGrid = true;
                     });
                   },
@@ -227,8 +270,16 @@ class _SearchState extends State<Search>
                         _cancelButton = false;
                         _removeText = false;
                         _searchColor = Colors.grey.shade600;
-                        _viewtabs = false;
-                        widget.callback(_viewtabs);
+                        _viewTabs = false;
+                        _usersResult=[];
+                        _photosResult=[];
+                        _photosPageNumber=1;
+                        _photosError=false;
+                        _hasMore = true;
+                        _usersPageNumber = 1;
+                        _usersError = false;
+                        _loading = true;
+                        // widget.callback(_viewTabs);
                         _searchedImagesGrid = false;
                         FocusScope.of(context).requestFocus(FocusNode());
                       });
@@ -253,9 +304,10 @@ class _SearchState extends State<Search>
           ]),
           // ),
           body: Stack(children: <Widget>[
-            Visibility(visible: !_viewtabs, child: ImagesGrid(images: images)),
+            //TODO: Check
+            // Visibility(visible: !_viewTabs, child: ImagesGrid(images: images)),
             Visibility(
-              visible: _viewtabs,
+              visible: _viewTabs,
               child: Container(
                 child: SingleChildScrollView(
                   child: Column(
@@ -303,21 +355,73 @@ class _SearchState extends State<Search>
                           child: TabBarView(
                               controller: _tabController,
                               children: <Widget>[
-                                ImagesGrid(images: searchedImages),
-                                Container(
-                                  //TODO: Request People
-                                  child: ListView.builder(
-                                    padding: const EdgeInsets.all(8),
-                                    itemCount: peopleNames.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return buildListTile(index, 60, 60);
-                                    },
-                                  ),
-                                ),
+                                    StaggeredGridView.countBuilder(
+                                    crossAxisCount: 2,
+                                       controller: _scrollController,
+                                       scrollDirection: Axis.vertical,
+                                      itemCount: _photosResult.length, // list of images
+                                      itemBuilder: (BuildContext context, int index) => GestureDetector(
+                                        onTap: () {
+                                          //TODO: Go to image page
+                                          print("Image Pressed");
+                                        },
+                                        child: Container(
+                                          child: Image.network(_photosResult[index].originalSource),
+                                        ),
+                                      ),
+                                      staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+                                      mainAxisSpacing: 5.0,
+                                      crossAxisSpacing: 5.0,
+                                    ),
+                                       Container(
+                                        //TODO: Request People
+                                        child: ListView.builder(
+                                          padding: const EdgeInsets.all(8),
+                                          itemCount: _usersResult.length + (_hasMore ? 1 : 0),
+                                          itemBuilder:
+                                              (BuildContext context,
+                                              int index) {
+                                                 if (index == _usersResult.length - _nextUsersThreshold) {
+                                                   print("Reached end of list");
+                                                     viewUsers();
+                                                 }
+                                                 if (index ==  _usersResult.length) {
+                                                  if (_usersError) {
+                                                  return Center(
+                                                       child: InkWell(
+                                                            onTap: () {
+                                                             setState(() {
+                                                              _loading =true;
+                                                              _usersError = false;
+                                                              print("Error");
+                                                               viewUsers();
+                                                                });
+                                                              },
+                                                           child: Padding(
+                                                              padding: const EdgeInsets.all(16),
+                                                                    child: Text("Error while loading photos, tap to try again"),
+                                                       ),
+                                                     ));
+                                                   }
+                                                   else {
+                                                   return Center(
+                                                       child: Padding(
+                                                         padding: const EdgeInsets
+                                                             .all(8),
+                                                         child: CircularProgressIndicator(),
+                                                       ));
+                                                   }
+                                                }
+                                                   return buildListTile(
+                                                       index, 60, 60);
+                                                 }
+                                        ),
+                                      ),
+                                // },
                                 Container(
                                   //TODO: Request Groups
                                   child: ListView.separated(
+                                    controller: _scrollController,
                                     itemCount: groupsNames.length,
                                     padding: const EdgeInsets.all(8),
                                     itemBuilder:
@@ -356,41 +460,19 @@ class _SearchState extends State<Search>
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-                image: NetworkImage(profilePhotos[index]), fit: BoxFit.fill),
+                image: NetworkImage(profilePhotos[0]), fit: BoxFit.fill),
           ),
         ),
       ),
-      title: Text(peopleNames[index],
+      title: Text(_usersResult[index].username,
           style: TextStyle(
             fontSize: 15.0,
             fontWeight: FontWeight.w600,
           )),
       subtitle: Text(
-          photosNumber[index] + " photos - " + followers[index] + " followers",
+          _usersResult[index].photoCount + " photos - " + _usersResult[index].followerCount + " followers",
           style: TextStyle(fontWeight: FontWeight.w600)),
       dense: true,
-      trailing: OutlinedButton(
-        onPressed: () {
-          setState(() {
-            //TODO: Request to edit followers
-            toggleFollow(index);
-            print("Follow");
-          });
-        },
-        child: Text(_followButton[index],
-            style: TextStyle(
-              fontSize: 13.0,
-              color: Colors.black,
-            )),
-        style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.all(1.0),
-          side: BorderSide(
-            width: 2.0,
-            color: Colors.black,
-            style: BorderStyle.solid,
-          ),
-        ),
-      ),
     );
   }
 }
@@ -466,28 +548,23 @@ class SearchGroupCard extends StatelessWidget {
   }
 }
 
-class ImagesGrid extends StatelessWidget {
-  ImagesGrid({@required this.images});
 
-//TODO: Request images and store them in the list the grid uses
-  List<String> images;
-  @override
-  Widget build(BuildContext context) {
-    return StaggeredGridView.countBuilder(
-      crossAxisCount: 2,
-      itemCount: images.length, // list of images
-      itemBuilder: (BuildContext context, int index) => GestureDetector(
-        onTap: () {
-          //TODO: Go to image page
-          print("Image Pressed");
-        },
-        child: Container(
-          child: Image.asset(images[index]),
-        ),
-      ),
-      staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-      mainAxisSpacing: 5.0,
-      crossAxisSpacing: 5.0,
-    );
-  }
-}
+// class ImagesGrid extends StatefulWidget {
+//   // Function(bool) callback;
+//   // Search(this.callback);
+//   @override
+//   _ImagesGridState createState() => _ImagesGridState();
+// }
+//
+// class _ImagesGridState extends State<Search> {
+//   ImagesGrid({@required this.images});
+//
+// //TODO: Request images and store them in the list the grid uses
+//   List<String> images;
+//   @override
+//   Widget build(BuildContext context) {
+//     return
+//   }
+// }
+
+
