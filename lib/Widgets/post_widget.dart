@@ -1,3 +1,5 @@
+// import 'package:flickr/Views/other_users_profile.dart';
+import 'package:flickr/Views/you.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/faves_and_comments.dart';
@@ -46,20 +48,35 @@ class _PostState extends State<Post> {
               child: Image(
                 image: NetworkImage(widget.postImage),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => PhotoOnClicking(image:widget.postImage,userImage:widget.userImage, username: widget.username, caption: widget.caption, faves: widget.postFaves, comments: widget.postComments)),
+                      builder: (context) => PhotoOnClicking(
+                          image: widget.postImage,
+                          userImage: widget.userImage,
+                          username: widget.username,
+                          caption: widget.caption,
+                          faves: widget.postFaves,
+                          comments: widget.postComments)),
                 );
               },
             ),
             margin: EdgeInsets.all(5.0),
           ),
           ListTile(
-            leading: CircleAvatar(
-              radius: 23.0,
-              backgroundImage: NetworkImage(widget.userImage),
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            YouPage(id: "608d55c7e512b74ee00791de")));
+              },
+              child: CircleAvatar(
+                radius: 23.0,
+                backgroundImage: NetworkImage(widget.userImage),
+              ),
             ),
             title: Text(
               widget.username,
@@ -84,8 +101,12 @@ class _PostState extends State<Post> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                FavesAndComments(chosenIcon: Icon(Icons.star_border_outlined), faves:  widget.postFaves),
-                FavesAndComments(chosenIcon: Icon(Icons.comment), faves:  widget.postComments),
+                FavesAndComments(
+                    chosenIcon: Icon(Icons.star_border_outlined),
+                    faves: widget.postFaves),
+                FavesAndComments(
+                    chosenIcon: Icon(Icons.comment),
+                    faves: widget.postComments),
                 Icon(
                   Icons.share_outlined,
                   size: 25.0,
