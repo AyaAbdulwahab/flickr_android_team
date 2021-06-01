@@ -105,7 +105,7 @@ class PrivacyInfo {
 // String welcomeToJson(AllUsers data) => json.encode(data.toJson());
 
 
-
+/// The [SearchedUser] class holds the data of the user parsed from the search request
 class SearchedUser {
   SearchedUser({
     @required this.userID,
@@ -138,7 +138,7 @@ class SearchedUser {
   // };
 }
 
-
+/// The [SearchedPhoto] class holds the data of the photo parsed from the search request
 class SearchedPhoto {
   SearchedPhoto({
     this.originalHeight,
@@ -193,7 +193,7 @@ class SearchedPhoto {
         descrip: json['description'],
         dateTaken: json['dateTaken'],
         username: json['userId']['firstName'],
-        canDownload: json['sizes']['size']['canDownload'],
+        canDownload: json['sizes']['canDownload'],
         pro: json['userId']['pro'],
       );
 
@@ -202,7 +202,7 @@ class SearchedPhoto {
   }
 }
 
-
+///The [UserAlbum] holds parsed data of each album for the current user
 class UserAlbum
 {
   UserAlbum({
