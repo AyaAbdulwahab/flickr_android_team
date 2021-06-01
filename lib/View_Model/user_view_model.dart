@@ -192,7 +192,7 @@ Future<PrivacyInfo> getPrivacy() async {
   // final user = Provider.of<MyModel>(context, listen: false);
   // user.authUser();
 
-  print("GET Request.....");
+  print("GET Privacy Request.....");
   final response =
   await http.get(Uri.parse(EndPoints.mockBaseUrl + '/user/perm?ID=1'),
       headers: {
@@ -262,9 +262,6 @@ searchByPhoto(String searchText, int limit, int page)  async{
     'limit': lim,
     'page':pg,
   };
-  // var uri =
-  // Uri.https(EndPoints.mockBaseUrl, '/user/search', queryParameters);
-
   String queryString = Uri(queryParameters: queryParams).query;
   var requestUrl = EndPoints.mockBaseUrl + '?' + queryString;
   final response = await http.get(Uri.parse(requestUrl));
@@ -303,6 +300,40 @@ forgotPassword(String email) async{
       }));
   print(response);
   return response;
+
+}
+
+
+Future <List<UserAlbum>> getUserAlbums() async {
+
+//TODO: Add token
+
+
+  // final response =
+  // await http.get(Uri.parse(EndPoints.mockBaseUrl + '/user/perm?ID=1'),
+  //     headers: {
+  //       HttpHeaders.authorizationHeader:' Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0'
+  //       //user.getToken()
+  //     }
+  // );
+  print('Requesting User Albums...');
+  final response =
+  await http.get(Uri.parse( 'https://run.mocky.io/v3/b61f1405-1fd0-4ba0-bc78-268d05ce7a04'));
+
+  var data= jsonDecode(response.body)['data'];
+
+  if (response.statusCode == 200) {
+
+    List <UserAlbum> albums = UserAlbum.parseList(data);
+    print('Returning from request');
+    return albums;
+
+  } else {
+
+    throw Exception('An error occurred during GET albums');
+  }
+
+
 
 }
 
