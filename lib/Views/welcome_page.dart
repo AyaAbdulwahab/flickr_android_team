@@ -26,7 +26,7 @@ class Page extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 378.0),
+            padding: const EdgeInsets.only(top: 278.0),
             child: Center(
               child: Text(
                 title,
