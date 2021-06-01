@@ -124,6 +124,15 @@ class _LoginState extends State<Login> {
         user.authUser();
         user.setToken(responseBody['token']);
         user.setID(responseBody["data"]["user"]["_id"]);
+        List a = await getFollowers(user.getID(), user.getToken());
+
+        user.setFollowers(a);
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
+          FocusManager.instance.primaryFocus.unfocus();
+        }
         Navigator.popUntil(context, ModalRoute.withName('/'));
       } else if (responseBody['message'] != null) {
         // No account exists with this email
@@ -337,7 +346,13 @@ class _LoginState extends State<Login> {
                               _email != null &&
                               _showWidgets == false) {
                             checkEmail();
-                            FocusScope.of(context).requestFocus(FocusNode());
+                            FocusScopeNode currentFocus =
+                                FocusScope.of(context);
+                            currentFocus.requestFocus(FocusNode());
+
+                            // if (!currentFocus.hasPrimaryFocus) {
+                            //   currentFocus.unfocus();
+                            // }
                           }
                         });
                         if (_showWidgets == true &&

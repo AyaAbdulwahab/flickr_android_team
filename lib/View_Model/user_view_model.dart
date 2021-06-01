@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 class MyModel with ChangeNotifier {
   bool isAuth = false;
   String _token;
+  List followers = [];
 
   String _id;
   void setID(String id) {
@@ -22,6 +23,14 @@ class MyModel with ChangeNotifier {
 
   String getID() {
     return _id;
+  }
+
+  void setFollowers(List a) {
+    followers = a;
+  }
+
+  List getFollowers() {
+    return followers;
   }
 
   void setToken(String token) {
@@ -68,7 +77,6 @@ Future<Map<String, dynamic>> signUp(String firstName, String lastName, int age,
       }
     }
   } catch (error) {
-    // throw HttpException(error.toString());
     print(error.toString());
   }
 }
@@ -87,6 +95,8 @@ Future<dynamic> getUsername(String id, String token) async {
     Map<String, dynamic> info = jsonDecode(data)['data'];
     String name = info["firstName"] + " " + info["lastName"];
     return (name.length >= 19) ? name.substring(0, 15).trim() : name.trim();
+  } else {
+    print(req.body);
   }
 }
 
@@ -101,6 +111,19 @@ Future<dynamic> getNoOfFollowers(String id, String token) async {
     String data = req.body;
     print(data);
     int noOfFollowing = jsonDecode(data)["count"];
+    return noOfFollowing;
+  }
+}
+
+Future<dynamic> getFollowers(String id, String token) async {
+  var req = await http.get(
+    (Uri.parse(EndPoints.baseUrl + '/user/' + id + '/following')),
+    headers: {"authorization": "Bearer " + token},
+  );
+  if (req.statusCode == 200) {
+    String data = req.body;
+    print(data);
+    List noOfFollowing = jsonDecode(data)["data"]["following"];
     return noOfFollowing;
   }
 }
