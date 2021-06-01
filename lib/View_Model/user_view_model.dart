@@ -209,3 +209,100 @@ Future<PrivacyInfo> getPrivacy() async {
     throw Exception('An error occurred');
   }
 }
+
+
+
+  searchByUser(String searchText, int limit, int page)  async{
+  //TODO: Add userID ?
+  String lim="$limit";
+  String pg="$page";
+  print("Searching for users...");
+  Map<String, String> queryParams = {
+    'searchText': searchText,
+    'limit': lim,
+    'page':pg,
+  };
+  // var uri =
+  // Uri.https(EndPoints.mockBaseUrl, '/user/search', queryParameters);
+
+  String queryString = Uri(queryParameters: queryParams).query;
+  var requestUrl = EndPoints.mockBaseUrl + '?' + queryString; // result - https://www.myurl.com/api/v1/user?param1=1&param2=2
+  final response = await http.get(Uri.parse(requestUrl));
+
+
+  if (response.statusCode == 200) {
+    print("200 OK");
+    // print(response.body);
+    var data=  json.decode(response.body)['data'];
+    // Iterable l = data;
+    // List <SearchedUser> fetchedUsers = List<SearchedUser>.from(l.map((model)=> SearchedUser.fromJson(model)));
+    List <SearchedUser> fetchedUsers = SearchedUser.parseList(data);
+    // print("parsed");
+    // usersResult.addAll(fetchedUsers);
+    // var result =  List.from(usersResult)..addAll(fetchedUsers);
+    // print("Returning...");
+    return fetchedUsers;
+    // return  usersFromJson(response.body); //Appending results not replacing them
+
+  } else {
+    print(response.statusCode);
+    throw Exception('An error occurred during users search request');
+  }
+}
+
+
+
+searchByPhoto(String searchText, int limit, int page)  async{
+  //TODO: Add userID ?
+  String lim="$limit";
+  String pg="$page";
+  print("Searching for photos...");
+  Map<String, String> queryParams = {
+    'searchText': searchText,
+    'limit': lim,
+    'page':pg,
+  };
+  // var uri =
+  // Uri.https(EndPoints.mockBaseUrl, '/user/search', queryParameters);
+
+  String queryString = Uri(queryParameters: queryParams).query;
+  var requestUrl = EndPoints.mockBaseUrl + '?' + queryString;
+  final response = await http.get(Uri.parse(requestUrl));
+
+  if (response.statusCode == 200) {
+    print("200 OK");
+    // print(response.body);
+    var data=  json.decode(response.body)['data'];
+    // Iterable l = data;
+    // List <SearchedPhoto> fetchedPhotos = List<SearchedPhoto>.from(l.map((model)=> SearchedPhoto.fromJson(model)));
+    List <SearchedPhoto> fetchedPhotos = SearchedPhoto.parseList(data);
+    // print("parsed");
+    // usersResult.addAll(fetchedPhotos);
+    // var result =  List.from(usersResult)..addAll(fetchedPhotos);
+    // print("Returning...");
+    return fetchedPhotos;
+    // return  usersFromJson(response.body); //Appending results not replacing them
+  } else {
+    print(response.statusCode);
+    throw Exception('An error occurred during photo search request');
+  }
+}
+
+/// Sends a POST request contain [email] in the body to send password reset instructions for the account associated with [email]
+forgotPassword(String email) async{
+  final response = await Dio().post(
+      EndPoints.mockBaseUrl + '/user/forget-password?ID=1',
+      // 'https://run.mocky.io/v3/405105a2-6f9b-40fc-ace5-bdde5fa186db',
+      options: Options(
+          validateStatus: (_) {
+            return true;
+          },
+          responseType: ResponseType.json),
+      data: jsonEncode({
+        "email": email,
+      }));
+  print(response);
+  return response;
+
+}
+
