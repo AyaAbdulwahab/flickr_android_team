@@ -12,7 +12,7 @@ class PrivacySettingsView {
     'Location privacy',
     'Safety level',
     'Import EXIF location data',
-    'SafeSeacrh filter'
+    'SafeSearch filter'
   ];
   static const List<String> tilesBody =[
     'Choose the default privacy for your manual posts.',
@@ -23,20 +23,21 @@ class PrivacySettingsView {
   ];
   static const List<String> defaultPrivacy = [
     'Public',
-    'Private',
+    'Contacts Only',
+    'Friends & family',
     'Friends',
     'Family',
-    'Friends & family'
+    'Private',
   ];
 
-  static const List<String> locationPrivacy =[
-    'Private',
-    'Family',
-    'Friends',
-    'Friends & family',
-    'Following',
-    'Public',
-  ];
+  // static const List<String> locationPrivacy =[
+  //   'Public',
+  //   'Contacts Only',
+  //   'Friends & family',
+  //   'Friends',
+  //   'Family',
+  //   'Private',
+  // ];
 
   static const List<String> safetyLevel =[
     'Safe',
@@ -46,7 +47,6 @@ class PrivacySettingsView {
 
   static const List<String> safeSearchFilter =[
     'On',
-    'Moderate',
     'Off'
   ];
 }
