@@ -340,4 +340,49 @@ Future<dynamic> getFollowers(String id, String token) async {
     List noOfFollowing = jsonDecode(data)["data"]["following"];
     return noOfFollowing;
   }
+
+/// The function addFave adds the photo from the user's faves using the [photoId] and the user's [token]
+void addFave(String photoID, String token) async {
+  var req2 = await Dio().post(
+      (EndPoints.mockBaseUrl + '/user/faves/' + photoID),
+      options: Options(
+        headers: {"authorization": "Bearer " + token},)
+  );
+}
+// print (req2.body);
+//   data: jsonEncode({
+//     'newPhotoFaveCount': {
+//       'favourites': int.parse(widget.faves)+1,
+//       '_id': widget.photoID,
+//     },
+//     "newUserFaveList": {
+//       "favourites": [
+//         widget.photoID
+//       ],
+//       "_id": widget.userID
+//     }
+//   });
+// }
+
+/// The function removeFave removes the photo from the user's faves using the [photoId] and the user's [token]
+void removeFave(String photoID, String token) async {
+  var req2 = await Dio().delete(
+      (EndPoints.mockBaseUrl + '/user/faves/' + photoID),
+      options: Options(
+        headers: {"authorization": "Bearer " + token},)
+  );
+  // print (req2.body);
+  // data: jsonEncode({
+  //   'newPhotoFaveCount': {
+  //     'favourites': int.parse(widget.faves)-1,
+  //     '_id':  widget.photoID,
+  //   },
+  //   "newUserFaveList": {
+  //     "favourites": [
+  //       widget.photoID
+  //     ],
+  //     "_id":  widget.userID
+  //   }
+  // });
+
 }
