@@ -1,3 +1,4 @@
+import 'package:flickr/Views/you.dart';
 import 'package:flickr/Models/user_model.dart';
 import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -171,6 +172,7 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
 
   @override
   Widget build(BuildContext context) {
+          
     return FutureBuilder(
         future:  Future.wait([callFunction()]),
         builder: (context,snapshot) {
@@ -217,12 +219,23 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
                       },
                     ),
                     margin: EdgeInsets.all(5.0),
+
                   ),
                   ListTile(
-                    leading: CircleAvatar(
-                      radius: 23.0,
-                      // backgroundImage: NetworkImage(widget.userImage),
-                    ),
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            YouPage(id: "608d55c7e512b74ee00791de")));
+              },
+              child: CircleAvatar(
+                radius: 23.0,
+                backgroundImage: NetworkImage(widget.userImage),
+              ),
+              )
+            ),
                     title: Text(
                       _photo.userName,
                       style: TextStyle(fontSize: 18.0, color: Colors.black),

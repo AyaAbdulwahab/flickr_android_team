@@ -54,17 +54,16 @@ class MyModel with ChangeNotifier {
 }
 
 
-
-
-
-
-Future<Map<String, dynamic>> signUp(String firstName, String lastName, int age,
-    String email, String password, String displayName) async {
+Future signUp(String firstName, String lastName, int age, String email,
+    String password, String displayName) async {
   try {
     final response = await Dio().post(EndPoints.baseUrl + '/user/sign-up',
-        options: Options(validateStatus: (status) {
-          return true;
-        }),
+        options: Options(
+            validateStatus: (status) {
+              return true;
+            },
+            responseType: ResponseType.json),
+
         data: json.encode({
           "firstName": firstName,
           "lastName": lastName,
@@ -74,13 +73,18 @@ Future<Map<String, dynamic>> signUp(String firstName, String lastName, int age,
           "password": password
         }));
 
-    if (response.statusCode == 200) {
-      if (response.data['token'] != null) {
-        return response.data;
-      } else {
-        print(response.data);
-      }
+    // print("HNAAA");
+
+    // print(response["token"]);
+    // if (response.statusCode == 200) {
+    // print()
+    if (response.data['token'] != null) {
+      print("OK");
+      return response.data;
+    } else {
+      print(response.data);
     }
+    // }
   } catch (error) {
     print(error.toString());
   }
@@ -122,8 +126,8 @@ Future<dynamic> getNoOfFollowers(String id, String token) async {
 
 /// Sends a post request containing [email] and [password] of the user to the url, and returns the response
 logIn(String email, String password) async {
-  final response = await Dio().post(
-      EndPoints.mockBaseUrl + '/user/sign-in?ID=1',
+  final response = await Dio().post(EndPoints.baseUrl + '/user/sign-in?ID=1',
+
       options: Options(
           validateStatus: (_) {
             return true;
@@ -138,54 +142,82 @@ logIn(String email, String password) async {
 }
 
 
+///--------------------------------------->
+explore(int page, int limit) async
+{
+  //TODO: ADD limit and page as query parameters
+  // var req = await http.get((Uri.parse(EndPoints.baseUrl + '/photo/explore' )));
+  var req = await http.get((Uri.parse('https://run.mocky.io/v3/a38e87fd-8658-46fa-9e76-d3782f653c4f')));
+
+  if (req.statusCode == 200) {
+    var data= jsonDecode(req.body)['data']['photos'];
+    // print(data);
+    // var data= jsonDecode(response.body)['data']
+    List <PhotosIDs> photoIds = PhotosIDs.parseList(data);
+    return photoIds;
+  }
+  else
+  {
+    throw Exception ("An error occurred during explore request");
+  }
+}
+
+getPhotoDetails() async {
+  var response = await http
+      .get((Uri.parse(
+      'https://run.mocky.io/v3/ec6c1711-7e15-4185-97ab-328bb68d8342')));
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body)['data'];
+    return PhotoDetails.fromJson(data);
+  }
+  else
+  {
+    throw Exception ("An error occurred during photoDetails request");
+  }
+}
+
+
 /// Sends PATCH request with [token] and [ID] as headers for updating privacy settings using the [PrivacyInfo] parameter
 ///
 /// Returns [PrivacyInfo] Object with the new privacy settings obtained from the response
-Future <PrivacyInfo> updatePrivacy(PrivacyInfo info) async {
+Future<PrivacyInfo> updatePrivacy(PrivacyInfo info, String token) async {
   try {
     //TODO: Add userID and token
     // final user = Provider.of<MyModel>(context, listen: false);
     // user.authUser();
 
     print("PATCH Request...");
-    final response = await Dio().patch(EndPoints.mockBaseUrl + '/user/perm?ID=1',
+    final response = await Dio().patch(EndPoints.baseUrl + '/user/perm',
         options: Options(
-            headers: {
-              "authorization": "Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0",
-              //user.getToken()
-            },
+            headers: {"authorization": "Bearer " + token},
             validateStatus: (_) {
               return true;
             },
             responseType: ResponseType.json),
-        data: jsonEncode({
-          "privacySettings": {
-            "defaults": {
-              "perms": {
-                "see": info.def,
-                "comment": info.def,
-                "addNotes": info.def,
+        data: jsonEncode(
+          {
+            "privacySettings": {
+              "defaults": {
+                "perms": {
+                  "see": info.def,
+                  "comment": info.def,
+                  "addNotes": info.def,
+                },
+                "mapVisible": info.location,
+                "importEXIF": info.importEXIF,
+                "safetyLevel": info.safetyLevel,
               },
-              "mapVisible": info.location,
-              "importEXIF": info.importEXIF,
-              "safetyLevel": info.safetyLevel,
-            },
-            "filters": {
-              "search": {
-                "safetySearch": info.safeSearch == 1 ? true : false
+              "filters": {
+                "search": {"safetySearch": info.safeSearch == 1 ? true : false}
               }
-            }
+            },
           },
-        },
         ));
-    // print(response);
     var responseBody = response.data;
     if (response.statusCode == 200) {
-
       return PrivacyInfo.fromJson(jsonDecode(responseBody));
-
     } else {
-
       throw Exception('An error occured');
     }
   } catch (error) {
@@ -193,103 +225,88 @@ Future <PrivacyInfo> updatePrivacy(PrivacyInfo info) async {
   }
 }
 
-
 /// Sends GET request for obtaining privacy settings using the [PrivacyInfo] parameter
 ///
 /// Returns [PrivacyInfo] Object that contains the privacy settings obtained from the response
-Future<PrivacyInfo> getPrivacy() async {
-
+Future<PrivacyInfo> getPrivacy(String token) async {
   //TODO: Add userID and token
   // final user = Provider.of<MyModel>(context, listen: false);
   // user.authUser();
 
   print("GET Privacy Request.....");
-  final response =
-  await http.get(Uri.parse(EndPoints.mockBaseUrl + '/user/perm?ID=1'),
-      headers: {
-        HttpHeaders.authorizationHeader:' Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0'
-        //user.getToken()
-      }
+  final response = await http.get(
+    Uri.parse(EndPoints.baseUrl + '/user/perm'),
+    headers: {"authorization": "Bearer " + token},
   );
 
   if (response.statusCode == 200) {
     return PrivacyInfo.fromJson(jsonDecode(response.body));
-
   } else {
-
     throw Exception('An error occurred');
   }
 }
 
-
-
-searchByUser(String searchText, int limit, int page)  async{
-  //TODO: Add userID ?
-  String lim="$limit";
-  String pg="$page";
+/// Sends a GET request with [searchText], [limit] and [page] as query parameters in the URL, and [token] in the headers
+///
+/// Users in the results are paginated according to page number [page], and limit per page [limit]
+/// Returns the result as a list of [SearchedUser]
+searchByUser(String searchText, int limit, int page, String token) async {
+  String lim = "$limit";
+  String pg = "$page";
   print("Searching for users...");
   Map<String, String> queryParams = {
     'searchText': searchText,
     'limit': lim,
-    'page':pg,
+    'page': pg,
   };
-  // var uri =
-  // Uri.https(EndPoints.mockBaseUrl, '/user/search', queryParameters);
 
-  String queryString = Uri(queryParameters: queryParams).query;
-  var requestUrl = EndPoints.mockBaseUrl + '?' + queryString; // result - https://www.myurl.com/api/v1/user?param1=1&param2=2
-  final response = await http.get(Uri.parse(requestUrl));
+  String u = EndPoints.baseUrl.split('/').last;
 
+  var uri = Uri.http(u, '/user/search', queryParams);
+  final response = await http.get(
+    uri,
+    headers: {"authorization": "Bearer " + token},
+  );
 
   if (response.statusCode == 200) {
     print("200 OK");
-    // print(response.body);
-    var data=  json.decode(response.body)['data'];
-    // Iterable l = data;
-    // List <SearchedUser> fetchedUsers = List<SearchedUser>.from(l.map((model)=> SearchedUser.fromJson(model)));
-    List <SearchedUser> fetchedUsers = SearchedUser.parseList(data);
-    // print("parsed");
-    // usersResult.addAll(fetchedUsers);
-    // var result =  List.from(usersResult)..addAll(fetchedUsers);
-    // print("Returning...");
-    return fetchedUsers;
-    // return  usersFromJson(response.body); //Appending results not replacing them
+    var data = json.decode(response.body)['data'];
+    List<SearchedUser> fetchedUsers = SearchedUser.parseList(data);
 
+    return fetchedUsers;
   } else {
     print(response.statusCode);
     throw Exception('An error occurred during users search request');
   }
 }
 
-
-
-searchByPhoto(String searchText, int limit, int page)  async{
-  //TODO: Add userID ?
-  String lim="$limit";
-  String pg="$page";
+/// Sends a GET request with [searchText], [limit] and [page] as query parameters in the URL, and [token] in the headers
+///
+/// Photos in the results are paginated according to page number [page], and limit per page [limit]
+/// /// Returns the result as a list of [SearchedPhoto]
+searchByPhoto(String searchText, int limit, int page, String token) async {
+  String lim = "$limit";
+  String pg = "$page";
   print("Searching for photos...");
-  Map<String, String> queryParams = {
+
+  var queryParams = {
     'searchText': searchText,
     'limit': lim,
-    'page':pg,
+    'page': pg,
   };
-  String queryString = Uri(queryParameters: queryParams).query;
-  var requestUrl = EndPoints.mockBaseUrl + '?' + queryString;
-  final response = await http.get(Uri.parse(requestUrl));
+  String u = EndPoints.baseUrl.split('/').last;
+
+  var uri = Uri.http(u, '/photo/search', queryParams);
+  final response = await http.get(
+    uri,
+    headers: {"authorization": "Bearer " + token},
+  );
 
   if (response.statusCode == 200) {
-    print("200 OK");
-    // print(response.body);
-    var data=  json.decode(response.body)['data'];
-    // Iterable l = data;
-    // List <SearchedPhoto> fetchedPhotos = List<SearchedPhoto>.from(l.map((model)=> SearchedPhoto.fromJson(model)));
-    List <SearchedPhoto> fetchedPhotos = SearchedPhoto.parseList(data);
-    // print("parsed");
-    // usersResult.addAll(fetchedPhotos);
-    // var result =  List.from(usersResult)..addAll(fetchedPhotos);
-    // print("Returning...");
+    var data = json.decode(response.body)['data'];
+
+    List<SearchedPhoto> fetchedPhotos = SearchedPhoto.parseList(data);
     return fetchedPhotos;
-    // return  usersFromJson(response.body); //Appending results not replacing them
   } else {
     print(response.statusCode);
     throw Exception('An error occurred during photo search request');
@@ -297,10 +314,8 @@ searchByPhoto(String searchText, int limit, int page)  async{
 }
 
 /// Sends a POST request contain [email] in the body to send password reset instructions for the account associated with [email]
-forgotPassword(String email) async{
-  final response = await Dio().post(
-      EndPoints.mockBaseUrl + '/user/forget-password?ID=1',
-      // 'https://run.mocky.io/v3/405105a2-6f9b-40fc-ace5-bdde5fa186db',
+forgotPassword(String email) async {
+  final response = await Dio().post(EndPoints.baseUrl + '/user/forget-password',
       options: Options(
           validateStatus: (_) {
             return true;
@@ -311,36 +326,21 @@ forgotPassword(String email) async{
       }));
   print(response);
   return response;
-
 }
 
-
-Future <List<UserAlbum>> getUserAlbums() async {
-
-//TODO: Add token
-
-
-  // final response =
-  // await http.get(Uri.parse(EndPoints.mockBaseUrl + '/user/perm?ID=1'),
-  //     headers: {
-  //       HttpHeaders.authorizationHeader:' Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0'
-  //       //user.getToken()
-  //     }
-  // );
+/// Sends Get Request to obtain current users' albums in the profile page
+Future<List<UserAlbum>> getUserAlbums(String token) async {
   print('Requesting User Albums...');
-  final response =
-  await http.get(Uri.parse( 'https://run.mocky.io/v3/b61f1405-1fd0-4ba0-bc78-268d05ce7a04'));
+  final response = await http.get(Uri.parse(EndPoints.baseUrl + '/user/albums'),
+      headers: {"authorization": "Bearer " + token});
 
-  var data= jsonDecode(response.body)['data'];
+  var data = jsonDecode(response.body)['data'];
 
   if (response.statusCode == 200) {
-
-    List <UserAlbum> albums = UserAlbum.parseList(data);
+    List<UserAlbum> albums = UserAlbum.parseList(data);
     print('Returning from request');
     return albums;
-
   } else {
-
     throw Exception('An error occurred during GET albums');
   }
 }
@@ -357,6 +357,7 @@ Future<dynamic> getFollowers(String id, String token) async {
     return noOfFollowing;
   }
 }
+
 
 
 ///Gets the explore stream of photos to be displayed
@@ -420,6 +421,7 @@ void addFave(String photoID, String token) async {
       options: Options(
         headers: {"authorization": "Bearer " + token},)
   );
+
 }
 // print (req2.body);
 //   data: jsonEncode({
@@ -443,6 +445,7 @@ void removeFave(String photoID, String token) async {
       options: Options(
         headers: {"authorization": "Bearer " + token},)
   );
+
   // print (req2.body);
   // data: jsonEncode({
   //   'newPhotoFaveCount': {

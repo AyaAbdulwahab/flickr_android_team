@@ -53,9 +53,9 @@ class _AboutTestState extends State<About> {
   String visibleToEmail = 'Anyone';
   String email = 'Aalaasalaheldin.99@gmail.com';
   String dateJoined = 'May 21';
-  String token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0';
-  String id = '608d55c7e512b74ee00791de';
+  // String token =
+  // 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0';
+  // String id = '608d55c7e512b74ee00791de';
 
   // List<String> data= [];
 

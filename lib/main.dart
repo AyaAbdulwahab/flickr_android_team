@@ -3,6 +3,7 @@ import 'package:flickr/Views/about_menu.dart';
 import 'package:flickr/Views/credits.dart';
 import 'package:flickr/Views/login.dart';
 import 'package:flickr/Views/nav.dart';
+import 'package:flickr/Views/privacy_settings.dart';
 
 import 'package:flickr/Views/sign_up.dart';
 import 'package:flickr/Views/welcome_page.dart';
@@ -10,8 +11,10 @@ import 'package:flickr/Views/splash_screen.dart';
 import 'package:flickr/Views/you.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_driver/driver_extension.dart';
 
 void main() {
+  // enableFlutterDriverExtension();
   runApp(MyApp());
 }
 
@@ -28,12 +31,13 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => SplashScreen(), //WelcomePage
           '/welcome_page': (context) => GetStarted(),
-          '/home': (context) => NavBar(), //WelcomePage
+          '/home': (context) => NavBar(),
           '/login': (context) => Login(),
           '/sign_up': (context) => SignUp(),
           '/you_page': (context) => YouPage(),
           '/About_Menu': (context) => AboutMenu(),
-          '/credits': (context) => Credits()
+          '/credits': (context) => Credits(),
+          '/privacy': (context) => Privacy()
         },
       ),
     );
