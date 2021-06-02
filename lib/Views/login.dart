@@ -1,4 +1,5 @@
 import 'package:flickr/View_Model/user_view_model.dart';
+import 'package:flickr/Views/forgot_password.dart';
 import 'package:flickr/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,19 +11,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flickr/Constants/constants.dart';
 
-
-
-
-
-
-
 /// Validator class for email TextFormField
 class EValidator {
   static String validate(String val) {
     return val.isEmpty ? "Required" : null;
   }
 }
-
 
 /// The [Login] Page is where the user enters their [email] and [password] to access their account in the app
 class Login extends StatefulWidget {
@@ -106,12 +100,14 @@ class _LoginState extends State<Login> {
   /// Navigates to the next view with the [token] in the route if response status code is 200
   /// Changes [_invalidAlert] to true if otherwise to display alert message
   checkResponse(String email, String password) async {
-    try{
-      var response = await logIn(email,password);
-      var responseBody = jsonDecode(response.data);
+    try {
+      var response = await logIn(email, password);
+      var responseBody = response.data;
       if (responseBody['token'] != null && response.statusCode == 200) {
         final user = Provider.of<MyModel>(context, listen: false);
         user.authUser();
+        print(responseBody['token']);
+        print(responseBody["data"]["user"]["_id"]);
         user.setToken(responseBody['token']);
         user.setID(responseBody["data"]["user"]["_id"]);
 
@@ -146,7 +142,6 @@ class _LoginState extends State<Login> {
       print(error);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -244,7 +239,7 @@ class _LoginState extends State<Login> {
                           labelStyle: style,
                           border: OutlineInputBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(3.0)),
+                                BorderRadius.all(Radius.circular(3.0)),
                             borderSide: BorderSide(color: Colors.pink),
                           )),
                     ),
@@ -273,14 +268,14 @@ class _LoginState extends State<Login> {
                                 ),
                                 onPressed: () {
                                   setState(() =>
-                                  this._hidePassword = !this._hidePassword);
+                                      this._hidePassword = !this._hidePassword);
                                 },
                               ),
                               labelText: 'Password',
                               labelStyle: style,
                               border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(3.0)),
+                                    BorderRadius.all(Radius.circular(3.0)),
                               )),
                           onChanged: (password) {
                             setState(() {
@@ -299,10 +294,10 @@ class _LoginState extends State<Login> {
                             }
                           },
                           validator: (val) => val.isEmpty ? "Required" : null
-                        // : _email == savedEmail && _password != savedPassword
-                        // ? "Invalid Password"
-                        // : null,
-                      ),
+                          // : _email == savedEmail && _password != savedPassword
+                          // ? "Invalid Password"
+                          // : null,
+                          ),
                     ),
                   ),
                   Visibility(
@@ -375,9 +370,13 @@ class _LoginState extends State<Login> {
                           children: <Widget>[
                             TextButton(
                               onPressed: () {
-                                //TODO: Navigate to forgot password page, & pass the email to it.
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ForgotPassword(_email)));
                               },
-                              child: Text('Forgot passowrd?', style: style),
+                              child: Text('Forgot password?', style: style),
                             ),
                             Container(
                               padding: EdgeInsets.only(left: 20.0, right: 20.0),
@@ -401,7 +400,7 @@ class _LoginState extends State<Login> {
                         padding: MaterialStateProperty.all(EdgeInsets.symmetric(
                             vertical: 9.0, horizontal: 5.0)),
                         backgroundColor:
-                        MaterialStateProperty.all(Colors.blue[600]),
+                            MaterialStateProperty.all(Colors.blue[600]),
                       ),
                       icon: FaIcon(
                         FontAwesomeIcons.facebook,
@@ -421,7 +420,7 @@ class _LoginState extends State<Login> {
                   ),
                   Row(
 
-                    ///A widget to navigate to the signUp page
+                      ///A widget to navigate to the signUp page
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text('Not a Flickr member?', style: style),
@@ -432,8 +431,8 @@ class _LoginState extends State<Login> {
                               Navigator.pushNamed(context, '/sign_up');
                             },
                             child: Text(' Sign up here.', style: style)
-                          // style :
-                        ),
+                            // style :
+                            ),
                       ]),
                 ],
               ),
@@ -442,7 +441,6 @@ class _LoginState extends State<Login> {
         ));
   }
 }
-
 
 const style = TextStyle(
   fontFamily: 'ProximaNova',

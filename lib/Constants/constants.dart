@@ -32,22 +32,13 @@ class PrivacySettingsView {
   ];
 
   static const List<String> locationPrivacy = [
-
     'Private',
   ];
 
-  static const List<String> safetyLevel =[
-    'Safe',
-    'Moderate',
-    'Restricted'
-  ];
+  static const List<String> safetyLevel = ['Safe', 'Moderate', 'Restricted'];
 
-  static const List<String> safeSearchFilter =[
-    'On',
-    'Off'
-  ];
+  static const List<String> safeSearchFilter = ['On', 'Off'];
 }
-
 
 // Static Images to be changed later
 List<String> images = [
@@ -102,4 +93,3 @@ List<String> groupsNames = [
 List<String> groupsMembers = ["100", "10k", "564", "9k", "10", "34"];
 List<String> groupsDiscussions = ["13", "110", "54", "45", "123", "78"];
 List<String> groupsPhotos = ["91", "16.2k", "54", "9k", "10", "143"];
-

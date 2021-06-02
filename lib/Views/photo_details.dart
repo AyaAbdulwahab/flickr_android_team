@@ -1,10 +1,15 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:flickr/Constants/constants.dart';
+import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Widgets/list_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:provider/provider.dart';
 
 class PhotoDetails extends StatefulWidget {
-  File image;
+  String image;
   PhotoDetails(this.image);
 
   @override
@@ -12,6 +17,29 @@ class PhotoDetails extends StatefulWidget {
 }
 
 class _PhotoDetailsState extends State<PhotoDetails> {
+  Future sendPhoto(String img, String token, String title, String desc) async {
+    File a = File(img);
+    String fileName = a.path.split('/').last;
+    print(a);
+
+    FormData formData = new FormData.fromMap({
+      "title": title,
+      "description": desc,
+      "photo": await MultipartFile.fromFile(a.path,
+          filename: fileName, contentType: MediaType('image', 'jpg')),
+    });
+    print("FORMDATAAA: " + fileName);
+    try {
+      Dio dio = new Dio();
+      dio.options.headers = {"authorization": "Bearer " + token};
+      var response =
+          await dio.post(EndPoints.baseUrl + "/photo/", data: formData);
+      print(response);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   String _title;
   String _desription;
   bool _isSelected = false;
@@ -71,7 +99,13 @@ class _PhotoDetailsState extends State<PhotoDetails> {
                       side: BorderSide(color: Colors.white, width: 2.0),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.zero)),
-                  onPressed: () {},
+                  onPressed: () async {
+                    final user = Provider.of<MyModel>(context, listen: false);
+                    await sendPhoto(
+                        widget.image, user.getToken(), _title, _desription);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
                 ),
               )
             ],
@@ -90,8 +124,8 @@ class _PhotoDetailsState extends State<PhotoDetails> {
                   width: 100.0,
 
                   // decoration: BoxDecoration(image:FileImage(widget.image)),
-                  child:
-                      Image(fit: BoxFit.fill, image: FileImage(widget.image))),
+                  child: Image(
+                      fit: BoxFit.fill, image: FileImage(File(widget.image)))),
               SizedBox(height: 5.0),
               //Add image
               TextField(
@@ -169,28 +203,6 @@ class _PhotoDetailsState extends State<PhotoDetails> {
               color: Colors.black.withOpacity(0.6),
             ),
           ),
-        // if (_isSelected)
-        //   Padding(
-        //       padding: EdgeInsets.only(
-        //         top: MediaQuery.of(context).size.height * 0.5 - 1 + 35 * 4,
-        //       ),
-        //       child: Container(
-        //           color: Colors.white,
-        //           child: Padding(
-        //             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        //             child: UserListTile(_icons[3], _titles[3], 35.0),
-        //           ))),
-        // child: ListView.separated(
-        //     shrinkWrap: true,
-        //     padding: EdgeInsets.only(top: 11.0),
-        //     separatorBuilder: (context, index) =>
-        //         Divider(color: Colors.grey[200], thickness: 1),
-        //     itemCount: _titles.length,
-        //     itemBuilder: (context, index) =>
-        // ),
-        // Positioned(
-        //     bottom: 160.0,
-        //     child: UserListTile(Icons.lock_open_outlined, "Public", 35.0)),
         if (_isSelected)
           Positioned(
             top: MediaQuery.of(context).size.height * 0.5 + 35 * 3 + 9.0,

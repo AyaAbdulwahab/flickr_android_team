@@ -2,27 +2,19 @@ import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 import '../Models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flickr/Constants/constants.dart';
 import 'dart:io';
 
-
-
-
-
-
-
-void main() {
-  return runApp(
-      MaterialApp(
-          home: Search()
-      )
-  );
-}
-
-
-
+// void main() {
+//   return runApp(
+//       MaterialApp(
+//           home: Search()
+//       )
+//   );
+// }
 
 // ------------------------------------------------------------------------ //
 /// The [Search] page allows user search for photos, people, and groups, returns the search results filtered in 3 different tabs
@@ -33,8 +25,7 @@ class Search extends StatefulWidget {
   _SearchState createState() => _SearchState();
 }
 
-class _SearchState extends State<Search>
-    with SingleTickerProviderStateMixin{
+class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
   TabController _tabController;
   bool _removeText = false;
   bool _cancelButton = false;
@@ -42,22 +33,21 @@ class _SearchState extends State<Search>
   bool _searchedImagesGrid = false;
   Color _searchColor = Colors.grey.shade600;
   String _searchKey = "";
-  List<SearchedUser> _usersResult= [];
-  List <SearchedUser> _fetchedUsers= [];
-  List <SearchedPhoto> _fetchedPhotos=[];
-  List<SearchedPhoto> _photosResult= [];
+  List<SearchedUser> _usersResult = [];
+  List<SearchedUser> _fetchedUsers = [];
+  List<SearchedPhoto> _fetchedPhotos = [];
+  List<SearchedPhoto> _photosResult = [];
   bool _hasMore;
   int _usersPageNumber;
   int _photosPageNumber;
   bool _usersError;
   bool _photosError;
   bool _loading;
-  bool _photosLoading=false;
+  bool _photosLoading = false;
   final int _userPerCount = 16;
-  final int _photosPerCount=12;
-  final int _nextPhotosThreshold=5;
+  final int _photosPerCount = 12;
+  final int _nextPhotosThreshold = 5;
   final int _nextUsersThreshold = 5;
-
 
   ScrollController _scrollController;
   final searchHolder = TextEditingController();
@@ -65,13 +55,15 @@ class _SearchState extends State<Search>
 
   // ------------------------------------------------------------------------ //
 
-  Future viewUsers() async{
+  Future viewUsers() async {
     try {
       print("---------------------->  viewUsers()");
       print(_usersPageNumber);
       print(_userPerCount);
       print(_searchKey);
-      _fetchedUsers = await searchByUser(_searchKey, _userPerCount, _usersPageNumber);
+      final user = Provider.of<MyModel>(context, listen: false);
+      _fetchedUsers = await searchByUser(
+          _searchKey, _userPerCount, _usersPageNumber, user.getToken());
       // print(_fetchedUsers);
       //
       setState(() {
@@ -84,21 +76,22 @@ class _SearchState extends State<Search>
         // notifyListeners();
         return 1;
       });
-    }catch(e) {
+    } catch (e) {
       print(e);
       _loading = false;
       _usersError = true;
     }
   }
 
-
   Future viewPhotos() async {
     try {
       print("---------------------->  viewPhotos()");
       print(_photosPageNumber);
       print(_photosPerCount);
+      final user = Provider.of<MyModel>(context, listen: false);
       print(_searchKey);
-      _fetchedPhotos = await searchByPhoto(_searchKey, _photosPerCount, _photosPageNumber);
+      _fetchedPhotos = await searchByPhoto(
+          _searchKey, _photosPerCount, _photosPageNumber, user.getToken());
       // print(_fetchedUsers);
       setState(() {
         _photosResult.addAll(_fetchedPhotos);
@@ -108,7 +101,7 @@ class _SearchState extends State<Search>
         // notifyListeners();
         return 1;
       });
-    }catch(e) {
+    } catch (e) {
       print(e);
       _photosLoading = false;
       _photosError = true;
@@ -117,7 +110,7 @@ class _SearchState extends State<Search>
 
   _scrollListener() {
     if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent &&
+            _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
       setState(() {
         // print("comes to bottom $_photosLoading");
@@ -142,11 +135,9 @@ class _SearchState extends State<Search>
     _usersPageNumber = 1;
     _usersError = false;
     _loading = true;
-    _photosPageNumber=1;
-    _photosError=false;
+    _photosPageNumber = 1;
+    _photosError = false;
   }
-
-
 
   @override
   void dispose() {
@@ -154,7 +145,6 @@ class _SearchState extends State<Search>
     _scrollController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -168,17 +158,17 @@ class _SearchState extends State<Search>
             Expanded(
                 child: IconButton(
               icon: Icon(Icons.search, color: _searchColor),
-              onPressed: () async{
+              onPressed: () async {
                 if (_searchKey != "") {
                   //TODO: Request for result
                   _hasMore = true;
                   _usersPageNumber = 1;
                   _usersError = false;
                   _loading = true;
-                  _usersResult=[];
-                  _photosResult=[];
-                  _photosPageNumber=1;
-                  _photosError=false;
+                  _usersResult = [];
+                  _photosResult = [];
+                  _photosPageNumber = 1;
+                  _photosError = false;
                   await viewUsers();
                   await viewPhotos();
                   print("Button pressed");
@@ -214,19 +204,18 @@ class _SearchState extends State<Search>
                       _searchKey = searchKey;
                     });
                   },
-                  onFieldSubmitted: (searchKey) async{
+                  onFieldSubmitted: (searchKey) async {
                     _hasMore = true;
                     _usersPageNumber = 1;
                     _usersError = false;
                     _loading = true;
-                    _usersResult=[];
-                    _photosResult=[];
-                    _photosPageNumber=1;
-                    _photosError=false;
+                    _usersResult = [];
+                    _photosResult = [];
+                    _photosPageNumber = 1;
+                    _photosError = false;
                     await viewUsers();
                     await viewPhotos();
                     setState(() {
-
                       _searchedImagesGrid = true;
                     });
                   },
@@ -271,10 +260,10 @@ class _SearchState extends State<Search>
                         _removeText = false;
                         _searchColor = Colors.grey.shade600;
                         _viewTabs = false;
-                        _usersResult=[];
-                        _photosResult=[];
-                        _photosPageNumber=1;
-                        _photosError=false;
+                        _usersResult = [];
+                        _photosResult = [];
+                        _photosPageNumber = 1;
+                        _photosError = false;
                         _hasMore = true;
                         _usersPageNumber = 1;
                         _usersError = false;
@@ -352,88 +341,82 @@ class _SearchState extends State<Search>
                         visible: _searchedImagesGrid,
                         child: Container(
                           height: MediaQuery.of(context).size.height - 106,
-                          child: TabBarView(
-                              controller: _tabController,
-                              children: <Widget>[
-                                    StaggeredGridView.countBuilder(
-                                    crossAxisCount: 2,
-                                       controller: _scrollController,
-                                       scrollDirection: Axis.vertical,
-                                      itemCount: _photosResult.length, // list of images
-                                      itemBuilder: (BuildContext context, int index) => GestureDetector(
-                                        onTap: () {
-                                          //TODO: Go to image page
-                                          print("Image Pressed");
-                                        },
-                                        child: Container(
-                                          child: Image.network(_photosResult[index].originalSource),
-                                        ),
-                                      ),
-                                      staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-                                      mainAxisSpacing: 5.0,
-                                      crossAxisSpacing: 5.0,
-                                    ),
-                                       Container(
-                                        //TODO: Request People
-                                        child: ListView.builder(
-                                          padding: const EdgeInsets.all(8),
-                                          itemCount: _usersResult.length + (_hasMore ? 1 : 0),
-                                          itemBuilder:
-                                              (BuildContext context,
-                                              int index) {
-                                                 if (index == _usersResult.length - _nextUsersThreshold) {
-                                                   print("Reached end of list");
-                                                     viewUsers();
-                                                 }
-                                                 if (index ==  _usersResult.length) {
-                                                  if (_usersError) {
-                                                  return Center(
-                                                       child: InkWell(
-                                                            onTap: () {
-                                                             setState(() {
-                                                              _loading =true;
-                                                              _usersError = false;
-                                                              print("Error");
-                                                               viewUsers();
-                                                                });
-                                                              },
-                                                           child: Padding(
-                                                              padding: const EdgeInsets.all(16),
-                                                                    child: Text("Error while loading photos, tap to try again"),
-                                                       ),
-                                                     ));
-                                                   }
-                                                   else {
-                                                   return Center(
-                                                       child: Padding(
-                                                         padding: const EdgeInsets
-                                                             .all(8),
-                                                         child: CircularProgressIndicator(),
-                                                       ));
-                                                   }
-                                                }
-                                                   return buildListTile(
-                                                       index, 60, 60);
-                                                 }
-                                        ),
-                                      ),
-                                // },
-                                Container(
-                                  //TODO: Request Groups
-                                  child: ListView.separated(
-                                    controller: _scrollController,
-                                    itemCount: groupsNames.length,
-                                    padding: const EdgeInsets.all(8),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return SearchGroupCard(index: index);
-                                    },
-                                    separatorBuilder:
-                                        (BuildContext context, int index) =>
-                                            SizedBox(height: 10),
-                                  ),
-                                )
-                              ]),
+                          child:
+                              TabBarView(controller: _tabController, children: <
+                                  Widget>[
+                            StaggeredGridView.countBuilder(
+                              crossAxisCount: 2,
+                              controller: _scrollController,
+                              scrollDirection: Axis.vertical,
+                              itemCount: _photosResult.length, // list of images
+                              itemBuilder: (BuildContext context, int index) =>
+                                  GestureDetector(
+                                onTap: () {
+                                  //TODO: Go to image page
+                                  print("Image Pressed");
+                                },
+                                child: Container(
+                                  child: Image.network(
+                                      _photosResult[index].originalSource),
+                                ),
+                              ),
+                              staggeredTileBuilder: (int index) =>
+                                  StaggeredTile.fit(1),
+                              mainAxisSpacing: 5.0,
+                              crossAxisSpacing: 5.0,
+                            ),
+                            Container(
+                              //TODO: Request People
+                              child: ListView.builder(
+                                  padding: const EdgeInsets.all(8),
+                                  itemCount:
+                                      _usersResult.length + (_hasMore ? 1 : 0),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    if (index ==
+                                        _usersResult.length -
+                                            _nextUsersThreshold) {
+                                      print("Reached end of list");
+                                      viewUsers();
+                                    }
+                                    if (index == _usersResult.length) {
+                                      if (_usersError) {
+                                        return Center(
+                                            child: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              _loading = true;
+                                              _usersError = false;
+                                              print("Error");
+                                              viewUsers();
+                                            });
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(16),
+                                            child: Text(
+                                                "Error while loading photos, tap to try again"),
+                                          ),
+                                        ));
+                                      } else {}
+                                    }
+                                    return buildListTile(index, 60, 60);
+                                  }),
+                            ),
+                            Container(
+                              //TODO: Request Groups
+                              child: ListView.separated(
+                                controller: _scrollController,
+                                itemCount: groupsNames.length,
+                                padding: const EdgeInsets.all(8),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return SearchGroupCard(index: index);
+                                },
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        SizedBox(height: 10),
+                              ),
+                            )
+                          ]),
                         ),
                       ),
                     ],
@@ -470,7 +453,10 @@ class _SearchState extends State<Search>
             fontWeight: FontWeight.w600,
           )),
       subtitle: Text(
-          _usersResult[index].photoCount + " photos - " + _usersResult[index].followerCount + " followers",
+          _usersResult[index].photoCount.toString() +
+              " photos - " +
+              _usersResult[index].followerCount.toString() +
+              " followers",
           style: TextStyle(fontWeight: FontWeight.w600)),
       dense: true,
     );
@@ -547,24 +533,3 @@ class SearchGroupCard extends StatelessWidget {
     );
   }
 }
-
-
-// class ImagesGrid extends StatefulWidget {
-//   // Function(bool) callback;
-//   // Search(this.callback);
-//   @override
-//   _ImagesGridState createState() => _ImagesGridState();
-// }
-//
-// class _ImagesGridState extends State<Search> {
-//   ImagesGrid({@required this.images});
-//
-// //TODO: Request images and store them in the list the grid uses
-//   List<String> images;
-//   @override
-//   Widget build(BuildContext context) {
-//     return
-//   }
-// }
-
-

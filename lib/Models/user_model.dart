@@ -15,13 +15,13 @@ class User {
 
   User(
       {this.username,
-        this.firstname,
-        this.lastname,
-        this.pro,
-        this.aboutme,
-        this.joindate,
-        this.profileurl,
-        this.location});
+      this.firstname,
+      this.lastname,
+      this.pro,
+      this.aboutme,
+      this.joindate,
+      this.profileurl,
+      this.location});
 
 // factory User.fromJson(Map<String, dynamic> json) {
 //   return User(
@@ -47,7 +47,6 @@ class User {
 // print(user.firstname);
 // }
 
-
 /// The [PrivacyInfo] class holds the privacy data obtained for the user
 ///
 /// Is used for sending privacy requests and parsing data from responses
@@ -65,45 +64,36 @@ class PrivacyInfo {
     @required this.safeSearch,
   });
 
-
-
   factory PrivacyInfo.fromJson(Map<String, dynamic> json) {
-    bool jsonSafeS=json['data']['privacySettings']['filters']['search']['safeSearch'];
+    bool jsonSafeS =
+        json['data']['privacySettings']['filters']['search']['safeSearch'];
     // print(json['data']['privacySettings']['defaults']['importEXIF']);
     int safeS;
-    if (jsonSafeS==true) {
-      safeS=1;
-    }
-    else  {
-      safeS=2;
+    if (jsonSafeS == true) {
+      safeS = 1;
+    } else {
+      safeS = 2;
     }
 
     return PrivacyInfo(
       def: json['data']['privacySettings']['defaults']['perms']['see'],
       location: json['data']['privacySettings']['defaults']['mapVisible'],
-      importEXIF:json['data']['privacySettings']['defaults']['importEXIF'],
+      importEXIF: json['data']['privacySettings']['defaults']['importEXIF'],
       safetyLevel: json['data']['privacySettings']['defaults']['safetyLevel'],
       safeSearch: safeS,
     );
   }
 }
 
-
 // To parse this JSON data, do
 //
 //     final welcome = welcomeFromJson(jsonString);
 
-
-
 // To parse this JSON data, do
 //
 //     final welcome = welcomeFromJson(jsonString);
-
-
-
 
 // String welcomeToJson(AllUsers data) => json.encode(data.toJson());
-
 
 /// The [SearchedUser] class holds the data of the user parsed from the search request
 class SearchedUser {
@@ -116,15 +106,15 @@ class SearchedUser {
 
   String userID;
   String username;
-  String photoCount;
-  String followerCount;
+  int photoCount;
+  int followerCount;
 
   factory SearchedUser.fromJson(Map<String, dynamic> json) => SearchedUser(
-    userID: json["_id"],
-    username: json["displayName"],
-    photoCount: json["photoCount"],
-    followerCount: json["followerCount"],
-  );
+        userID: json["_id"],
+        username: json["displayName"],
+        photoCount: json["photoCount"],
+        followerCount: json["followerCount"],
+      );
 
   static List<SearchedUser> parseList(List<dynamic> list) {
     return list.map((i) => SearchedUser.fromJson(i)).toList();
@@ -140,24 +130,23 @@ class SearchedUser {
 
 /// The [SearchedPhoto] class holds the data of the photo parsed from the search request
 class SearchedPhoto {
-  SearchedPhoto({
-    this.originalHeight,
-    this.originalWidth,
-    this.originalSource,
-    this.originalURL,
-    this.thumbHeight,
-    this.thumbWidth,
-    this.thumbSource,
-    this.thumbURL,
-    this.favs,
-    this.comments,
-    this.canDownload,
-    this.title,
-    this.descrip,
-    this.username,
-    this.dateTaken,
-    this.pro
-  });
+  SearchedPhoto(
+      {this.originalHeight,
+      this.originalWidth,
+      this.originalSource,
+      this.originalURL,
+      this.thumbHeight,
+      this.thumbWidth,
+      this.thumbSource,
+      this.thumbURL,
+      this.favs,
+      this.comments,
+      this.canDownload,
+      this.title,
+      this.descrip,
+      this.username,
+      this.dateTaken,
+      this.pro});
 
   int originalHeight;
   int originalWidth;
@@ -176,9 +165,7 @@ class SearchedPhoto {
   bool canDownload;
   bool pro;
 
-
-  factory SearchedPhoto.fromJson(Map<String, dynamic> json) =>
-      SearchedPhoto(
+  factory SearchedPhoto.fromJson(Map<String, dynamic> json) => SearchedPhoto(
         originalHeight: json['sizes']['size']['original']['height'],
         originalWidth: json['sizes']['size']['original']['width'],
         thumbHeight: json['sizes']['size']['thumbnail']['height'],
@@ -203,13 +190,12 @@ class SearchedPhoto {
 }
 
 ///The [UserAlbum] holds parsed data of each album for the current user
-class UserAlbum
-{
+class UserAlbum {
   UserAlbum({
     @required this.photoCount,
     @required this.primaryPhoto,
     @required this.albumName,
-});
+  });
   String photoCount;
   String primaryPhoto;
   String albumName;
@@ -219,8 +205,8 @@ class UserAlbum
     return UserAlbum(
       photoCount: "$count",
       albumName: json['album']['albumName'],
-      primaryPhoto: json['album']['primaryPhotoId']['sizes']['size']['largeSquare']['source'],
-
+      primaryPhoto: json['album']['primaryPhotoId']['sizes']['size']
+          ['largeSquare']['source'],
     );
   }
   static List<UserAlbum> parseList(List<dynamic> list) {

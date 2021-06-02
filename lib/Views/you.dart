@@ -1,6 +1,7 @@
 import 'package:flickr/Constants/constants.dart';
 import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Views/about.dart';
+import 'package:flickr/Views/albums.dart';
 import 'package:flickr/Views/camera_roll.dart';
 import 'package:flickr/Views/loading.dart';
 import 'package:flickr/Views/settings.dart';
@@ -283,11 +284,15 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                                   'A place holder for the ${youBar[1]} Page'),
                             ),
                             CameraRoll(),
-                            for (var i = 3; i < youBar.length; i++)
-                              Center(
-                                child: Text(
-                                    'A place holder for the ${youBar[i]} Page'),
-                              )
+                            Center(
+                              child: Text(
+                                  'A place holder for the ${youBar[3]} Page'),
+                            ),
+                            Albums(),
+                            Center(
+                              child: Text(
+                                  'A place holder for the ${youBar[5]} Page'),
+                            )
                           ])
                         : TabBarView(controller: _tabController, children: [
                             for (var i = 0; i < 3; i++)

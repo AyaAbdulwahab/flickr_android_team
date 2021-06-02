@@ -48,16 +48,20 @@ class _CameraRollState extends State<CameraRoll> {
   List sortBy = ["Date Taken", "Date Uploaded"];
 
   int defaultIndex = 1;
+  int noOfSelectedPhotos = 0;
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MyModel>(context, listen: false);
+    List<bool> isSelected;
 
     return FutureBuilder(
         future: getCameraRoll(user.getToken()),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List photos = snapshot.data ?? [];
+            // isSelected = new List(photos.length) ?? 0;
+            isSelected.fillRange(0, photos.length, false);
             return Column(
               children: [
                 Container(
@@ -160,8 +164,18 @@ class _CameraRollState extends State<CameraRoll> {
                       mainAxisSpacing: 10.0,
                       childAspectRatio: 110 / 140,
                       children: List.generate(photos.length, (index) {
-                        return Image.network(
-                            photos[index]["sizes"]["size"]["medium"]["url"]);
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isSelected[index] = !isSelected[index];
+                              isSelected[index]
+                                  ? noOfSelectedPhotos++
+                                  : noOfSelectedPhotos--;
+                            });
+                          },
+                          child: Image.network(
+                              photos[index]["sizes"]["size"]["medium"]["url"]),
+                        );
                       })),
                 ),
               ],

@@ -1,6 +1,7 @@
 import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Views/camera.dart';
 import 'package:flickr/Views/home.dart';
+import 'package:flickr/Views/loading.dart';
 import 'package:flickr/Views/search.dart';
 import 'package:flickr/Views/you.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +29,6 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
   Future getImage() async {
     PickedFile ip;
     return await ImagePicker().getImage(source: ImageSource.camera);
-    // setState(() {
-    //   _image=File(image.path);
-    // });
   }
 
   callback(bool _hideTabBar) {
@@ -44,10 +42,13 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
       PickedFile pk = await getImage();
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Camera(pk)));
-      // Camera(pk);
       _tabController.index = 0;
     }
   }
+
+  // directToUser() {
+  //   _tabController.index = 2;
+  // }
 
   @override
   void initState() {
@@ -55,6 +56,7 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
     _tabController = TabController(length: youBar.length, vsync: this);
     _tabController.addListener(() async {
       await cameraCall();
+      // directToUser();
     });
   }
 
@@ -116,9 +118,9 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
         },
         body: TabBarView(controller: _tabController, children: [
           Home(),
-          Search(callback),
+          Search(),
           YouPage(id: user.getID()),
-          for (var i = 3; i < youBar.length; i++)
+          for (var i = 3; i < youBar.length - 1; i++)
             Container(
               width: 10.0,
               height: 50.0,
@@ -126,8 +128,7 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
                 child: Text('A place holder for the ${youBar[i]} Page'),
               ),
             ),
-
-          // Camera()
+          LoadingPage()
         ]),
       )),
     );

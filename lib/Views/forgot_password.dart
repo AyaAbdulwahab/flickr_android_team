@@ -4,56 +4,41 @@ import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/authentication_app_bar.dart';
 import 'dart:convert';
 
-
-void main() {
-  return runApp(
-      MaterialApp(
-          home: ForgotPassword()
-      )
-  );
-}
-
-const String email="something@gmail.com";
-
+const String email = "something@gmail.com";
 
 //TODO: initialize _email with passed string from login page
 
 /// The [ForgotPassword] page is where user enters their email to send an email for instructions on how to reset their password
 class ForgotPassword extends StatefulWidget {
+  String email;
+  ForgotPassword(this.email);
+
   @override
   _ForgotPasswordState createState() => _ForgotPasswordState();
 }
 
-
 class _ForgotPasswordState extends State<ForgotPassword> {
-
-  String _email="something@gmail.com";
-  bool _invalidAlert=false;
+  String _email = "";
+  bool _invalidAlert = false;
   final _formKey = GlobalKey<FormState>();
 
   sendEmail() async {
     var response = await forgotPassword(_email);
     // var responseBody = jsonDecode(response.data);
-    if (response.statusCode==200)
-      {
-        print("Navigate");
-        //TODO: Navigate to email_verification page
-      }
-    else
-      {
-        setState(() {
-          _invalidAlert=true;
-        });
-        print("Invalid");
-
-      }
+    if (response.statusCode == 200) {
+      print("Navigate");
+      //TODO: Navigate to email_verification page
+    } else {
+      setState(() {
+        _invalidAlert = true;
+      });
+      print("Invalid");
+    }
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
+    _email = widget.email;
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: authAppBar(context),
@@ -63,7 +48,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               padding: EdgeInsets.all(15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children:<Widget>[
+                children: <Widget>[
                   SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
@@ -75,39 +60,51 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         SizedBox(
                           height: 5.0,
                         ),
-                        Text(
-                          "Change your Flickr password",
-                          style: TextStyle(
-                              fontFamily: 'ProximaNova',
-                              fontSize:19.0,
-                              fontWeight: FontWeight.w500
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            "Change your Flickr password",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontFamily: 'ProximaNova',
+                                fontSize: 19.0,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                         SizedBox(
                           height: 7.0,
                         ),
-                        Text(
-                          "Please enter your email address below and",
-                          style: TextStyle(
-                              fontFamily: 'ProximaNova',
-                              fontSize:17.0,
-                              fontWeight: FontWeight.w500
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            "Please enter your email address below and",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontFamily: 'ProximaNova',
+                                fontSize: 17.0,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
-                        Text(
-                          "we'll send you instructions on how to reset your",
-                          style: TextStyle(
-                              fontFamily: 'ProximaNova',
-                              fontSize:17.0,
-                              fontWeight: FontWeight.w500
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            "we'll send you instructions on how to reset your",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontFamily: 'ProximaNova',
+                                fontSize: 17.0,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
-                        Text(
-                          "password.",
-                          style: TextStyle(
-                              fontFamily: 'ProximaNova',
-                              fontSize:17.0,
-                              fontWeight: FontWeight.w500
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            "password.",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontFamily: 'ProximaNova',
+                                fontSize: 17.0,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                         SizedBox(
@@ -123,7 +120,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 border: Border.all(
                                   color: Colors.red[100],
                                 ),
-                                borderRadius: BorderRadius.all(Radius.circular(4))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4))),
                             padding: EdgeInsets.only(left: 20.0, right: 20.0),
                             child: Center(
                               child: Text(
@@ -145,34 +143,32 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             onChanged: (email) {
                               setState(() {
                                 _email = email;
-                                _invalidAlert=false;
+                                _invalidAlert = false;
                               });
                             },
                             onFieldSubmitted: (email) {
                               if (_formKey.currentState.validate()) {}
                               setState(() {
-                                if (_email!="") {
+                                if (_email != "") {
                                   sendEmail();
-                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
                                 }
                               });
-
                             },
-                            validator: (val) => val.isEmpty
-                                ? "Required"
-                                : null,
+                            validator: (val) => val.isEmpty ? "Required" : null,
                             decoration: InputDecoration(
-                                contentPadding:EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10.0),
                                 labelText: 'Email address',
                                 // labelStyle: style,
                                 border: OutlineInputBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(3.0)),
+                                      BorderRadius.all(Radius.circular(3.0)),
                                   borderSide: BorderSide(color: Colors.pink),
                                 )),
                           ),
                         ),
-
                         SizedBox(
                           height: 30.0,
                         ),
@@ -181,21 +177,20 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           width: 360.0,
                           height: 40.0,
                           child: TextButton(
-                            onPressed: (){
+                            onPressed: () {
                               if (_formKey.currentState.validate()) {}
-                                //TODO: Request
-                              if (_email!="") {
+                              //TODO: Request
+                              if (_email != "") {
                                 sendEmail();
-                                FocusScope.of(context).requestFocus(FocusNode());
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
                               }
                             },
-                            child: Text(
-                                "Send email",
+                            child: Text("Send email",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 15.0,
-                                )
-                            ),
+                                )),
                             style: TextButton.styleFrom(
                               primary: Colors.white,
                               backgroundColor: Colors.blue,
@@ -206,24 +201,19 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           height: 20.0,
                         ),
                         InkWell(
-                          child: Text(
-                              "Can't access your email?",
+                          child: Text("Can't access your email?",
                               style: TextStyle(
                                   fontFamily: 'ProximaNova',
                                   fontSize: 15.0,
                                   color: Colors.blue,
-                                  fontWeight: FontWeight.bold
-                              )
-                          ),
+                                  fontWeight: FontWeight.bold)),
                           onTap: () {},
                         ),
                       ],
                     ),
                   ),
                 ],
-              )
-          ),
-        )
-    );
+              )),
+        ));
   }
 }

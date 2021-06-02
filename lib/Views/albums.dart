@@ -2,24 +2,13 @@ import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 import '../Models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
 
-
-
-
-
-void main() {
-  return runApp(
-      MaterialApp(
-          home: Albums()
-      )
-  );
-}
-
 /// The list of albums for the current user
-List <UserAlbum> userAlbums=[];
+List<UserAlbum> userAlbums = [];
 
 /// The [Albums] page is a tab in the user Profile where it displays their current albums with numbers of photos for each album
 class Albums extends StatefulWidget {
@@ -28,38 +17,34 @@ class Albums extends StatefulWidget {
 }
 
 class _AlbumsState extends State<Albums> {
-
   @override
   void initState() {
     super.initState();
     sendAlbumsRequest();
   }
 
-  sendAlbumsRequest() async{
-    try
-    {
-      userAlbums= await getUserAlbums();
+  sendAlbumsRequest() async {
+    try {
+      final user = Provider.of<MyModel>(context, listen: false);
+      userAlbums = await getUserAlbums(user.getToken());
       setState(() {
-        userAlbums=userAlbums;
+        userAlbums = userAlbums;
       });
-    }catch(e)
-    {
+    } catch (e) {
       print(e);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       child: ListView.separated(
         itemCount: userAlbums.length,
         // padding: const EdgeInsets.all(8),
-        itemBuilder:
-            (BuildContext context, int index) {
+        itemBuilder: (BuildContext context, int index) {
           return AlbumCard(index: index);
         },
-        separatorBuilder:
-            (BuildContext context, int index) =>
+        separatorBuilder: (BuildContext context, int index) =>
             SizedBox(height: 10),
       ),
     );
@@ -93,7 +78,8 @@ class AlbumCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                           image: DecorationImage(
-                              image: NetworkImage(userAlbums[index].primaryPhoto),
+                              image:
+                                  NetworkImage(userAlbums[index].primaryPhoto),
                               fit: BoxFit.fill),
                         ),
                       ),
