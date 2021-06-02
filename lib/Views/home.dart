@@ -19,17 +19,6 @@ List <String> images=[];
 List <String> photoURLs=[];
 
 
-
-
-void main() {
-  return runApp(
-      MaterialApp(
-          home: Home()
-      )
-  );
-}
-
-
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();

@@ -1,7 +1,7 @@
 // import 'package:http/http.dart' as http;
-
-import 'dart:convert';
-import 'package:meta/meta.dart';
+  import 'dart:convert';
+  import 'package:meta/meta.dart';
+import 'package:intl/intl.dart';
 
 // import 'package:flutter/services.dart' show rootBundle;
 
@@ -226,7 +226,7 @@ class UserAlbum {
   }
   }
 
-  ///------------------------------>
+  ///---------------------------------------->
   class PhotosIDs
   {
   PhotosIDs({
@@ -236,13 +236,28 @@ class UserAlbum {
   factory PhotosIDs.fromJson(Map<String, dynamic> json) =>
   PhotosIDs(id: json['photo']['_id']);
 
-
   static List<PhotosIDs> parseList(List<dynamic> list) {
   return list.map((i) => PhotosIDs.fromJson(i)).toList();
   }
   }
 
-  ///------------------------------------------>
+
+///---------------------------------------->
+class PhotosIDsPublic
+{
+  PhotosIDsPublic({
+    this.id
+  });
+  String id;
+  factory PhotosIDsPublic.fromJson(Map<String, dynamic> json) =>
+      PhotosIDsPublic(id: json['_id']);
+
+  static List<PhotosIDsPublic> parseList(List<dynamic> list) {
+    return list.map((i) => PhotosIDsPublic.fromJson(i)).toList();
+  }
+}
+
+///------------------------------------------>
   class PhotoDetails
   {
   PhotoDetails({
@@ -296,7 +311,8 @@ class UserAlbum {
   tags: json['tags'],
   caption: json['title'],
   description: json['description'],
-  postDate: json['dateUploaded'],
+  postDate: (DateFormat.yMd().format(DateTime.parse(json['dateUploaded']))).toString(),
+  // postDate: json['dateUploaded'],
   dateTaken: json['dateTaken'],
   privacy: json['permissions']['public'],
   safety: json['safetyLevel'],

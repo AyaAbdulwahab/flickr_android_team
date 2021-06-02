@@ -160,7 +160,8 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
   }
 
   Future<int> callFunction() async {
-    _photo=await getPhotoDetails();
+    _photo=await getPhotoDetails(widget.photoID);
+
     return 1;
     // await getDetails();
     // await getFaves();
