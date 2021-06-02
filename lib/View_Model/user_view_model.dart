@@ -6,6 +6,8 @@ import 'package:flickr/Constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
+import '../Models/user_model.dart';
+
 /// class [MyModel] // have 2 functions to check if the current user is
 /// authenticated to enter the app of not
 /// the ChangeNotifier is used to inform the root of the app if any changes
@@ -51,6 +53,7 @@ class MyModel with ChangeNotifier {
   }
 }
 
+
 Future signUp(String firstName, String lastName, int age, String email,
     String password, String displayName) async {
   try {
@@ -60,6 +63,7 @@ Future signUp(String firstName, String lastName, int age, String email,
               return true;
             },
             responseType: ResponseType.json),
+
         data: json.encode({
           "firstName": firstName,
           "lastName": lastName,
@@ -123,6 +127,7 @@ Future<dynamic> getNoOfFollowers(String id, String token) async {
 /// Sends a post request containing [email] and [password] of the user to the url, and returns the response
 logIn(String email, String password) async {
   final response = await Dio().post(EndPoints.baseUrl + '/user/sign-in?ID=1',
+
       options: Options(
           validateStatus: (_) {
             return true;
@@ -135,6 +140,43 @@ logIn(String email, String password) async {
   print(response);
   return response;
 }
+
+
+///--------------------------------------->
+explore(int page, int limit) async
+{
+  //TODO: ADD limit and page as query parameters
+  // var req = await http.get((Uri.parse(EndPoints.baseUrl + '/photo/explore' )));
+  var req = await http.get((Uri.parse('https://run.mocky.io/v3/a38e87fd-8658-46fa-9e76-d3782f653c4f')));
+
+  if (req.statusCode == 200) {
+    var data= jsonDecode(req.body)['data']['photos'];
+    // print(data);
+    // var data= jsonDecode(response.body)['data']
+    List <PhotosIDs> photoIds = PhotosIDs.parseList(data);
+    return photoIds;
+  }
+  else
+  {
+    throw Exception ("An error occurred during explore request");
+  }
+}
+
+getPhotoDetails() async {
+  var response = await http
+      .get((Uri.parse(
+      'https://run.mocky.io/v3/ec6c1711-7e15-4185-97ab-328bb68d8342')));
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body)['data'];
+    return PhotoDetails.fromJson(data);
+  }
+  else
+  {
+    throw Exception ("An error occurred during photoDetails request");
+  }
+}
+
 
 /// Sends PATCH request with [token] and [ID] as headers for updating privacy settings using the [PrivacyInfo] parameter
 ///

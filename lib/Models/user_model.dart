@@ -1,9 +1,11 @@
 // import 'package:http/http.dart' as http;
+
 import 'dart:convert';
 import 'package:meta/meta.dart';
+
 // import 'package:flutter/services.dart' show rootBundle;
 
-class User {
+  class User {
   String username;
   String firstname;
   String lastname;
@@ -22,6 +24,7 @@ class User {
       this.joindate,
       this.profileurl,
       this.location});
+
 
 // factory User.fromJson(Map<String, dynamic> json) {
 //   return User(
@@ -47,10 +50,12 @@ class User {
 // print(user.firstname);
 // }
 
+
 /// The [PrivacyInfo] class holds the privacy data obtained for the user
 ///
 /// Is used for sending privacy requests and parsing data from responses
 class PrivacyInfo {
+
   int def;
   int location;
   int safetyLevel;
@@ -85,6 +90,7 @@ class PrivacyInfo {
   }
 }
 
+
 // To parse this JSON data, do
 //
 //     final welcome = welcomeFromJson(jsonString);
@@ -92,6 +98,7 @@ class PrivacyInfo {
 // To parse this JSON data, do
 //
 //     final welcome = welcomeFromJson(jsonString);
+
 
 // String welcomeToJson(AllUsers data) => json.encode(data.toJson());
 
@@ -102,6 +109,7 @@ class SearchedUser {
     @required this.username,
     @required this.photoCount,
     @required this.followerCount,
+
   });
 
   String userID;
@@ -118,6 +126,7 @@ class SearchedUser {
 
   static List<SearchedUser> parseList(List<dynamic> list) {
     return list.map((i) => SearchedUser.fromJson(i)).toList();
+
   }
 
   // Map<String, dynamic> toJson() => {
@@ -126,6 +135,7 @@ class SearchedUser {
   //   "photoCount": photoCount,
   //   "followerCount": followerCount,
   // };
+
 }
 
 /// The [SearchedPhoto] class holds the data of the photo parsed from the search request
@@ -147,6 +157,7 @@ class SearchedPhoto {
       this.username,
       this.dateTaken,
       this.pro});
+
 
   int originalHeight;
   int originalWidth;
@@ -195,21 +206,107 @@ class UserAlbum {
     @required this.photoCount,
     @required this.primaryPhoto,
     @required this.albumName,
+
   });
   String photoCount;
   String primaryPhoto;
   String albumName;
 
   factory UserAlbum.fromJson(Map<String, dynamic> json) {
-    int count = json['photoCount'];
-    return UserAlbum(
-      photoCount: "$count",
-      albumName: json['album']['albumName'],
-      primaryPhoto: json['album']['primaryPhotoId']['sizes']['size']
-          ['largeSquare']['source'],
-    );
+  int count = json['photoCount'];
+  return UserAlbum(
+  photoCount: "$count",
+  albumName: json['album']['albumName'],
+  primaryPhoto: json['album']['primaryPhotoId']['sizes']['size']['largeSquare']['source'],
+
+  );
   }
   static List<UserAlbum> parseList(List<dynamic> list) {
-    return list.map((i) => UserAlbum.fromJson(i)).toList();
+  return list.map((i) => UserAlbum.fromJson(i)).toList();
   }
-}
+  }
+
+  ///------------------------------>
+  class PhotosIDs
+  {
+  PhotosIDs({
+  this.id
+  });
+  String id;
+  factory PhotosIDs.fromJson(Map<String, dynamic> json) =>
+  PhotosIDs(id: json['photo']['_id']);
+
+
+  static List<PhotosIDs> parseList(List<dynamic> list) {
+  return list.map((i) => PhotosIDs.fromJson(i)).toList();
+  }
+  }
+
+  ///------------------------------------------>
+  class PhotoDetails
+  {
+  PhotoDetails({
+  this.userID,
+  this.userName,
+  this.userRealName,
+  this.userImage,
+  this.postImage,
+  this.tags,
+  this.caption,
+  this.description,
+  this.postDate,
+  this.dateTaken,
+  this.privacy,
+  this.safety,
+  this.postFaves,
+  this.views,
+  this.commentsCount,
+  this.comment1,
+  this.commenter,
+  });
+
+
+  String userID;
+  String userImage;
+  String postImage;
+  String userName;
+  String userRealName;
+  String caption; //also title
+  String postDate;
+  String postFaves;
+  bool privacy;
+  int safety;
+  String views;
+  String token;
+  String description;
+  String dateTaken;
+  String commenter;
+  String comment1;
+  int commentsCount;
+  List<dynamic> tags;
+
+
+  factory PhotoDetails.fromJson(Map<String, dynamic> json) {
+  List<dynamic> postComments = json['comments'];
+  return PhotoDetails(
+  userID: json['userId']['_id'],
+  userName: json['userId']['displayName'],
+  userImage: 'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
+  postImage: json['sizes']['size']['original']['source'],
+  tags: json['tags'],
+  caption: json['title'],
+  description: json['description'],
+  postDate: json['dateUploaded'],
+  dateTaken: json['dateTaken'],
+  privacy: json['permissions']['public'],
+  safety: json['safetyLevel'],
+  postFaves: json['favourites'].toString(),
+  views: json['views'].toString(),
+  commentsCount: postComments.length,
+  comment1 : json['comments'][0]['body'],
+  commenter : json['comments'][0]['userId']['displayName'],
+  );
+  }
+
+  }
+

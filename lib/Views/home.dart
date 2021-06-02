@@ -6,6 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:flickr/Constants/constants.dart';
 import 'dart:convert';
 
+import '../Models/user_model.dart';
+import '../View_Model/user_view_model.dart';
+
 String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0';
 String id = '608d55c7e512b74ee00791de';
 String username = 'Someone'; //////////username??
@@ -13,7 +16,18 @@ int limit = 5;
 int page = 1;
 String photoID = 'a12345';
 List <String> images=[];
-// List <String> photoURLs=[];
+List <String> photoURLs=[];
+
+
+
+
+void main() {
+  return runApp(
+      MaterialApp(
+          home: Home()
+      )
+  );
+}
 
 
 class Home extends StatefulWidget {
@@ -24,26 +38,35 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   Map<String, dynamic> info;
 
+  List <PhotosIDs> _ids=[];
+  List <PhotosIDs> _fetchedIDs=[];
+  int _threshold=2;
+  bool _error=false;
+  bool _hasMore=false;
+  bool _loading;
+  int _page=1;
+  int _postsPerPage=4;
+
   ///Function getPhotoIDs gets the photo IDs of explore photos
-  void getPhotoIDs() async {
-    var req2 = await http.get(
-      (Uri.parse(EndPoints.mockBaseUrl + '/photo/explore')),
-    );
-    if (req2.statusCode == 200) {
-      String data = req2.body;
-      info = jsonDecode(data)['data'];
-      print(data);
-      setState(() {
-        images = info['_id'];
-      //   for(int i=0; i<images.length; i++)
-      //   {
-      //     images[i]=info[i]['_id'];
-      //     print(images[i]);
-      //   }
-      });
-    }
-  }
-  //
+  // void getPhotoIDs() async {
+  //   var req2 = await http.get(
+  //     (Uri.parse(EndPoints.mockBaseUrl + '/photo/explore')),
+  //   );
+  //   if (req2.statusCode == 200) {
+  //     String data = req2.body;
+  //     info = jsonDecode(data)['data'];
+  //     print(data);
+  //     setState(() {
+  //       images = info['_id'];
+  //       //   for(int i=0; i<images.length; i++)
+  //       //   {
+  //       //     images[i]=info[i]['_id'];
+  //       //     print(images[i]);
+  //       //   }
+  //     });
+  //   }
+  // }
+
   // void getPhotoURLs() async {
   //   for(int i=0; i<images.length; i++)
   //   {
@@ -63,10 +86,40 @@ class _HomeState extends State<Home> {
   //     }
   //   }
   // }
-
+  @override
   void initState() {
     super.initState();
-    getPhotoIDs();
+    getIDs();
+    // getPhotoURLs();
+  }
+
+  getIDs() async
+  {
+    // _ids=await explore(_page,_postsPerPage);
+    // setState(() {
+    //   _ids= _ids;
+    // });
+    try {
+      print("---------------------->  getIDs()");
+      _fetchedIDs = await explore(_page,_postsPerPage);
+      // print(_fetchedUsers);
+      //
+      setState(() {
+        _ids.addAll(_fetchedIDs);
+        // _hasMore = fetchedPhotos.length == _defaultPhotosPerPageCount;
+
+        _loading = false;
+        _page = _page + 1;
+        print("----------------> Returning from getIDs()");
+        // notifyListeners();
+        return 1;
+      });
+    }catch(e) {
+      print(e);
+      _loading = false;
+      _error = true;
+    }
+
   }
 
   List <Post> postList = [Post(photoID: photoID, token: token,
@@ -160,11 +213,41 @@ class _HomeState extends State<Home> {
               children: [
                 Expanded(
                   child: new ListView.builder(
-                    itemCount: postList.length,
+                    itemCount: _ids.length +(_hasMore ? 1 : 0) ,
                     itemBuilder:(BuildContext context, int index)
                     {
-                      post=postList[index];
-                      return postList[index];
+                      if (index == _ids.length - _threshold) {
+                        print("Reached end of list");
+                        getIDs();
+                      }
+                      if (index ==  _ids.length) {
+                        if (_error) {
+                          return Center(
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _loading =true;
+                                    _error = false;
+                                    print("Error");
+                                    getIDs();
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text("Error while loading photos, tap to try again"),
+                                ),
+                              ));
+                        }
+                        else {
+                          return Center(
+                              child: Padding(
+                                padding: const EdgeInsets
+                                    .all(8),
+                                child: CircularProgressIndicator(),
+                              ));
+                        }
+                      }
+                      return Post(photoID:_ids[index].id,token:token);
                     },
                   ),
                 ),
@@ -175,3 +258,5 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+
