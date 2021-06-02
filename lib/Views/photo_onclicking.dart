@@ -2,17 +2,19 @@ import 'package:flickr/Widgets/post_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/faves_and_comments.dart';
 import 'package:flickr/Views/photo_details.dart';
+import 'package:flickr/View_Model/user_view_model.dart';
 
-/////HOW TO USE THE FUNCTIONS WITHIN A DIFFERENT CLASS (ADD AND REMOVES FAVES)
+String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0';
 
 ///The [PhotoOnClicking] takes the required data about the photo and views the photo
 class PhotoOnClicking extends StatefulWidget {
-  String image, userImage, username, userRealName, userID, description, dateTaken, caption, views, faves, comments;
+  String photoID,image, userImage, username, userRealName, userID, description, dateTaken, caption, views, faves, comments;
   int safety;
   bool privacy;
   List<dynamic> tags;
   PhotoOnClicking(
-      {@required this.image,
+      { @required this.photoID,
+        @required this.image,
         @required this.userImage,
         @required this.username,
         @required this.userID,
@@ -84,11 +86,11 @@ class _PhotoOnClickingState extends State<PhotoOnClicking> {
                                 if (widget.s.icon==Icons.star_border_outlined)
                                 {
                                   widget.s=Icon(Icons.star, color: Colors.white);
-                                  // addFave();
+                                  addFave(widget.photoID, token);
                                 }
                                 else if (widget.s.icon==Icons.star){
                                   widget.s=Icon(Icons.star_border_outlined, color: Colors.white);
-                                  // removeFave();
+                                  removeFave(widget.photoID,token);
                                 }
                               });
                             }),

@@ -27,7 +27,7 @@ class About extends StatefulWidget {
 
 class _AboutTestState extends State<About> {
   Map<String, dynamic> info;
-  int photoCount = 0;
+  int photoCount = 0; //get it from camera roll
   String occupation = 'Add Occupation...';
   String oc = 'Add Occupation...';
   String description = 'Add Description...';
@@ -123,7 +123,7 @@ class _AboutTestState extends State<About> {
     }
   }
 
-  ///The function getDescription gets the user information using the user's id
+  ///The function getDescription gets the user's description using the user's id and token
   void getDescription() async {
     final user = Provider.of<MyModel>(context, listen: false);
     var req2 = await http.get(
@@ -139,7 +139,24 @@ class _AboutTestState extends State<About> {
     }
   }
 
+  ///The function getPhotoCount gets the user's description using the user's id and token
+  void getPhotoCount() async {
+    final user = Provider.of<MyModel>(context, listen: false);
+    var req2 = await http.get(
+      (Uri.parse(EndPoints.baseUrl + '/user/' + user.getID() + '/about-me')),
+    );
+    if (req2.statusCode == 200) {
+      String data = req2.body;
+      info = jsonDecode(data)['data'];
+      setState(() {
+        description = info["aboutMe"];
+        d = '';
+      });
+    }
+  }
+
   ///The function updateInfo updates the user info and it is called whenever a field is edited
+  ///Contains two patch requests; one for the description and the other for the rest of the data
   Future<Map<String, dynamic>> updateInfo(String oc, String h, String c,
       String d, String cV, String eV, String country) async {
     try {
@@ -188,69 +205,6 @@ class _AboutTestState extends State<About> {
       print(error);
     }
   }
-
-  // ///The function updateVisibility updates the user's current city visibility using token
-  // void updateVisibility(String v) async {
-  //   int visibility;
-  //   if (v == 'Anyone')
-  //     {
-  //       visibility=1;
-  //     }
-  //   else if (v == 'Any Flickr member')
-  //     {
-  //       visibility=2;
-  //     }
-  //   else if (v == 'People you follow')
-  //   {
-  //     visibility=3;
-  //   }
-  //   else if (v == 'Friends and family')
-  //   {
-  //     visibility=4;
-  //   }
-  //
-  //   Map<String, String> body = {
-  //     data: json.encode({
-  //       'currentCityVisibility': visibility,
-  //     }),
-  //   };
-  //   var req2 = await http.patch(
-  //     Uri.parse(EndPoints.baseUrl + '/user/'),
-  //     headers: {"authorization": "Bearer " + token},
-  //     body: body,
-  //   );
-  // }
-  //
-  // ///The function updateEmailVisibility updates the user's email visibility using token
-  // void updateEmailVisibility(String v) async {
-  //   int visibility;
-  //   if (v == 'Anyone')
-  //   {
-  //     visibility=1;
-  //   }
-  //   else if (v == 'Any Flickr member')
-  //   {
-  //     visibility=2;
-  //   }
-  //   else if (v == 'People you follow')
-  //   {
-  //     visibility=3;
-  //   }
-  //   else if (v == 'Friends and family')
-  //   {
-  //     visibility=4;
-  //   }
-  //   Map<String, String> body = {
-  //     'data': json.encode({
-  //       'emailVisibility': visibility,
-  //     }),
-  //   };
-  //   var req2 = await http.patch(
-  //     Uri.parse(EndPoints.baseUrl + '/user/'),
-  //     headers: {"authorization": "Bearer " + token},
-  //     body: body,
-  //   );
-  // }
 
   ///The functions getData, getVisibility, and getDescription are all called in the initial state function to get all the user's info
   @override
