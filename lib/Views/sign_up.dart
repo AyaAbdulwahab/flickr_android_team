@@ -293,10 +293,6 @@ class _SignUpState extends State<SignUp> {
                       SizedBox(
                         height: 9.0,
                       ),
-                      // RaisedButton(
-                      //   onPressed: () => _openReCaptcha(),
-                      //   child: Text("I'm not a robot"),
-                      // ),
                       SizedBox(
                         height: 9.0,
                       ),
@@ -321,12 +317,19 @@ class _SignUpState extends State<SignUp> {
                                     _email,
                                     _password,
                                     _displayName[0]);
+                                print(response);
 
                                 if (response != null) {
                                   final user = Provider.of<MyModel>(context,
                                       listen: false);
                                   user.setToken(response['token']);
                                   user.authUser();
+                                  user.setID(response["data"]["user"]["_id"]);
+
+                                  List a = await getFollowers(
+                                      user.getID(), user.getToken());
+
+                                  user.setFollowers(a);
 
                                   Navigator.popUntil(
                                       context, ModalRoute.withName('/'));

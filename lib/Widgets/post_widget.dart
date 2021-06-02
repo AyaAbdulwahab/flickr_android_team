@@ -1,3 +1,5 @@
+// import 'package:flickr/Views/other_users_profile.dart';
+import 'package:flickr/Views/you.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/faves_and_comments.dart';
@@ -164,15 +166,26 @@ class _PostState extends State<Post> {
                           tags: widget.tags,
                           faves: widget.postFaves,
                           comments: widget.postComments.toString())),
+
                 );
               },
             ),
             margin: EdgeInsets.all(5.0),
           ),
           ListTile(
-            leading: CircleAvatar(
-              radius: 23.0,
-              // backgroundImage: NetworkImage(widget.userImage),
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            YouPage(id: "608d55c7e512b74ee00791de")));
+              },
+              child: CircleAvatar(
+                radius: 23.0,
+                backgroundImage: NetworkImage(widget.userImage),
+              ),
+
             ),
             title: Text(
               widget.userName,
@@ -199,6 +212,7 @@ class _PostState extends State<Post> {
               children: [
                 FavesAndComments(
                     chosenIcon: Icon(Icons.star_border_outlined),
+
                     faves: widget.postFaves,
                     photoID: widget.photoID,
                     token: widget.token,
@@ -206,6 +220,7 @@ class _PostState extends State<Post> {
                 Comments(
                     chosenIcon: Icon(Icons.comment),
                     faves: widget.commentNumber.toString()),
+
                 Icon(
                   Icons.share_outlined,
                   size: 25.0,

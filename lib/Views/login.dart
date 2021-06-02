@@ -1,4 +1,5 @@
 import 'package:flickr/View_Model/user_view_model.dart';
+import 'package:flickr/Views/forgot_password.dart';
 import 'package:flickr/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +11,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flickr/Constants/constants.dart';
 
-const style = TextStyle(
-  fontFamily: 'ProximaNova',
-  fontWeight: FontWeight.bold,
-);
-
 /// Validator class for email TextFormField
 class EValidator {
   static String validate(String val) {
@@ -22,6 +18,7 @@ class EValidator {
   }
 }
 
+/// The [Login] Page is where the user enters their [email] and [password] to access their account in the app
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -96,34 +93,33 @@ class _LoginState extends State<Login> {
     } else {
       wrongEmailAlert(context);
     }
-    // return check;
   }
 
-  /// Sends a post request containing [_email] and [_password] to the url
-  ///
-  /// Sends the request in the try block, and catches hthe error and prints it. It parses the response body as JSON
+  /// Sends the request in the try block, and catches the error and prints it. It parses the response body as JSON
   ///Checks for the response code and the message in the JSON
   /// Navigates to the next view with the [token] in the route if response status code is 200
   /// Changes [_invalidAlert] to true if otherwise to display alert message
-  logIn(String email, String password) async {
+  checkResponse(String email, String password) async {
     try {
-      final response = await Dio().post(EndPoints.baseUrl + '/user/sign-in',
-          options: Options(
-              validateStatus: (_) {
-                return true;
-              },
-              responseType: ResponseType.json),
-          data: jsonEncode({
-            "email": email,
-            "password": password,
-          }));
-      print(response);
+      var response = await logIn(email, password);
       var responseBody = response.data;
       if (responseBody['token'] != null && response.statusCode == 200) {
         final user = Provider.of<MyModel>(context, listen: false);
         user.authUser();
+        print(responseBody['token']);
+        print(responseBody["data"]["user"]["_id"]);
         user.setToken(responseBody['token']);
         user.setID(responseBody["data"]["user"]["_id"]);
+
+        List a = await getFollowers(user.getID(), user.getToken());
+
+        user.setFollowers(a);
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
+          FocusManager.instance.primaryFocus.unfocus();
+        }
         Navigator.popUntil(context, ModalRoute.withName('/'));
       } else if (responseBody['message'] != null) {
         // No account exists with this email
@@ -234,7 +230,7 @@ class _LoginState extends State<Login> {
                             _email != null &&
                             _password != null &&
                             _password != "") {
-                          logIn(_email, _password);
+                          checkResponse(_email, _password);
                         }
                       },
                       validator: EValidator.validate,
@@ -294,7 +290,7 @@ class _LoginState extends State<Login> {
                                 _email != null &&
                                 _password != null &&
                                 _password != "") {
-                              logIn(_email, _password);
+                              checkResponse(_email, _password);
                             }
                           },
                           validator: (val) => val.isEmpty ? "Required" : null
@@ -329,7 +325,6 @@ class _LoginState extends State<Login> {
                     width: double.infinity,
                     height: 40.0,
                     child: TextButton(
-                      key: Key("log-in-nxt-btn"),
                       onPressed: () {
                         if (_formKey.currentState.validate()) {}
                         setState(() {
@@ -337,7 +332,13 @@ class _LoginState extends State<Login> {
                               _email != null &&
                               _showWidgets == false) {
                             checkEmail();
-                            FocusScope.of(context).requestFocus(FocusNode());
+                            FocusScopeNode currentFocus =
+                                FocusScope.of(context);
+                            currentFocus.requestFocus(FocusNode());
+
+                            // if (!currentFocus.hasPrimaryFocus) {
+                            //   currentFocus.unfocus();
+                            // }
                           }
                         });
                         if (_showWidgets == true &&
@@ -345,7 +346,7 @@ class _LoginState extends State<Login> {
                             _email != null &&
                             _password != null &&
                             _password != "") {
-                          logIn(_email, _password);
+                          checkResponse(_email, _password);
                         }
                       },
                       child: Text(
@@ -369,9 +370,13 @@ class _LoginState extends State<Login> {
                           children: <Widget>[
                             TextButton(
                               onPressed: () {
-                                //TODO: Navigate to forgot password page, & pass the email to it.
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ForgotPassword(_email)));
                               },
-                              child: Text('Forgot passowrd?', style: style),
+                              child: Text('Forgot password?', style: style),
                             ),
                             Container(
                               padding: EdgeInsets.only(left: 20.0, right: 20.0),
@@ -386,8 +391,8 @@ class _LoginState extends State<Login> {
                       height: 15.0,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  SizedBox(
+                    width: 200,
                     child: ElevatedButton.icon(
                       onPressed: () {},
                       style: ButtonStyle(
@@ -436,3 +441,8 @@ class _LoginState extends State<Login> {
         ));
   }
 }
+
+const style = TextStyle(
+  fontFamily: 'ProximaNova',
+  fontWeight: FontWeight.bold,
+);
