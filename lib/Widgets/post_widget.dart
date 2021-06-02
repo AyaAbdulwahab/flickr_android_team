@@ -197,6 +197,7 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
                           MaterialPageRoute(
                               builder: (context) =>
                                   PhotoOnClicking(
+                                    photoID: widget.photoID,
                                       image: _photo.postImage,
                                       userImage: _photo.userImage,
                                       username: _photo.userName,
