@@ -8,7 +8,12 @@ import 'dart:convert';
 
 /////THE DATA FOR ADD AND REMOVE FAVES!!
 class FavesAndComments extends StatefulWidget {
-  FavesAndComments({@required this.chosenIcon, @required this.faves, @required this.photoID, @required this.token, @required this.userID});
+  FavesAndComments(
+      {@required this.chosenIcon,
+      @required this.faves,
+      @required this.photoID,
+      @required this.token,
+      @required this.userID});
   Icon chosenIcon;
   String faves;
   String photoID;
@@ -19,27 +24,23 @@ class FavesAndComments extends StatefulWidget {
 }
 
 class _FavesAndCommentsState extends State<FavesAndComments> {
-
   // Map<String, dynamic> info;
-
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         IconButton(
-            icon:
-            widget.chosenIcon,
+            icon: widget.chosenIcon,
             onPressed: () {
               setState(() {
-                if (widget.chosenIcon.icon==Icons.star_border_outlined)
-                {
-                  widget.chosenIcon=Icon(Icons.star, color: Colors.white);
-                  addFave(widget.photoID,widget.token);
-                }
-                else if (widget.chosenIcon.icon==Icons.star){
-                  widget.chosenIcon=Icon(Icons.star_border_outlined, color: Colors.white);
-                  removeFave(widget.photoID,widget.token);
+                if (widget.chosenIcon.icon == Icons.star_border_outlined) {
+                  widget.chosenIcon = Icon(Icons.star, color: Colors.white);
+                  addFave(widget.photoID, widget.token);
+                } else if (widget.chosenIcon.icon == Icons.star) {
+                  widget.chosenIcon =
+                      Icon(Icons.star_border_outlined, color: Colors.white);
+                  removeFave(widget.photoID, widget.token);
                 }
               });
             }),

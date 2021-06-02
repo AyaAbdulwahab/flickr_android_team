@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flickr/Views/photo_details.dart';
+import 'package:flickr/Views/photo_taken_details.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

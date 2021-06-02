@@ -139,47 +139,39 @@ logIn(String email, String password) async {
 /// Sends PATCH request with [token] and [ID] as headers for updating privacy settings using the [PrivacyInfo] parameter
 ///
 /// Returns [PrivacyInfo] Object with the new privacy settings obtained from the response
-Future<PrivacyInfo> updatePrivacy(PrivacyInfo info) async {
+Future<PrivacyInfo> updatePrivacy(PrivacyInfo info, String token) async {
   try {
     //TODO: Add userID and token
     // final user = Provider.of<MyModel>(context, listen: false);
     // user.authUser();
 
     print("PATCH Request...");
-    final response =
-        await Dio().patch(EndPoints.mockBaseUrl + '/user/perm?ID=1',
-            options: Options(
-                headers: {
-                  "authorization":
-                      "Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0",
-                  //user.getToken()
+    final response = await Dio().patch(EndPoints.baseUrl + '/user/perm',
+        options: Options(
+            headers: {"authorization": "Bearer " + token},
+            validateStatus: (_) {
+              return true;
+            },
+            responseType: ResponseType.json),
+        data: jsonEncode(
+          {
+            "privacySettings": {
+              "defaults": {
+                "perms": {
+                  "see": info.def,
+                  "comment": info.def,
+                  "addNotes": info.def,
                 },
-                validateStatus: (_) {
-                  return true;
-                },
-                responseType: ResponseType.json),
-            data: jsonEncode(
-              {
-                "privacySettings": {
-                  "defaults": {
-                    "perms": {
-                      "see": info.def,
-                      "comment": info.def,
-                      "addNotes": info.def,
-                    },
-                    "mapVisible": info.location,
-                    "importEXIF": info.importEXIF,
-                    "safetyLevel": info.safetyLevel,
-                  },
-                  "filters": {
-                    "search": {
-                      "safetySearch": info.safeSearch == 1 ? true : false
-                    }
-                  }
-                },
+                "mapVisible": info.location,
+                "importEXIF": info.importEXIF,
+                "safetyLevel": info.safetyLevel,
               },
-            ));
-    // print(response);
+              "filters": {
+                "search": {"safetySearch": info.safeSearch == 1 ? true : false}
+              }
+            },
+          },
+        ));
     var responseBody = response.data;
     if (response.statusCode == 200) {
       return PrivacyInfo.fromJson(jsonDecode(responseBody));
@@ -194,18 +186,16 @@ Future<PrivacyInfo> updatePrivacy(PrivacyInfo info) async {
 /// Sends GET request for obtaining privacy settings using the [PrivacyInfo] parameter
 ///
 /// Returns [PrivacyInfo] Object that contains the privacy settings obtained from the response
-Future<PrivacyInfo> getPrivacy() async {
+Future<PrivacyInfo> getPrivacy(String token) async {
   //TODO: Add userID and token
   // final user = Provider.of<MyModel>(context, listen: false);
   // user.authUser();
 
   print("GET Privacy Request.....");
-  final response = await http
-      .get(Uri.parse(EndPoints.mockBaseUrl + '/user/perm?ID=1'), headers: {
-    HttpHeaders.authorizationHeader:
-        ' Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0'
-    //user.getToken()
-  });
+  final response = await http.get(
+    Uri.parse(EndPoints.baseUrl + '/user/perm'),
+    headers: {"authorization": "Bearer " + token},
+  );
 
   if (response.statusCode == 200) {
     return PrivacyInfo.fromJson(jsonDecode(response.body));
@@ -219,7 +209,6 @@ Future<PrivacyInfo> getPrivacy() async {
 /// Users in the results are paginated according to page number [page], and limit per page [limit]
 /// Returns the result as a list of [SearchedUser]
 searchByUser(String searchText, int limit, int page, String token) async {
-  //TODO: Add userID ?
   String lim = "$limit";
   String pg = "$page";
   print("Searching for users...");
@@ -228,12 +217,6 @@ searchByUser(String searchText, int limit, int page, String token) async {
     'limit': lim,
     'page': pg,
   };
-  // var uri =
-  // Uri.https(EndPoints.mockBaseUrl, '/user/search', queryParameters);
-
-  // String queryString = Uri(queryParameters: queryParams).query;
-  // var requestUrl = EndPoints.mockBaseUrl + '?' + queryString; // result - https://www.myurl.com/api/v1/user?param1=1&param2=2
-  // final response = await http.get(Uri.parse(requestUrl));
 
   String u = EndPoints.baseUrl.split('/').last;
 
@@ -245,19 +228,10 @@ searchByUser(String searchText, int limit, int page, String token) async {
 
   if (response.statusCode == 200) {
     print("200 OK");
-    // print(response.body);
     var data = json.decode(response.body)['data'];
-    print(data);
-    // Iterable l = data;
-    // List <SearchedUser> fetchedUsers = List<SearchedUser>.from(l.map((model)=> SearchedUser.fromJson(model)));
     List<SearchedUser> fetchedUsers = SearchedUser.parseList(data);
-    // print("parsed");
-    // usersResult.addAll(fetchedUsers);
-    // var result =  List.from(usersResult)..addAll(fetchedUsers);
-    // print("Returning...");
-    return fetchedUsers;
-    // return  usersFromJson(response.body); //Appending results not replacing them
 
+    return fetchedUsers;
   } else {
     print(response.statusCode);
     throw Exception('An error occurred during users search request');
@@ -340,14 +314,15 @@ Future<dynamic> getFollowers(String id, String token) async {
     List noOfFollowing = jsonDecode(data)["data"]["following"];
     return noOfFollowing;
   }
+}
 
 /// The function addFave adds the photo from the user's faves using the [photoId] and the user's [token]
 void addFave(String photoID, String token) async {
-  var req2 = await Dio().post(
-      (EndPoints.mockBaseUrl + '/user/faves/' + photoID),
-      options: Options(
-        headers: {"authorization": "Bearer " + token},)
-  );
+  var req2 =
+      await Dio().post((EndPoints.mockBaseUrl + '/user/faves/' + photoID),
+          options: Options(
+            headers: {"authorization": "Bearer " + token},
+          ));
 }
 // print (req2.body);
 //   data: jsonEncode({
@@ -366,11 +341,11 @@ void addFave(String photoID, String token) async {
 
 /// The function removeFave removes the photo from the user's faves using the [photoId] and the user's [token]
 void removeFave(String photoID, String token) async {
-  var req2 = await Dio().delete(
-      (EndPoints.mockBaseUrl + '/user/faves/' + photoID),
-      options: Options(
-        headers: {"authorization": "Bearer " + token},)
-  );
+  var req2 =
+      await Dio().delete((EndPoints.mockBaseUrl + '/user/faves/' + photoID),
+          options: Options(
+            headers: {"authorization": "Bearer " + token},
+          ));
   // print (req2.body);
   // data: jsonEncode({
   //   'newPhotoFaveCount': {
@@ -384,5 +359,4 @@ void removeFave(String photoID, String token) async {
   //     "_id":  widget.userID
   //   }
   // });
-
 }

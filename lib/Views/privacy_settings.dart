@@ -1,11 +1,10 @@
+import 'package:flickr/Views/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Constants/constants.dart';
-import '../Models/user_model.dart';
 import 'package:provider/provider.dart';
+import '../Models/user_model.dart';
 import 'package:flutter/cupertino.dart';
-
-
 
 /// The [Privacy] is were user can change their account Privacy and Safety setting
 ///
@@ -16,75 +15,46 @@ import 'package:flutter/cupertino.dart';
 /// * Import EXIF location data
 /// * SafeSearch filter
 
-void main() {
-  return runApp(
-      MaterialApp(
-          home: Privacy()
-      )
-  );
-}
-
-
-
-
-
-
 /// An object of type [PrivacyInfo] where data is parsed and stored from page requests
 PrivacyInfo info;
+
 /// The invoking variable for builder of [FutureBuilder] widget
 Future<int> variableBuilder;
-
-
 
 /// Updates fields in [info] when a new value is selected
 ///
 /// Checks which privacy the user changed using the [AlertDialog] title, and changes the corresponding field in [info] accordingly
-updateInfo(String title, value)
-{
-  if (title==PrivacySettingsView.tilesTitles[0])
-  {
-    info.def=value+1;
-  }
-  else if (title==PrivacySettingsView.tilesTitles[1])
-  {
-    info.location=value+1;
-  }
-  else if (title==PrivacySettingsView.tilesTitles[2])
-  {
-    info.safetyLevel=value+1;
-  }
-  else if (title==PrivacySettingsView.tilesTitles[3])
-  {
-    info.importEXIF=value;
-  }
-  else if (title==PrivacySettingsView.tilesTitles[4])
-  {
-    info.safeSearch=value+1;
+updateInfo(String title, value) {
+  if (title == PrivacySettingsView.tilesTitles[0]) {
+    info.def = value + 1;
+  } else if (title == PrivacySettingsView.tilesTitles[1]) {
+    info.location = value + 1;
+  } else if (title == PrivacySettingsView.tilesTitles[2]) {
+    info.safetyLevel = value + 1;
+  } else if (title == PrivacySettingsView.tilesTitles[3]) {
+    info.importEXIF = value;
+  } else if (title == PrivacySettingsView.tilesTitles[4]) {
+    info.safeSearch = value + 1;
   }
 }
-
 
 class Privacy extends StatefulWidget {
   @override
   _PrivacyState createState() => _PrivacyState();
 }
 
-
-
 class _PrivacyState extends State<Privacy> {
-
   final List<Function> tilesAction = [() {}, () {}, () {}, () {}, () {}];
-
 
   @override
   void initState() {
     super.initState();
-    variableBuilder=getData();
+    variableBuilder = getData();
   }
 
-
-  Future<int> getData() async{
-    info=await getPrivacy();
+  Future<int> getData() async {
+    final user = Provider.of<MyModel>(context, listen: false);
+    info = await getPrivacy(user.getToken());
     return 1;
   }
 
@@ -95,9 +65,9 @@ class _PrivacyState extends State<Privacy> {
         appBar: AppBar(
           title: Center(
               child: Text(
-                'Privacy and Safety',
-                style: TextStyle(fontSize: 17.0),
-              )),
+            'Privacy and Safety',
+            style: TextStyle(fontSize: 17.0),
+          )),
           leadingWidth: 300.0,
           elevation: 0.0,
           backgroundColor: Colors.black87,
@@ -111,74 +81,57 @@ class _PrivacyState extends State<Privacy> {
         ),
         body: FutureBuilder(
             future: variableBuilder,
-            builder: (context,snapshot) {
-              if (snapshot.data == null) { //<-- Add this condition
-                // return LoadingPage(); //TODO: Check if you will change it
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children:<Widget>[
-                          Image(
-                            image: AssetImage("assets/flickr-logo.png"),
-                            height: 20,
-                            width: 58,
-                          ),
-
-                        ]
-                    ),
-                  ],
-                );
-              }
-              else {
-                return  ListView(
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return LoadingPage();
+              } else {
+                final user = Provider.of<MyModel>(context, listen: false);
+                return ListView(
                     padding: EdgeInsets.only(top: 11.0),
-                    children: <Widget> [
+                    children: <Widget>[
                       BuildTile(
                         title: PrivacySettingsView.tilesTitles[0],
                         body: PrivacySettingsView.tilesBody[0],
-                        value:info.def,
+                        value: info.def,
                         titlesList: PrivacySettingsView.defaultPrivacy,
-                        // info: info
                       ),
                       BuildTile(
                         title: PrivacySettingsView.tilesTitles[1],
                         body: PrivacySettingsView.tilesBody[1],
                         value: info.location,
                         titlesList: PrivacySettingsView.defaultPrivacy,
-                        // info: info
                       ),
-                      BuildTile(title: PrivacySettingsView.tilesTitles[2],
+                      BuildTile(
+                        title: PrivacySettingsView.tilesTitles[2],
                         body: PrivacySettingsView.tilesBody[2],
                         value: info.safetyLevel,
                         titlesList: PrivacySettingsView.safetyLevel,
-                        // info: info
                       ),
                       SwitchListTile(
-                          title: Text(PrivacySettingsView.tilesTitles[3],
-                            style: TextStyle( fontWeight: FontWeight.w600,
-                                fontFamily: 'ProximaNova'
-                            ),
+                          title: Text(
+                            PrivacySettingsView.tilesTitles[3],
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'ProximaNova'),
                           ),
                           subtitle: Text(
                             PrivacySettingsView.tilesBody[3],
-                            style: TextStyle( fontWeight: FontWeight.w600,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
                                 fontFamily: 'ProximaNova'),
-                          ) ,
+                          ),
                           value: info.importEXIF,
-                          onChanged: (bool value) async{
+                          onChanged: (bool value) async {
                             setState(() {
                               info.importEXIF = value;
                             });
-                            info=await updatePrivacy(info);
+                            info = await updatePrivacy(info, user.getToken());
                             setState(() {
-                              info.importEXIF = info.importEXIF; // Stupid I know
+                              info.importEXIF =
+                                  info.importEXIF; // Stupid I know
                             });
-                          }
-                      ),
-                      const Divider(thickness:1),
+                          }),
+                      const Divider(thickness: 1),
                       BuildTile(
                         title: PrivacySettingsView.tilesTitles[4],
                         body: PrivacySettingsView.tilesBody[4],
@@ -186,15 +139,11 @@ class _PrivacyState extends State<Privacy> {
                         titlesList: PrivacySettingsView.safeSearchFilter,
                         // info: _info
                       ),
-
-                    ]
-                );
+                    ]);
               }
-            }
-        ));
+            }));
   }
 }
-
 
 class BuildTile extends StatefulWidget {
   BuildTile({
@@ -207,39 +156,41 @@ class BuildTile extends StatefulWidget {
   final String title;
   final String body;
   final int value;
-  final List <String> titlesList;
+  final List<String> titlesList;
   @override
   _BuildTileState createState() => _BuildTileState();
 }
 
 class _BuildTileState extends State<BuildTile> {
-
-  createPrivacyDialog(BuildContext context, String title, int number){
-    return showDialog(context: context, builder: (BuildContext context) {
-      return Dialog(
-        title: title,
-        // value: number,
-        titlesList: widget.titlesList,
-        // info: info
-      );
-    });
+  createPrivacyDialog(BuildContext context, String title, int number) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            title: title,
+            titlesList: widget.titlesList,
+          );
+        });
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children:<Widget> [
+      children: <Widget>[
         GestureDetector(
           child: ListTile(
-            title: Text(widget.title, style: TextStyle( fontWeight: FontWeight.w600, fontFamily: 'ProximaNova')),
-            subtitle: Text(widget.body, style: TextStyle( fontWeight: FontWeight.w600, fontFamily: 'ProximaNova')),
-            onTap: (){
-              createPrivacyDialog(context,widget.title, widget.value);
+            title: Text(widget.title,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600, fontFamily: 'ProximaNova')),
+            subtitle: Text(widget.body,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600, fontFamily: 'ProximaNova')),
+            onTap: () {
+              createPrivacyDialog(context, widget.title, widget.value);
             },
           ),
         ),
-        const Divider(thickness:1),
+        const Divider(thickness: 1),
       ],
     );
   }
@@ -252,53 +203,50 @@ class Dialog extends StatefulWidget {
     @required this.titlesList,
   }) : super(key: key);
 
-  final List <String> titlesList;
+  final List<String> titlesList;
   final String title;
-
-
 
   @override
   _DialogState createState() => _DialogState();
 }
 
 class _DialogState extends State<Dialog> {
-
   int _value;
   @override
   void initState() {
     super.initState();
-    _value= widget.title==PrivacySettingsView.tilesTitles[0]
-        ? info.def:
-    widget.title==PrivacySettingsView.tilesTitles[1]
-        ? info.location :
-    widget.title==PrivacySettingsView.tilesTitles[2]
-        ? info.safetyLevel :
-    widget.title==PrivacySettingsView.tilesTitles[4]
-        ? info.safeSearch :
-    -1;
+    _value = widget.title == PrivacySettingsView.tilesTitles[0]
+        ? info.def
+        : widget.title == PrivacySettingsView.tilesTitles[1]
+            ? info.location
+            : widget.title == PrivacySettingsView.tilesTitles[2]
+                ? info.safetyLevel
+                : widget.title == PrivacySettingsView.tilesTitles[4]
+                    ? info.safeSearch
+                    : -1;
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<MyModel>(context, listen: false);
     return AlertDialog(
       title: Text(widget.title),
       content: Container(
         height: 290.0,
         width: 250.0,
         child: ListView.builder(
-          // padding: const EdgeInsets.all(8),
           shrinkWrap: true,
           itemCount: widget.titlesList.length,
           itemExtent: 50.0,
           itemBuilder: (BuildContext context, int index) {
             return RadioListTile(
               title: Text(widget.titlesList[index]),
-              value:index,
-              groupValue: _value-1,
+              value: index,
+              groupValue: _value - 1,
               activeColor: Colors.green.shade700,
-              onChanged: (newValue) async{
-                updateInfo(widget.title,newValue);
-                info = await updatePrivacy(info);
+              onChanged: (newValue) async {
+                updateInfo(widget.title, newValue);
+                info = await updatePrivacy(info, user.getToken());
                 Navigator.pop(context);
               },
             );
@@ -319,6 +267,3 @@ class _DialogState extends State<Dialog> {
     );
   }
 }
-
-
-
