@@ -124,6 +124,7 @@ class ImagesGrid extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => PhotoOnClicking(
+                photoID: images[index],
                   image: postImage,
                   userImage: userImage,
                   username: userName,
