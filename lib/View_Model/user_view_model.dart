@@ -359,12 +359,12 @@ Future<dynamic> getFollowers(String id, String token) async {
 }
 
 
-///--------------------------------------->
+///Gets the explore stream of photos to be displayed
 explore(int page, int limit) async
 {
   //TODO: ADD limit and page as query parameters
-  // var req = await http.get((Uri.parse(EndPoints.baseUrl + '/photo/explore' )));
-  var req = await http.get((Uri.parse('https://run.mocky.io/v3/a38e87fd-8658-46fa-9e76-d3782f653c4f')));
+  var req = await http.get((Uri.parse(EndPoints.baseUrl + '/photo/explore' )));
+  // var req = await http.get((Uri.parse('https://run.mocky.io/v3/a38e87fd-8658-46fa-9e76-d3782f653c4f')));
 
   if (req.statusCode == 200) {
     var data= jsonDecode(req.body)['data']['photos'];
@@ -379,11 +379,30 @@ explore(int page, int limit) async
   }
 }
 
-getPhotoDetails() async {
-  var response = await http
-      .get((Uri.parse(
-      'https://run.mocky.io/v3/ec6c1711-7e15-4185-97ab-328bb68d8342')));
+///Gets the stream of public photos of a user using the [userId]
+public(String userId) async
+{
+  //TODO: ADD limit and page as query parameters
+  // var req = await http.get((Uri.parse(EndPoints.baseUrl + '/user/' + userId + '/stream')));
+  var req = await http.get((Uri.parse('https://run.mocky.io/v3/9d099f64-ac41-49ea-b53b-46f658eb2a78')));
 
+  if (req.statusCode == 200) {
+    var data= jsonDecode(req.body)['data']['photos']['photos'];
+    // print(data);
+    // var data= jsonDecode(response.body)['data']
+    List <PhotosIDsPublic> photoIds = PhotosIDsPublic.parseList(data);
+    return photoIds;
+  }
+  else
+  {
+    throw Exception ("An error occurred during public request");
+  }
+}
+
+///Gets all details of a photo using the [photoId]
+getPhotoDetails(String photoId) async {
+  // var response = await http.get((Uri.parse(EndPoints.baseUrl + '/photo/' + photoId)));
+  var response = await http.get((Uri.parse('https://run.mocky.io/v3/b8eb78d6-0716-4804-8bea-2f116ba788d0')));
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body)['data'];
     return PhotoDetails.fromJson(data);
@@ -397,7 +416,7 @@ getPhotoDetails() async {
 /// The function addFave adds the photo from the user's faves using the [photoId] and the user's [token]
 void addFave(String photoID, String token) async {
   var req2 = await Dio().post(
-      (EndPoints.mockBaseUrl + '/user/faves/' + photoID),
+      (EndPoints.baseUrl + '/user/faves/' + photoID),
       options: Options(
         headers: {"authorization": "Bearer " + token},)
   );
@@ -420,7 +439,7 @@ void addFave(String photoID, String token) async {
 /// The function removeFave removes the photo from the user's faves using the [photoId] and the user's [token]
 void removeFave(String photoID, String token) async {
   var req2 = await Dio().delete(
-      (EndPoints.mockBaseUrl + '/user/faves/' + photoID),
+      (EndPoints.baseUrl + '/user/faves/' + photoID),
       options: Options(
         headers: {"authorization": "Bearer " + token},)
   );
