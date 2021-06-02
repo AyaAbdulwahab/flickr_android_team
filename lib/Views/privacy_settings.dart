@@ -1,42 +1,73 @@
-
-
+import 'package:flickr/Views/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Constants/constants.dart';
+import 'package:provider/provider.dart';
+import '../Models/user_model.dart';
+import 'package:flutter/cupertino.dart';
 
-void main() {
-  return runApp(
-      MaterialApp(
-          home: Privacy()
-      )
-  );
+/// The [Privacy] is were user can change their account Privacy and Safety setting
+///
+/// The settings include
+/// * Default Privacy
+/// * Location Privacy
+/// * Safety Level
+/// * Import EXIF location data
+/// * SafeSearch filter
+
+/// An object of type [PrivacyInfo] where data is parsed and stored from page requests
+PrivacyInfo info;
+
+/// The invoking variable for builder of [FutureBuilder] widget
+Future<int> variableBuilder;
+
+/// Updates fields in [info] when a new value is selected
+///
+/// Checks which privacy the user changed using the [AlertDialog] title, and changes the corresponding field in [info] accordingly
+updateInfo(String title, value) {
+  if (title == PrivacySettingsView.tilesTitles[0]) {
+    info.def = value + 1;
+  } else if (title == PrivacySettingsView.tilesTitles[1]) {
+    info.location = value + 1;
+  } else if (title == PrivacySettingsView.tilesTitles[2]) {
+    info.safetyLevel = value + 1;
+  } else if (title == PrivacySettingsView.tilesTitles[3]) {
+    info.importEXIF = value;
+  } else if (title == PrivacySettingsView.tilesTitles[4]) {
+    info.safeSearch = value + 1;
+  }
 }
-
-int _selectedRadio=1; //TODO: change according to setting of each user
-
 
 class Privacy extends StatefulWidget {
   @override
   _PrivacyState createState() => _PrivacyState();
 }
 
-
-
 class _PrivacyState extends State<Privacy> {
-
   final List<Function> tilesAction = [() {}, () {}, () {}, () {}, () {}];
-  bool _exif=false; // TODO: Change according to data of the user
 
+  @override
+  void initState() {
+    super.initState();
+    variableBuilder = getData();
+  }
 
+  Future<int> getData() async {
+    final user = Provider.of<MyModel>(context, listen: false);
+    info = await getPrivacy(user.getToken());
+    return 1;
+  }
 
   @override
   Widget build(BuildContext context) {
+    // final user = Provider.of<MyModel>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
           title: Center(
               child: Text(
-                'Privacy and Safety',
-                style: TextStyle(fontSize: 17.0),
-              )),
+            'Privacy and Safety',
+            style: TextStyle(fontSize: 17.0),
+          )),
           leadingWidth: 300.0,
           elevation: 0.0,
           backgroundColor: Colors.black87,
@@ -48,101 +79,118 @@ class _PrivacyState extends State<Privacy> {
                 })
           ],
         ),
-        body: ListView(
-            padding: EdgeInsets.only(top: 11.0),
-            children: <Widget> [
-              BuildTile(
-                  title: PrivacySettingsView.tilesTitles[0],
-                  body: PrivacySettingsView.tilesBody[0],
-                  settingIndex: 0,
-                  titlesList: PrivacySettingsView.defaultPrivacy
-              ),
-              BuildTile(
-                  title: PrivacySettingsView.tilesTitles[1],
-                  body: PrivacySettingsView.tilesBody[1],settingIndex: 1,
-                  titlesList: PrivacySettingsView.locationPrivacy),
-              BuildTile(title: PrivacySettingsView.tilesTitles[2],
-                  body: PrivacySettingsView.tilesBody[2],
-                  settingIndex: 2,
-                  titlesList: PrivacySettingsView.safetyLevel),
-              SwitchListTile(
-                  title: Text(PrivacySettingsView.tilesTitles[3],
-                    style: TextStyle( fontWeight: FontWeight.w600,
-                        fontFamily: 'ProximaNova'
-                    ),
-                  ),
-                  subtitle: Text(
-                    PrivacySettingsView.tilesBody[3],
-                    style: TextStyle( fontWeight: FontWeight.w600,
-                        fontFamily: 'ProximaNova'),
-                  ) ,
-                  value: _exif,
-                  onChanged: (bool value) {
-                    setState(() {
-                      //TODO: Request here
-                      _exif = value;
-                    });
-                  }
-              ),
-              const Divider(thickness:1),
-              BuildTile(
-                  title: PrivacySettingsView.tilesTitles[4],
-                  body: PrivacySettingsView.tilesBody[4],
-                  settingIndex: 3,
-                  titlesList: PrivacySettingsView.safeSearchFilter
-              ),
-
-            ]
-
-
-        ));
+        body: FutureBuilder(
+            future: variableBuilder,
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return LoadingPage();
+              } else {
+                final user = Provider.of<MyModel>(context, listen: false);
+                return ListView(
+                    padding: EdgeInsets.only(top: 11.0),
+                    children: <Widget>[
+                      BuildTile(
+                        title: PrivacySettingsView.tilesTitles[0],
+                        body: PrivacySettingsView.tilesBody[0],
+                        value: info.def,
+                        titlesList: PrivacySettingsView.defaultPrivacy,
+                      ),
+                      BuildTile(
+                        title: PrivacySettingsView.tilesTitles[1],
+                        body: PrivacySettingsView.tilesBody[1],
+                        value: info.location,
+                        titlesList: PrivacySettingsView.defaultPrivacy,
+                      ),
+                      BuildTile(
+                        title: PrivacySettingsView.tilesTitles[2],
+                        body: PrivacySettingsView.tilesBody[2],
+                        value: info.safetyLevel,
+                        titlesList: PrivacySettingsView.safetyLevel,
+                      ),
+                      SwitchListTile(
+                          title: Text(
+                            PrivacySettingsView.tilesTitles[3],
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'ProximaNova'),
+                          ),
+                          subtitle: Text(
+                            PrivacySettingsView.tilesBody[3],
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'ProximaNova'),
+                          ),
+                          value: info.importEXIF,
+                          onChanged: (bool value) async {
+                            setState(() {
+                              info.importEXIF = value;
+                            });
+                            info = await updatePrivacy(info, user.getToken());
+                            setState(() {
+                              info.importEXIF =
+                                  info.importEXIF; // Stupid I know
+                            });
+                          }),
+                      const Divider(thickness: 1),
+                      BuildTile(
+                        title: PrivacySettingsView.tilesTitles[4],
+                        body: PrivacySettingsView.tilesBody[4],
+                        value: info.safeSearch,
+                        titlesList: PrivacySettingsView.safeSearchFilter,
+                        // info: _info
+                      ),
+                    ]);
+              }
+            }));
   }
 }
-
 
 class BuildTile extends StatefulWidget {
   BuildTile({
     Key key,
     @required this.title,
     @required this.body,
-    @required this.settingIndex,
-    @required this.titlesList
+    @required this.value,
+    @required this.titlesList,
   }) : super(key: key);
   final String title;
   final String body;
-  final int settingIndex;
-  final List <String> titlesList;
+  final int value;
+  final List<String> titlesList;
   @override
   _BuildTileState createState() => _BuildTileState();
 }
 
 class _BuildTileState extends State<BuildTile> {
-
-
-  createPrivacyDialog(BuildContext context, String title, int number){
-    return showDialog(context: context, builder: (BuildContext context) {
-      return Dialog(
-          title: title,
-          settingIndex: number,
-          titlesList: widget.titlesList
-      );
-    });
+  createPrivacyDialog(BuildContext context, String title, int number) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            title: title,
+            titlesList: widget.titlesList,
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children:<Widget> [
+      children: <Widget>[
         GestureDetector(
           child: ListTile(
-            title: Text(widget.title, style: TextStyle( fontWeight: FontWeight.w600, fontFamily: 'ProximaNova')),
-            subtitle: Text(widget.body, style: TextStyle( fontWeight: FontWeight.w600, fontFamily: 'ProximaNova')),
-            onTap: (){
-              createPrivacyDialog(context,widget.title, widget.settingIndex);
+            title: Text(widget.title,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600, fontFamily: 'ProximaNova')),
+            subtitle: Text(widget.body,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600, fontFamily: 'ProximaNova')),
+            onTap: () {
+              createPrivacyDialog(context, widget.title, widget.value);
             },
           ),
         ),
-        const Divider(thickness:1),
+        const Divider(thickness: 1),
       ],
     );
   }
@@ -152,31 +200,41 @@ class Dialog extends StatefulWidget {
   Dialog({
     Key key,
     @required this.title,
-    @required this.settingIndex,
-    @required this.titlesList
-
+    @required this.titlesList,
   }) : super(key: key);
 
-  final List <String> titlesList;
+  final List<String> titlesList;
   final String title;
-  final int settingIndex;
 
   @override
   _DialogState createState() => _DialogState();
 }
 
 class _DialogState extends State<Dialog> {
-
+  int _value;
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.title == PrivacySettingsView.tilesTitles[0]
+        ? info.def
+        : widget.title == PrivacySettingsView.tilesTitles[1]
+            ? info.location
+            : widget.title == PrivacySettingsView.tilesTitles[2]
+                ? info.safetyLevel
+                : widget.title == PrivacySettingsView.tilesTitles[4]
+                    ? info.safeSearch
+                    : -1;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<MyModel>(context, listen: false);
     return AlertDialog(
       title: Text(widget.title),
       content: Container(
         height: 290.0,
         width: 250.0,
         child: ListView.builder(
-          // padding: const EdgeInsets.all(8),
           shrinkWrap: true,
           itemCount: widget.titlesList.length,
           itemExtent: 50.0,
@@ -184,17 +242,12 @@ class _DialogState extends State<Dialog> {
             return RadioListTile(
               title: Text(widget.titlesList[index]),
               value: index,
-              groupValue:_selectedRadio,
+              groupValue: _value - 1,
               activeColor: Colors.green.shade700,
-              onChanged: (newValue) {
-                setState(() {
-                  print("Radio Tile pressed $newValue");
-                  _selectedRadio = newValue;
-                  // print("Radio Tile pressed $_selectedRadio");
-                  //TODO: Request here
-                  Navigator.pop(context);
-
-                });
+              onChanged: (newValue) async {
+                updateInfo(widget.title, newValue);
+                info = await updatePrivacy(info, user.getToken());
+                Navigator.pop(context);
               },
             );
           },
@@ -210,11 +263,7 @@ class _DialogState extends State<Dialog> {
             primary: Colors.green.shade700,
           ),
         ),
-
       ],
     );
   }
 }
-
-
-

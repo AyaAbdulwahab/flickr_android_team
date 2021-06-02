@@ -44,7 +44,9 @@ class _SettingsState extends State<Settings> {
         ),
         ListTile(
           title: Text('Privacy and Safety'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, '/privacy');
+          },
         ),
         ListTile(
             title: Text('Use Native Video Camera'),

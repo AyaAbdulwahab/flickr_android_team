@@ -1,6 +1,8 @@
 // import 'package:http/http.dart' as http;
-  import 'dart:convert';
-  import 'package:meta/meta.dart';
+
+import 'dart:convert';
+import 'package:meta/meta.dart';
+
 // import 'package:flutter/services.dart' show rootBundle;
 
   class User {
@@ -14,14 +16,15 @@
   String location;
 
   User(
-  {this.username,
-  this.firstname,
-  this.lastname,
-  this.pro,
-  this.aboutme,
-  this.joindate,
-  this.profileurl,
-  this.location});
+      {this.username,
+      this.firstname,
+      this.lastname,
+      this.pro,
+      this.aboutme,
+      this.joindate,
+      this.profileurl,
+      this.location});
+
 
 // factory User.fromJson(Map<String, dynamic> json) {
 //   return User(
@@ -34,7 +37,7 @@
 //       profileurl: json['profileurl'],
 //       location: json['location']);0
 // }
-  }
+}
 
 // Future<User> getUserInfo() async {
 //   Future<String> getJson() async {
@@ -48,86 +51,82 @@
 // }
 
 
-  /// The [PrivacyInfo] class holds the privacy data obtained for the user
-  ///
-  /// Is used for sending privacy requests and parsing data from responses
-  class PrivacyInfo {
+/// The [PrivacyInfo] class holds the privacy data obtained for the user
+///
+/// Is used for sending privacy requests and parsing data from responses
+class PrivacyInfo {
+
   int def;
   int location;
   int safetyLevel;
   bool importEXIF;
   int safeSearch;
   PrivacyInfo({
-  @required this.def,
-  @required this.location,
-  @required this.safetyLevel,
-  @required this.importEXIF,
-  @required this.safeSearch,
+    @required this.def,
+    @required this.location,
+    @required this.safetyLevel,
+    @required this.importEXIF,
+    @required this.safeSearch,
   });
 
-
-
   factory PrivacyInfo.fromJson(Map<String, dynamic> json) {
-  bool jsonSafeS=json['data']['privacySettings']['filters']['search']['safeSearch'];
-  // print(json['data']['privacySettings']['defaults']['importEXIF']);
-  int safeS;
-  if (jsonSafeS==true) {
-  safeS=1;
-  }
-  else  {
-  safeS=2;
-  }
+    bool jsonSafeS =
+        json['data']['privacySettings']['filters']['search']['safeSearch'];
+    // print(json['data']['privacySettings']['defaults']['importEXIF']);
+    int safeS;
+    if (jsonSafeS == true) {
+      safeS = 1;
+    } else {
+      safeS = 2;
+    }
 
-  return PrivacyInfo(
-  def: json['data']['privacySettings']['defaults']['perms']['see'],
-  location: json['data']['privacySettings']['defaults']['mapVisible'],
-  importEXIF:json['data']['privacySettings']['defaults']['importEXIF'],
-  safetyLevel: json['data']['privacySettings']['defaults']['safetyLevel'],
-  safeSearch: safeS,
-  );
+    return PrivacyInfo(
+      def: json['data']['privacySettings']['defaults']['perms']['see'],
+      location: json['data']['privacySettings']['defaults']['mapVisible'],
+      importEXIF: json['data']['privacySettings']['defaults']['importEXIF'],
+      safetyLevel: json['data']['privacySettings']['defaults']['safetyLevel'],
+      safeSearch: safeS,
+    );
   }
-  }
+}
 
 
 // To parse this JSON data, do
 //
 //     final welcome = welcomeFromJson(jsonString);
 
-
-
 // To parse this JSON data, do
 //
 //     final welcome = welcomeFromJson(jsonString);
-
-
 
 
 // String welcomeToJson(AllUsers data) => json.encode(data.toJson());
 
-
-
-  class SearchedUser {
+/// The [SearchedUser] class holds the data of the user parsed from the search request
+class SearchedUser {
   SearchedUser({
-  @required this.userID,
-  @required this.username,
-  @required this.photoCount,
-  @required this.followerCount,
+    @required this.userID,
+    @required this.username,
+    @required this.photoCount,
+    @required this.followerCount,
+
   });
 
   String userID;
   String username;
-  String photoCount;
-  String followerCount;
+  int photoCount;
+  int followerCount;
 
   factory SearchedUser.fromJson(Map<String, dynamic> json) => SearchedUser(
-  userID: json["_id"],
-  username: json["displayName"],
-  photoCount: json["photoCount"],
-  followerCount: json["followerCount"],
-  );
+        userID: json["_id"],
+        username: json["displayName"],
+        photoCount: json["photoCount"],
+        followerCount: json["followerCount"],
+      );
 
   static List<SearchedUser> parseList(List<dynamic> list) {
-  return list.map((i) => SearchedUser.fromJson(i)).toList();
+    return list.map((i) => SearchedUser.fromJson(i)).toList();
+
   }
 
   // Map<String, dynamic> toJson() => {
@@ -136,28 +135,29 @@
   //   "photoCount": photoCount,
   //   "followerCount": followerCount,
   // };
-  }
 
+}
 
-  class SearchedPhoto {
-  SearchedPhoto({
-  this.originalHeight,
-  this.originalWidth,
-  this.originalSource,
-  this.originalURL,
-  this.thumbHeight,
-  this.thumbWidth,
-  this.thumbSource,
-  this.thumbURL,
-  this.favs,
-  this.comments,
-  this.canDownload,
-  this.title,
-  this.descrip,
-  this.username,
-  this.dateTaken,
-  this.pro
-  });
+/// The [SearchedPhoto] class holds the data of the photo parsed from the search request
+class SearchedPhoto {
+  SearchedPhoto(
+      {this.originalHeight,
+      this.originalWidth,
+      this.originalSource,
+      this.originalURL,
+      this.thumbHeight,
+      this.thumbWidth,
+      this.thumbSource,
+      this.thumbURL,
+      this.favs,
+      this.comments,
+      this.canDownload,
+      this.title,
+      this.descrip,
+      this.username,
+      this.dateTaken,
+      this.pro});
+
 
   int originalHeight;
   int originalWidth;
@@ -176,39 +176,37 @@
   bool canDownload;
   bool pro;
 
-
-  factory SearchedPhoto.fromJson(Map<String, dynamic> json) =>
-  SearchedPhoto(
-  originalHeight: json['sizes']['size']['original']['height'],
-  originalWidth: json['sizes']['size']['original']['width'],
-  thumbHeight: json['sizes']['size']['thumbnail']['height'],
-  thumbWidth: json['sizes']['size']['thumbnail']['width'],
-  favs: json['favourites'],
-  comments: json['comments'],
-  originalSource: json['sizes']['size']['original']['source'],
-  originalURL: json['sizes']['size']['original']['url'],
-  thumbSource: json['sizes']['size']['thumbnail']['source'],
-  thumbURL: json['sizes']['size']['original']['url'],
-  title: json['title'],
-  descrip: json['description'],
-  dateTaken: json['dateTaken'],
-  username: json['userId']['firstName'],
-  canDownload: json['sizes']['size']['canDownload'],
-  pro: json['userId']['pro'],
-  );
+  factory SearchedPhoto.fromJson(Map<String, dynamic> json) => SearchedPhoto(
+        originalHeight: json['sizes']['size']['original']['height'],
+        originalWidth: json['sizes']['size']['original']['width'],
+        thumbHeight: json['sizes']['size']['thumbnail']['height'],
+        thumbWidth: json['sizes']['size']['thumbnail']['width'],
+        favs: json['favourites'],
+        comments: json['comments'],
+        originalSource: json['sizes']['size']['original']['source'],
+        originalURL: json['sizes']['size']['original']['url'],
+        thumbSource: json['sizes']['size']['thumbnail']['source'],
+        thumbURL: json['sizes']['size']['original']['url'],
+        title: json['title'],
+        descrip: json['description'],
+        dateTaken: json['dateTaken'],
+        username: json['userId']['firstName'],
+        canDownload: json['sizes']['canDownload'],
+        pro: json['userId']['pro'],
+      );
 
   static List<SearchedPhoto> parseList(List<dynamic> list) {
-  return list.map((i) => SearchedPhoto.fromJson(i)).toList();
+    return list.map((i) => SearchedPhoto.fromJson(i)).toList();
   }
-  }
+}
 
-
-  class UserAlbum
-  {
+///The [UserAlbum] holds parsed data of each album for the current user
+class UserAlbum {
   UserAlbum({
-  @required this.photoCount,
-  @required this.primaryPhoto,
-  @required this.albumName,
+    @required this.photoCount,
+    @required this.primaryPhoto,
+    @required this.albumName,
+
   });
   String photoCount;
   String primaryPhoto;
@@ -311,3 +309,4 @@
   }
 
   }
+
