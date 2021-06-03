@@ -4,6 +4,7 @@ import 'package:flickr/Views/about.dart';
 import 'package:flickr/Views/albums.dart';
 import 'package:flickr/Views/camera_roll.dart';
 import 'package:flickr/Views/loading.dart';
+import 'package:flickr/Views/public.dart';
 import 'package:flickr/Views/settings.dart';
 import 'package:flickr/Views/user_options.dart';
 import 'package:flutter/material.dart';
@@ -284,10 +285,11 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                                   'A place holder for the ${youBar[1]} Page'),
                             ),
                             CameraRoll(),
-                            Center(
-                              child: Text(
-                                  'A place holder for the ${youBar[3]} Page'),
-                            ),
+                            Public(),
+                            // Center(
+                            //   child: Text(
+                            //       'A place holder for the ${youBar[3]} Page'),
+                            // ),
                             Albums(),
                             Center(
                               child: Text(

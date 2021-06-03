@@ -17,6 +17,8 @@ class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(image),
@@ -101,8 +103,11 @@ class GetStarted extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 530.0),
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.78,
+              left: MediaQuery.of(context).size.width * 0.15,
+
+              // padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -132,8 +137,10 @@ class GetStarted extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 500.0),
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.72,
+              left: MediaQuery.of(context).size.width * 0.4,
+              // padding: const EdgeInsets.only(top: 500.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -153,8 +160,10 @@ class GetStarted extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 630.0, left: 10.0),
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.92,
+              left: MediaQuery.of(context).size.width * 0.01,
+              // padding: EdgeInsets.only(top: 630.0, left: 10.0),
               child: Row(
                 children: [
                   Icon(

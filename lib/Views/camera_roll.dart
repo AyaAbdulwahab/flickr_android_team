@@ -61,7 +61,8 @@ class _CameraRollState extends State<CameraRoll> {
           if (snapshot.hasData) {
             List photos = snapshot.data ?? [];
             // isSelected = new List(photos.length) ?? 0;
-            isSelected.fillRange(0, photos.length, false);
+            if (photos.length > 1)
+              isSelected.fillRange(0, photos.length, false);
             return Column(
               children: [
                 Container(

@@ -39,19 +39,16 @@ class Post extends StatefulWidget {
   // // String likers;
   // // String commenter;
   // String comment1;
-  String fave1="person1";
-  String fave2="person2";
+  String fave1 = "person1";
+  String fave2 = "person2";
   // int commentNumber;
 
   @override
   _PostState createState() => _PostState();
 }
 
-class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
+class _PostState extends State<Post> with AutomaticKeepAliveClientMixin {
   PhotoDetails _photo;
-
-
-
 
   ///The function getDetails gets the photo information using the photo id
   // Future<int> getDetails() async {
@@ -67,8 +64,8 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
   //         widget.userID = info['userId']['_id'];
   //         widget.userName = info['userId']['displayName'];
   //         widget.userRealName = info['userId']['firstName'];
-  //         widget.userImage =
-  //         'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80';
+  var userImage =
+      'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80';
   //         widget.postImage = info['sizes']['size']['original']['source'];
   //         widget.tags = info['tags'];
   //         print(info['tags']);
@@ -130,7 +127,6 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
   //   }
   // }
 
-
   ///The function getFaves gets the photo faves using the photo id
   getFaves() async {
     // var req2 = await http.get((Uri.parse(
@@ -140,7 +136,6 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
     //   print(data);
     //   info = jsonDecode(data)['data'];
     setState(() {
-
       // info['usernamelist'][0].toString();
 
       // info['usernamelist'][1].toString();
@@ -156,11 +151,11 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
 
     // getUserName();
     // getUserRealName();
-
   }
 
   Future<int> callFunction() async {
-    _photo=await getPhotoDetails(widget.photoID);
+    _photo = await getPhotoDetails(widget.photoID);
+    print(_photo);
 
     return 1;
     // await getDetails();
@@ -172,70 +167,65 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
 
   @override
   Widget build(BuildContext context) {
-          
     return FutureBuilder(
-        future:  Future.wait([callFunction()]),
-        builder: (context,snapshot) {
-          if (snapshot.data == null) {
+        future: Future.wait([callFunction()]),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
             //TODO: Check if you will change it
-            return Container(
-                child: Text("Loading...")
-            );
-          }
-          else {
+            return Container(child: Text("Loading..."));
+          } else {
             return Container(
               color: Colors.white,
+              height: MediaQuery.of(context).size.height,
               child: Column(
                 children: [
-                  Container(
-                    child: GestureDetector(
-                      // child: Image.asset("assets/zootopia.jpg"),
-                      child: Image(
-
-                        image: NetworkImage(_photo.postImage),
-                      ),
+                  // Container(
+                  //   height: 100.0,
+                  //   child: GestureDetector(
+                  //     // child: Image.asset("assets/zootopia.jpg"),
+                  //     child: Image(
+                  //       image: NetworkImage(_photo.postImage),
+                  //     ),
+                  //     onTap: () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => PhotoOnClicking(
+                  //                 photoID: widget.photoID,
+                  //                 image: _photo.postImage,
+                  //                 userImage: _photo.userImage,
+                  //                 username: _photo.userName,
+                  //                 userID: _photo.userID,
+                  //                 userRealName: _photo.userRealName,
+                  //                 privacy: _photo.privacy,
+                  //                 safety: _photo.safety,
+                  //                 views: _photo.views,
+                  //                 dateTaken: _photo.dateTaken,
+                  //                 caption: _photo.caption,
+                  //                 description: _photo.description,
+                  //                 tags: _photo.tags,
+                  //                 faves: _photo.postFaves,
+                  //                 comments: _photo.commentsCount.toString())),
+                  //       );
+                  //     },
+                  //   ),
+                  //   margin: EdgeInsets.all(5.0),
+                  // ),
+                  ListTile(
+                    leading: GestureDetector(
                       onTap: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  PhotoOnClicking(
-                                    photoID: widget.photoID,
-                                      image: _photo.postImage,
-                                      userImage: _photo.userImage,
-                                      username: _photo.userName,
-                                      userID: _photo.userID,
-                                      userRealName: _photo.userRealName,
-                                      privacy: _photo.privacy,
-                                      safety: _photo.safety,
-                                      views: _photo.views,
-                                      dateTaken: _photo.dateTaken,
-                                      caption: _photo.caption,
-                                      description: _photo.description,
-                                      tags: _photo.tags,
-                                      faves: _photo.postFaves,
-                                      comments: _photo.commentsCount.toString())),
-                        );
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    YouPage(id: "608d55c7e512b74ee00791de")));
                       },
+                      child: CircleAvatar(
+                        radius: 23.0,
+                        backgroundImage: NetworkImage(userImage),
+                      ),
                     ),
-                    margin: EdgeInsets.all(5.0),
-
-                  ),
-                  ListTile(
-            leading: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            YouPage(id: "608d55c7e512b74ee00791de")));
-              },
-              child: CircleAvatar(
-                radius: 23.0,
-                backgroundImage: NetworkImage(widget.userImage),
-              ),
-              )
-            ),
+                    // ),
                     title: Text(
                       _photo.userName,
                       style: TextStyle(fontSize: 18.0, color: Colors.black),
@@ -247,10 +237,7 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
                     trailing: Text(_photo.postDate),
                   ),
                   SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    width: MediaQuery.of(context).size.width,
                     height: 20.0,
                     child: Divider(
                       color: Colors.grey,
@@ -280,10 +267,7 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
                     ),
                   ),
                   Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    width: MediaQuery.of(context).size.width,
                     color: Colors.grey[300],
                     child: Column(
                       children: [
@@ -293,9 +277,12 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
                             size: 20.0,
                           ),
                           // title: Text('people faved'),
-                          title: Text(widget.fave1 + ', ' + widget.fave2 +
-                              ' and ' + (((int.parse(_photo.postFaves)) - 2))
-                              .toString() + ' others faved'),
+                          title: Text(widget.fave1 +
+                              ', ' +
+                              widget.fave2 +
+                              ' and ' +
+                              (((int.parse(_photo.postFaves)) - 2)).toString() +
+                              ' others faved'),
                         ),
                         ListTile(
                           isThreeLine: true,
@@ -304,11 +291,9 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
                             size: 20.0,
                           ),
                           title: Text('commenter'),
-                          subtitle: Text(
-                              _photo.comment1
-                          ),
-                          trailing: Text('1 of ' + _photo.commentsCount
-                              .toString()),
+                          subtitle: Text(_photo.comment1),
+                          trailing:
+                              Text('1 of ' + _photo.commentsCount.toString()),
                         ),
                         SizedBox(
                           height: 20.0,
@@ -321,7 +306,6 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin{
               ),
             );
           }
-        }
-    );
+        });
   }
 }
