@@ -74,12 +74,44 @@ class _SignUpState extends State<SignUp> {
   bool _obscureText = true;
   bool passwordHint = false;
   String verifyResult = "";
+  String _invalidText = "";
+  bool _invalidAlert = false;
 
   // String captchaSiteKey = "6LeePrkaAAAAAF1Tx8KEoVpDqCrHJDfwKPmsX5vX";
   // RecaptchaV2Controller recaptchaV2Controller = RecaptchaV2Controller();
 
   final f3 = FocusNode();
   final f4 = FocusNode();
+
+  checkResponse(var response) async {
+    if (response['token'] != null) {
+      final user = Provider.of<MyModel>(context, listen: false);
+      user.setToken(response['token']);
+      user.authUser();
+      user.setID(response["data"]["user"]["_id"]);
+
+      List a = await getFollowers(user.getID(), user.getToken());
+
+      user.setFollowers(a);
+
+      Navigator.popUntil(context, ModalRoute.withName('/'));
+    } else if (response['message'] != null) {
+      // No account exists with this email
+      setState(() {
+        _invalidText = response['message'];
+        _invalidAlert = true;
+      });
+      // if (response['message'] == "Invalid Email") {
+
+      // return true;
+    }
+
+    // print(response.data);
+    // }
+
+    //  if (response != null) {
+    //                             }
+  }
 
   @override
   void initState() {
@@ -130,6 +162,27 @@ class _SignUpState extends State<SignUp> {
                         'Sign up for Flickr',
                         style: TextStyle(
                             fontSize: 20.0, fontWeight: FontWeight.w200),
+                      ),
+                      Visibility(
+                        /// A widget for invalid [_email] or [_password] alert
+                        visible: _invalidAlert,
+                        child: Container(
+                          width: 370.0,
+                          height: 40.0,
+                          decoration: BoxDecoration(
+                              color: Colors.red.shade100,
+                              border: Border.all(
+                                color: Colors.red[100],
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4))),
+                          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                          child: Center(
+                            child: Text(
+                              _invalidText,
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: 15.0,
@@ -319,21 +372,7 @@ class _SignUpState extends State<SignUp> {
                                     _displayName[0]);
                                 print(response);
 
-                                if (response != null) {
-                                  final user = Provider.of<MyModel>(context,
-                                      listen: false);
-                                  user.setToken(response['token']);
-                                  user.authUser();
-                                  user.setID(response["data"]["user"]["_id"]);
-
-                                  List a = await getFollowers(
-                                      user.getID(), user.getToken());
-
-                                  user.setFollowers(a);
-
-                                  Navigator.popUntil(
-                                      context, ModalRoute.withName('/'));
-                                }
+                                checkResponse(response);
                               }
                             },
                             child: Text(
