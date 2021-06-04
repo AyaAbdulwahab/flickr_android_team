@@ -1,20 +1,12 @@
-import 'package:flickr/View_Model/user_view_model.dart';
+import 'package:flickr/Models/search_model.dart';
+import 'package:flickr/Models/user_model.dart';
+import 'package:flickr/View_Model/search_view_model.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
-import '../Models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flickr/Constants/constants.dart';
-import 'dart:io';
-
-// void main() {
-//   return runApp(
-//       MaterialApp(
-//           home: Search()
-//       )
-//   );
-// }
 
 // ------------------------------------------------------------------------ //
 /// The [Search] page allows user search for photos, people, and groups, returns the search results filtered in 3 different tabs

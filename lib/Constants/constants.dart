@@ -1,10 +1,12 @@
+/// [EndPoints] contains all the used http links to be used for the backend
+/// * [baseUrl] is the main URL of the deployed server
+/// * [emulatorBaseUrl] to test on an emulator from the local host
+/// * [mockBaseUrl] to take the mockdata from the mock server
 class EndPoints {
-  static const String baseUrl = "https://www.flickrclone.tech/api/";
+  static const String baseUrl = "https://www.flickrclone.tech/api";
   static const String emulatorBaseUrl = "http://10.0.0.2:7000";
   static const String mockBaseUrl =
       "https://c4aca0bd-5ba0-4a26-b6a2-a6b086a3646f.mock.pstmn.io";
-
-  //192.168.1.11
 }
 
 class PrivacySettingsView {

@@ -2,21 +2,21 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flickr/Constants/constants.dart';
-import 'package:flickr/View_Model/user_view_model.dart';
+import 'package:flickr/Models/user_model.dart';
 import 'package:flickr/Widgets/list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:provider/provider.dart';
 
-class PhotoDetails extends StatefulWidget {
+class PhotoTakenDetails extends StatefulWidget {
   String image;
-  PhotoDetails(this.image);
+  PhotoTakenDetails(this.image);
 
   @override
   _PhotoDetailsState createState() => _PhotoDetailsState();
 }
 
-class _PhotoDetailsState extends State<PhotoDetails> {
+class _PhotoDetailsState extends State<PhotoTakenDetails> {
   Future sendPhoto(String img, String token, String title, String desc) async {
     File a = File(img);
     String fileName = a.path.split('/').last;
@@ -111,7 +111,6 @@ class _PhotoDetailsState extends State<PhotoDetails> {
             ],
           ),
         ),
-
         Padding(
             padding: EdgeInsets.only(
                 top: AppBar().preferredSize.height + 50.0,
@@ -265,22 +264,6 @@ class _PhotoDetailsState extends State<PhotoDetails> {
               ),
             ),
           ),
-        // Column(children: [
-        //   // SizedBox(
-        //   //   height: 55.0 + MediaQuery.of(context).size.height * 0.04,
-        //   // ),
-        //   Stack(
-        //     children: [
-        //       Column(
-        //         children: [
-        //           SizedBox(
-        //             height: 10.0,
-        //           ),
-        //         ],
-        //       )
-        //     ],
-        //   )
-        // ])
       ]),
     );
   }

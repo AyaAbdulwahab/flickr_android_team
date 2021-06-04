@@ -1,4 +1,4 @@
-import 'package:flickr/Constants/constants.dart';
+import 'package:flickr/Models/user_model.dart';
 import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Views/about.dart';
 import 'package:flickr/Views/albums.dart';
@@ -10,8 +10,6 @@ import 'package:flickr/Views/user_options.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:charcode/charcode.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'dart:convert';
 import 'package:provider/provider.dart';
 
 /// The [YouPage] is where the user can find his own info,
@@ -69,8 +67,8 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           _username = snapshot.data[0] ?? " ";
-          noOfFollowering = snapshot.data[1];
-          List followers = snapshot.data[2];
+          noOfFollowering = snapshot.data[1] ?? 0;
+          List followers = snapshot.data[2] ?? [];
           print(followers);
           if (user.getID() == widget.id) {
             youBar = [
@@ -88,7 +86,6 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                 break;
               }
             }
-            // isFollowing = ;
             youBar = ['Publics', 'Albums', 'Groups', 'About'];
           }
           _tabController = TabController(length: youBar.length, vsync: this);
@@ -136,14 +133,7 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 5.0, horizontal: 7.0),
-                                child:
-                                    // Row(
-                                    //   mainAxisAlignment:
-                                    //       MainAxisAlignment.spaceBetween,
-                                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                                    // children: [
-                                    //   Container(height: 20, width: 40.0),
-                                    Column(
+                                child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Row(
@@ -279,7 +269,9 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                     },
                     body: (user.getID() == widget.id)
                         ? TabBarView(controller: _tabController, children: [
-                            About(),
+                            About(
+                                isImmutable: user.getID() == widget.id,
+                                id: widget.id),
                             Center(
                               child: Text(
                                   'A place holder for the ${youBar[1]} Page'),
@@ -302,7 +294,9 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                                 child: Text(
                                     'A place holder for the ${youBar[i]} Page'),
                               ),
-                            About()
+                            About(
+                                isImmutable: user.getID() == widget.id,
+                                id: widget.id)
                           ])),
                 if (_isSelected)
                   GestureDetector(

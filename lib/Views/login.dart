@@ -1,15 +1,13 @@
+import 'package:flickr/Models/user_model.dart';
+import 'package:flickr/View_Model/auth_view_model.dart';
 import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Views/forgot_password.dart';
-import 'package:flickr/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
 import 'package:flickr/Widgets/authentication_app_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'dart:convert';
-import 'package:dio/dio.dart';
-import 'package:flickr/Constants/constants.dart';
 
 /// Validator class for email TextFormField
 class EValidator {
@@ -106,8 +104,6 @@ class _LoginState extends State<Login> {
       if (responseBody['token'] != null && response.statusCode == 200) {
         final user = Provider.of<MyModel>(context, listen: false);
         user.authUser();
-        print(responseBody['token']);
-        print(responseBody["data"]["user"]["_id"]);
         user.setToken(responseBody['token']);
         user.setID(responseBody["data"]["user"]["_id"]);
 
@@ -391,16 +387,16 @@ class _LoginState extends State<Login> {
                       height: 15.0,
                     ),
                   ),
-                  SizedBox(
-                    width: 200,
+                  Container(
+                    padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                    width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: () {},
                       style: ButtonStyle(
                         elevation: MaterialStateProperty.all(0.0),
                         padding: MaterialStateProperty.all(EdgeInsets.symmetric(
                             vertical: 9.0, horizontal: 5.0)),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.blue[600]),
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
                       ),
                       icon: FaIcon(
                         FontAwesomeIcons.facebook,

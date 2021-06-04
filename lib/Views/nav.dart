@@ -1,4 +1,4 @@
-import 'package:flickr/View_Model/user_view_model.dart';
+import 'package:flickr/Models/user_model.dart';
 import 'package:flickr/Views/camera.dart';
 import 'package:flickr/Views/home.dart';
 import 'package:flickr/Views/loading.dart';
@@ -9,6 +9,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
+/// The navigation bar is constructed using the [NavBar] Widget which conatins:
+/// * The Home page
+/// * The Search
+/// * The You page
+/// * The Notifications
+/// * The Camera (if the user closed it or finished the uploaded, he'll be automatically redirected to the homePage)
 
 class NavBar extends StatefulWidget {
   @override
@@ -27,7 +34,6 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
   ];
 
   Future getImage() async {
-    PickedFile ip;
     return await ImagePicker().getImage(source: ImageSource.camera);
   }
 
@@ -46,17 +52,12 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
     }
   }
 
-  // directToUser() {
-  //   _tabController.index = 2;
-  // }
-
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: youBar.length, vsync: this);
     _tabController.addListener(() async {
       await cameraCall();
-      // directToUser();
     });
   }
 

@@ -1,4 +1,4 @@
-import 'package:flickr/View_Model/user_view_model.dart';
+import 'package:flickr/Models/user_model.dart';
 import 'package:flickr/Views/current_city.dart';
 import 'package:flickr/Views/email.dart';
 import 'package:flickr/Views/description.dart';
@@ -12,7 +12,6 @@ import 'package:flickr/Views/twitter.dart';
 import 'package:flickr/Views/website.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:flickr/Constants/constants.dart';
 import 'dart:convert';
@@ -21,6 +20,9 @@ import 'package:provider/provider.dart';
 
 ///The [About] class allows the user to view his information and update it through directing the user to the chosen field's page
 class About extends StatefulWidget {
+  bool isImmutable;
+  String id;
+  About({this.isImmutable, this.id});
   @override
   _AboutTestState createState() => _AboutTestState();
 }
@@ -65,7 +67,7 @@ class _AboutTestState extends State<About> {
     print(user.getID());
     print(user.getToken());
     var req2 = await http.get(
-      (Uri.parse(EndPoints.baseUrl + '/user/' + user.getID())),
+      (Uri.parse(EndPoints.baseUrl + '/user/' + widget.id)),
       headers: {"authorization": "Bearer " + user.getToken()},
     );
     if (req2.statusCode == 200) {
@@ -127,7 +129,7 @@ class _AboutTestState extends State<About> {
   void getDescription() async {
     final user = Provider.of<MyModel>(context, listen: false);
     var req2 = await http.get(
-      (Uri.parse(EndPoints.baseUrl + '/user/' + user.getID() + '/about-me')),
+      (Uri.parse(EndPoints.baseUrl + '/user/' + widget.id + '/about-me')),
     );
     if (req2.statusCode == 200) {
       String data = req2.body;
@@ -143,7 +145,7 @@ class _AboutTestState extends State<About> {
   void getPhotoCount() async {
     final user = Provider.of<MyModel>(context, listen: false);
     var req2 = await http.get(
-      (Uri.parse(EndPoints.baseUrl + '/user/' + user.getID() + '/about-me')),
+      (Uri.parse(EndPoints.baseUrl + '/user/' + widget.id + '/about-me')),
     );
     if (req2.statusCode == 200) {
       String data = req2.body;
@@ -249,24 +251,32 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                  onTap: () {
-                    setState(
-                      () async {
-                        description = await (Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Description(
-                                    description: d,
-                                  )),
-                        ));
-                        setState(() {
-                          d = description;
-                          updateInfo(occupation, hometown, currentCity,
-                              description, visibleTo, visibleToEmail, country);
-                        });
-                      },
-                    );
-                  }),
+                  onTap: widget.isImmutable
+                      ? () {
+                          setState(
+                            () async {
+                              description = await (Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Description(
+                                          description: d,
+                                        )),
+                              ));
+                              setState(() {
+                                d = description;
+                                updateInfo(
+                                    occupation,
+                                    hometown,
+                                    currentCity,
+                                    description,
+                                    visibleTo,
+                                    visibleToEmail,
+                                    country);
+                              });
+                            },
+                          );
+                        }
+                      : () {}),
               Divider(
                 color: Colors.grey[300],
                 thickness: 1.0,
@@ -284,25 +294,33 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                  onTap: () {
-                    setState(
-                      () async {
-                        hometown = await (Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Hometown(
-                                    hometown: hometown,
-                                  )),
-                        ));
-                        setState(() {
-                          h = hometown;
-                          updateInfo(occupation, hometown, currentCity,
-                              description, visibleTo, visibleToEmail, country);
-                        });
-                        //call the edit info request function
-                      },
-                    );
-                  }),
+                  onTap: widget.isImmutable
+                      ? () {
+                          setState(
+                            () async {
+                              hometown = await (Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Hometown(
+                                          hometown: hometown,
+                                        )),
+                              ));
+                              setState(() {
+                                h = hometown;
+                                updateInfo(
+                                    occupation,
+                                    hometown,
+                                    currentCity,
+                                    description,
+                                    visibleTo,
+                                    visibleToEmail,
+                                    country);
+                              });
+                              //call the edit info request function
+                            },
+                          );
+                        }
+                      : () {}),
               Divider(
                 color: Colors.grey[300],
                 thickness: 1.0,
@@ -320,24 +338,32 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                  onTap: () {
-                    setState(
-                      () async {
-                        occupation = await (Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Occupation(
-                                    occupation: occupation,
-                                  )),
-                        ));
-                        setState(() {
-                          oc = occupation;
-                          updateInfo(occupation, hometown, currentCity,
-                              description, visibleTo, visibleToEmail, country);
-                        });
-                      },
-                    );
-                  }),
+                  onTap: widget.isImmutable
+                      ? () {
+                          setState(
+                            () async {
+                              occupation = await (Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Occupation(
+                                          occupation: occupation,
+                                        )),
+                              ));
+                              setState(() {
+                                oc = occupation;
+                                updateInfo(
+                                    occupation,
+                                    hometown,
+                                    currentCity,
+                                    description,
+                                    visibleTo,
+                                    visibleToEmail,
+                                    country);
+                              });
+                            },
+                          );
+                        }
+                      : () {}),
               Divider(
                 color: Colors.grey[300],
                 thickness: 1.0,
@@ -358,25 +384,34 @@ class _AboutTestState extends State<About> {
                   style: TextStyle(fontSize: 18.0, color: Colors.grey),
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                onTap: () {
-                  setState(() async {
-                    List temp;
-                    temp = await (Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CurrentCity(
-                            currentCity: currentCity, visibleTo: visibleTo),
-                      ),
-                    ));
-                    setState(() {
-                      currentCity = temp[0];
-                      visibleTo = temp[1];
-                      updateInfo(occupation, hometown, currentCity, description,
-                          visibleTo, visibleToEmail, country);
-                    });
-                    // print(currentCity);
-                  });
-                },
+                onTap: widget.isImmutable
+                    ? () {
+                        setState(() async {
+                          List temp;
+                          temp = await (Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CurrentCity(
+                                  currentCity: currentCity,
+                                  visibleTo: visibleTo),
+                            ),
+                          ));
+                          setState(() {
+                            currentCity = temp[0];
+                            visibleTo = temp[1];
+                            updateInfo(
+                                occupation,
+                                hometown,
+                                currentCity,
+                                description,
+                                visibleTo,
+                                visibleToEmail,
+                                country);
+                          });
+                          // print(currentCity);
+                        });
+                      }
+                    : () {},
               ),
               Divider(
                 color: Colors.grey[300],
@@ -395,23 +430,25 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                  onTap: () {
-                    setState(
-                      () async {
-                        String temp;
-                        website = await (Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Website(
-                                    website: w,
-                                  )),
-                        ));
-                        setState(() {
-                          w = website;
-                        });
-                      },
-                    );
-                  }),
+                  onTap: widget.isImmutable
+                      ? () {
+                          setState(
+                            () async {
+                              String temp;
+                              website = await (Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Website(
+                                          website: w,
+                                        )),
+                              ));
+                              setState(() {
+                                w = website;
+                              });
+                            },
+                          );
+                        }
+                      : () {}),
               Divider(
                 color: Colors.grey[300],
                 thickness: 1.0,
@@ -429,22 +466,24 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                  onTap: () {
-                    setState(
-                      () async {
-                        tumblr = await (Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Tumblr(
-                                    tumblr: t,
-                                  )),
-                        ));
-                        setState(() {
-                          t = tumblr;
-                        });
-                      },
-                    );
-                  }),
+                  onTap: widget.isImmutable
+                      ? () {
+                          setState(
+                            () async {
+                              tumblr = await (Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Tumblr(
+                                          tumblr: t,
+                                        )),
+                              ));
+                              setState(() {
+                                t = tumblr;
+                              });
+                            },
+                          );
+                        }
+                      : () {}),
               Divider(
                 color: Colors.grey[300],
                 thickness: 1.0,
@@ -462,22 +501,24 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                  onTap: () {
-                    setState(
-                      () async {
-                        facebook = await (Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Facebook(
-                                    facebook: f,
-                                  )),
-                        ));
-                        setState(() {
-                          f = facebook;
-                        });
-                      },
-                    );
-                  }),
+                  onTap: widget.isImmutable
+                      ? () {
+                          setState(
+                            () async {
+                              facebook = await (Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Facebook(
+                                          facebook: f,
+                                        )),
+                              ));
+                              setState(() {
+                                f = facebook;
+                              });
+                            },
+                          );
+                        }
+                      : () {}),
               Divider(
                 color: Colors.grey[300],
                 thickness: 1.0,
@@ -495,22 +536,24 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                  onTap: () {
-                    setState(
-                      () async {
-                        twitter = await (Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Twitter(
-                                    twitter: tw,
-                                  )),
-                        ));
-                        setState(() {
-                          tw = twitter;
-                        });
-                      },
-                    );
-                  }),
+                  onTap: widget.isImmutable
+                      ? () {
+                          setState(
+                            () async {
+                              twitter = await (Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Twitter(
+                                          twitter: tw,
+                                        )),
+                              ));
+                              setState(() {
+                                tw = twitter;
+                              });
+                            },
+                          );
+                        }
+                      : () {}),
               Divider(
                 color: Colors.grey[300],
                 thickness: 1.0,
@@ -528,22 +571,24 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                  onTap: () {
-                    setState(
-                      () async {
-                        instagram = await (Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Instagram(
-                                    instagram: i,
-                                  )),
-                        ));
-                        setState(() {
-                          i = instagram;
-                        });
-                      },
-                    );
-                  }),
+                  onTap: widget.isImmutable
+                      ? () {
+                          setState(
+                            () async {
+                              instagram = await (Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Instagram(
+                                          instagram: i,
+                                        )),
+                              ));
+                              setState(() {
+                                i = instagram;
+                              });
+                            },
+                          );
+                        }
+                      : () {}),
               Divider(
                 color: Colors.grey[300],
                 thickness: 1.0,
@@ -561,22 +606,24 @@ class _AboutTestState extends State<About> {
                     style: TextStyle(fontSize: 18.0, color: Colors.grey),
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                  onTap: () {
-                    setState(
-                      () async {
-                        pinterest = await (Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Pinterest(
-                                    pinterest: p,
-                                  )),
-                        ));
-                        setState(() {
-                          p = pinterest;
-                        });
-                      },
-                    );
-                  }),
+                  onTap: widget.isImmutable
+                      ? () {
+                          setState(
+                            () async {
+                              pinterest = await (Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Pinterest(
+                                          pinterest: p,
+                                        )),
+                              ));
+                              setState(() {
+                                p = pinterest;
+                              });
+                            },
+                          );
+                        }
+                      : () {}),
               Divider(
                 color: Colors.grey[300],
                 thickness: 1.0,
@@ -593,23 +640,31 @@ class _AboutTestState extends State<About> {
                   style: TextStyle(fontSize: 18.0, color: Colors.grey),
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                onTap: () {
-                  setState(() async {
-                    v = await (Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Email(
-                                email: email,
-                                visibleTo: visibleToEmail,
-                              )),
-                    ));
-                    setState(() {
-                      visibleToEmail = v;
-                      updateInfo(occupation, hometown, currentCity, description,
-                          visibleTo, visibleToEmail, country);
-                    });
-                  });
-                },
+                onTap: widget.isImmutable
+                    ? () {
+                        setState(() async {
+                          v = await (Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Email(
+                                      email: email,
+                                      visibleTo: visibleToEmail,
+                                    )),
+                          ));
+                          setState(() {
+                            visibleToEmail = v;
+                            updateInfo(
+                                occupation,
+                                hometown,
+                                currentCity,
+                                description,
+                                visibleTo,
+                                visibleToEmail,
+                                country);
+                          });
+                        });
+                      }
+                    : () {},
               ),
               Divider(
                 color: Colors.grey[300],

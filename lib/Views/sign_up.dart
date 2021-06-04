@@ -1,4 +1,6 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:flickr/Models/user_model.dart';
+import 'package:flickr/View_Model/auth_view_model.dart';
 import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Widgets/authentication_app_bar.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
@@ -76,9 +78,6 @@ class _SignUpState extends State<SignUp> {
   String verifyResult = "";
   String _invalidText = "";
   bool _invalidAlert = false;
-
-  // String captchaSiteKey = "6LeePrkaAAAAAF1Tx8KEoVpDqCrHJDfwKPmsX5vX";
-  // RecaptchaV2Controller recaptchaV2Controller = RecaptchaV2Controller();
 
   final f3 = FocusNode();
   final f4 = FocusNode();

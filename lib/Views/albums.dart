@@ -1,11 +1,9 @@
-import 'package:flickr/View_Model/user_view_model.dart';
-import 'package:flickr/Widgets/text_field_widget.dart';
+import 'package:flickr/Models/albums_model.dart';
+import 'package:flickr/View_Model/albums_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 import '../Models/user_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:io';
 
 /// The list of albums for the current user
 List<UserAlbum> userAlbums = [];

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// [textInputDecoration] is used i the [signUp] and [signIn] pages for the shape of the text box
+/// on focusing, enabling and giving an error
 const textInputDecoration = InputDecoration(
   // isCollapsed: true,
   // border: InputBorder.none,

@@ -1,10 +1,6 @@
+import 'package:flickr/View_Model/photo_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
-import 'package:flickr/Constants/constants.dart';
-import 'package:flickr/View_Model/user_view_model.dart';
-import 'dart:convert';
 
 /////THE DATA FOR ADD AND REMOVE FAVES!!
 class FavesAndComments extends StatefulWidget {
@@ -15,7 +11,7 @@ class FavesAndComments extends StatefulWidget {
       @required this.token,
       @required this.userID});
   Icon chosenIcon;
-  String faves;
+  int faves;
   String photoID;
   String userID;
   String token;
@@ -24,31 +20,39 @@ class FavesAndComments extends StatefulWidget {
 }
 
 class _FavesAndCommentsState extends State<FavesAndComments> {
-  // Map<String, dynamic> info;
+  int faves = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-            icon: widget.chosenIcon,
-            onPressed: () {
-              setState(() {
-                if (widget.chosenIcon.icon == Icons.star_border_outlined) {
-                  widget.chosenIcon = Icon(Icons.star, color: Colors.white);
-                  addFave(widget.photoID, widget.token);
-                } else if (widget.chosenIcon.icon == Icons.star) {
-                  widget.chosenIcon =
-                      Icon(Icons.star_border_outlined, color: Colors.white);
-                  removeFave(widget.photoID, widget.token);
-                }
-              });
-            }),
-        Text(
-          widget.faves,
-          style: TextStyle(color: Colors.grey),
-        ),
-      ],
+    if (faves == 0) faves = widget.faves;
+    print("FAVES:" + faves.toString());
+    print("WIDGET FAVES:" + widget.faves.toString());
+    return Container(
+      child: Row(
+        children: [
+          IconButton(
+              icon: widget.chosenIcon,
+              onPressed: () {
+                setState(() {
+                  if (widget.chosenIcon.icon == Icons.star_border_outlined) {
+                    widget.chosenIcon = Icon(Icons.star, color: Colors.grey);
+                    faves++;
+
+                    addFave(widget.photoID, widget.token);
+                  } else if (widget.chosenIcon.icon == Icons.star) {
+                    widget.chosenIcon =
+                        Icon(Icons.star_border_outlined, color: Colors.grey);
+                    removeFave(widget.photoID, widget.token);
+                    faves--;
+                  }
+                });
+              }),
+          Text(
+            faves.toString(),
+            style: TextStyle(color: Colors.grey),
+          ),
+        ],
+      ),
     );
   }
 }

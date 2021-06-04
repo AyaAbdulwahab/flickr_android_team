@@ -1,24 +1,19 @@
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class NetworkHelper {
   NetworkHelper(this.url);
 
   String url;
 
-  Future getData() async
-  {
+  Future getData() async {
     var uri = Uri.parse(url);
     http.Response response = await http.get(uri);
     return response;
-
   }
 
-
-  Future postData( Map<String, dynamic> Body) async
-  {
-    var uri= Uri.parse(url);
-    var response = await http.post(uri,body:Body);
+  Future postData(Map<String, dynamic> body) async {
+    var uri = Uri.parse(url);
+    var response = await http.post(uri, body: body);
 
     return response;
 
@@ -32,9 +27,5 @@ class NetworkHelper {
     // {
     //   print(response.statusCode);
     // }
-
   }
-
-
-
 }
