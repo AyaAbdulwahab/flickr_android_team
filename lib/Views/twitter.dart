@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
-
+///The [Twitter] class displays the Twitter account of the user
 class Twitter extends StatefulWidget {
   String twitter = '';
   Twitter({@required this.twitter});

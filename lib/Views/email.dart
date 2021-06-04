@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+///The [Email] class displays the Email of the user and the visibility of the email
+///Allows editing the visibility
 class Email extends StatefulWidget {
   String visibleTo = 'Anyone';
   String email = 'Aalaasalaheldin.99@gmail.com';

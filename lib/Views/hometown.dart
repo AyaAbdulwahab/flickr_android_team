@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
-
+///The [Hometown] class displays the hometown of the user
 class Hometown extends StatefulWidget {
   String hometown;
   Hometown({@required this.hometown});

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
-
+///The [Instagram] class displays the Instagram account of the user
 class Instagram extends StatefulWidget {
   String instagram = '';
   Instagram({@required this.instagram});

@@ -61,7 +61,7 @@ class _AboutTestState extends State<About> {
 
   // List<String> data= [];
 
-  /// The function getData gets the user information using token
+  /// This function gets the user information using the user [id] and [token]
   void getData() async {
     final user = Provider.of<MyModel>(context, listen: false);
     print(user.getID());
@@ -125,7 +125,7 @@ class _AboutTestState extends State<About> {
     }
   }
 
-  ///The function getDescription gets the user's description using the user's id and token
+  ///This function gets the user's description using the user's [id] and [token]
   void getDescription() async {
     final user = Provider.of<MyModel>(context, listen: false);
     var req2 = await http.get(
@@ -141,7 +141,7 @@ class _AboutTestState extends State<About> {
     }
   }
 
-  ///The function getPhotoCount gets the user's description using the user's id and token
+  ///This function gets the user's photoCount using the user's [id] and [token]
   void getPhotoCount() async {
     final user = Provider.of<MyModel>(context, listen: false);
     var req2 = await http.get(
@@ -157,7 +157,7 @@ class _AboutTestState extends State<About> {
     }
   }
 
-  ///The function updateInfo updates the user info and it is called whenever a field is edited
+  ///This function updates the user info and it is called whenever a field is edited using the user's [token]
   ///Contains two patch requests; one for the description and the other for the rest of the data
   Future<Map<String, dynamic>> updateInfo(String oc, String h, String c,
       String d, String cV, String eV, String country) async {
@@ -208,7 +208,7 @@ class _AboutTestState extends State<About> {
     }
   }
 
-  ///The functions getData, getVisibility, and getDescription are all called in the initial state function to get all the user's info
+
   @override
   void initState() {
     super.initState();

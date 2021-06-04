@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
-
+///The [Tumblr] class displays the Tumblr account of the user
 class Tumblr extends StatefulWidget {
   String tumblr = '';
   Tumblr({@required this.tumblr});

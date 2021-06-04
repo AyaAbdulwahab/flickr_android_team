@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
-
+///The [Website] class displays the website of the user
 class Website extends StatefulWidget {
   String website = '';
   Website({@required this.website});

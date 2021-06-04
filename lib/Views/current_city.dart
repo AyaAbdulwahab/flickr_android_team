@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
+///The [CurrentCity] class displays the current city of the user and the visibility of this field
+///Allows editing the both fields
 class CurrentCity extends StatefulWidget {
   String currentCity;
   String visibleTo;
