@@ -1,12 +1,7 @@
-import 'package:flickr/View_Model/user_view_model.dart';
+import 'package:flickr/View_Model/auth_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/authentication_app_bar.dart';
-import 'dart:convert';
-
-const String email = "something@gmail.com";
-
-//TODO: initialize _email with passed string from login page
 
 /// The [ForgotPassword] page is where user enters their email to send an email for instructions on how to reset their password
 class ForgotPassword extends StatefulWidget {

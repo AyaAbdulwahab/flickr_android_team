@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
-
 class Description extends StatefulWidget {
   String description;
   Description({@required this.description});
@@ -39,7 +38,7 @@ class _State extends State<Description> {
                 ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                          (states) => Colors.transparent),
+                      (states) => Colors.transparent),
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
                       side: BorderSide(color: Colors.white, width: 2.0),
@@ -51,13 +50,10 @@ class _State extends State<Description> {
                     if (button == 'Edit') {
                       check = true;
                       button = 'Done';
-                    }
-                    else
-                    {
-                      if(changed!=null)
-                        {
-                          widget.description = changed;
-                        }
+                    } else {
+                      if (changed != null) {
+                        widget.description = changed;
+                      }
                       check = false;
                       button = 'Edit';
                     }
@@ -74,14 +70,14 @@ class _State extends State<Description> {
               Stack(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only( left: 20.0, top: 7.0),
+                    padding: const EdgeInsets.only(left: 20.0, top: 7.0),
                     child: TextFormField(
                       enabled: check,
                       initialValue: widget.description,
                       decoration: textInputDecoration.copyWith(
                         hintText: "Add Description...",
                         hintStyle:
-                        TextStyle(color: Colors.grey, fontSize: 23.0),
+                            TextStyle(color: Colors.grey, fontSize: 23.0),
                         disabledBorder: InputBorder.none,
                         border: InputBorder.none,
                         focusedBorder: InputBorder.none,

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+/// [UserOptions] widget appears on clicking on a user's profile picture
+/// The 3 parameters it takes are:
+/// * [isMe] as the options that appears in the user's profile are different from that appears in the others profile.
+/// * [userName] because if the user enters anothers profile, he have the option to block him
+/// * [isFollower] if the user is following that user he is authorized to choose the relation between them.
 class UserOptions extends StatefulWidget {
   bool isMe;
   String userName;

@@ -1,9 +1,11 @@
+import 'package:flickr/Models/privacy_info_model.dart';
+import 'package:flickr/Models/user_model.dart';
+import 'package:flickr/View_Model/privacy_view_model.dart';
 import 'package:flickr/Views/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Constants/constants.dart';
 import 'package:provider/provider.dart';
-import '../Models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 
 /// The [Privacy] is were user can change their account Privacy and Safety setting

@@ -1,15 +1,14 @@
+import 'package:flickr/Models/photo_model.dart';
+import 'package:flickr/View_Model/photo_view_model.dart';
+import 'package:flickr/Views/loading.dart';
 import 'package:flickr/Views/you.dart';
 import 'package:flickr/Models/user_model.dart';
-import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/faves_and_comments.dart';
 import 'package:flickr/Widgets/comments.dart';
 import 'package:flickr/Views/photo_onclicking.dart';
-import 'package:http/http.dart' as http;
-import 'package:flickr/Constants/constants.dart';
-import 'dart:convert';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class Post extends StatefulWidget {
   Post({
@@ -18,30 +17,9 @@ class Post extends StatefulWidget {
   });
 
   String photoID;
-  // String userID;
-  // String userImage;
-  // String postImage;
-  // String userName;
-  // String userRealName;
-  // String caption; //also title
-  // String postDate;
-  // String postFaves;
-  // bool privacy;
-  // int safety;
-  // String views;
   String token;
-  // String description;
-  // String dateTaken;
-  // String commenter;
-  //
-  // List<dynamic> postComments;
-  // List<dynamic> tags;
-  // // String likers;
-  // // String commenter;
-  // String comment1;
   String fave1 = "person1";
   String fave2 = "person2";
-  // int commentNumber;
 
   @override
   _PostState createState() => _PostState();
@@ -50,82 +28,8 @@ class Post extends StatefulWidget {
 class _PostState extends State<Post> with AutomaticKeepAliveClientMixin {
   PhotoDetails _photo;
 
-  ///The function getDetails gets the photo information using the photo id
-  // Future<int> getDetails() async {
-  //   // var req2 = await http
-  //   //     .get((Uri.parse(EndPoints.mockBaseUrl + '/photo/' + widget.photoID)));
-  //   var req2 = await http
-  //       .get((Uri.parse('https://run.mocky.io/v3/ec6c1711-7e15-4185-97ab-328bb68d8342')));
-  //   if (req2.statusCode == 200) {
-  //     String data = req2.body;
-  //     print(data);
-  //     info = jsonDecode(data)['data'];
-  //     try {
-  //         widget.userID = info['userId']['_id'];
-  //         widget.userName = info['userId']['displayName'];
-  //         widget.userRealName = info['userId']['firstName'];
   var userImage =
       'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80';
-  //         widget.postImage = info['sizes']['size']['original']['source'];
-  //         widget.tags = info['tags'];
-  //         print(info['tags']);
-  //         widget.caption = info['title'];
-  //         widget.description = info['description'];
-  //         widget.postDate =
-  //             DateFormat.yMd().format(DateTime.parse(info['dateUploaded']));
-  //         widget.dateTaken = info['dateTaken'];
-  //         widget.privacy = info['permissions']['public'];
-  //         widget.safety = info['safetyLevel'];
-  //         // print(widget.postDate);
-  //         widget.postFaves = info['favourites'].toString();
-  //         widget.views = info['views'].toString();
-  //         widget.postComments = info['comments'];
-  //         widget.comment1 = info['comments'][0]['body'];
-  //         widget.commenter = info['comments'][0]['userId']['displayName'];
-  //         widget.commentNumber = (widget.postComments).length;
-  //
-  //
-  //
-  //         return 1;
-  //     }
-  //     catch(e)
-  //   {
-  //     print("------------------------------------>>");
-  //     print(e);
-  //   }
-  //   }
-  // }
-
-  // ///The function getUserName gets  the username using the user id
-  // void getUserName() async {
-  //   var req2 = await http.get((Uri.parse(
-  //       EndPoints.mockBaseUrl + '/user/' + widget.userID + '/disp-name')));
-  //   if (req2.statusCode == 200) {
-  //     String data = req2.body;
-  //     print(data);
-  //     info = jsonDecode(data)['data'];
-  //     setState(() {
-  //       widget.userName = info['displayName'];
-  //       //USER PROFILE PICTURE!
-  //       widget.userImage =
-  //       'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80';
-  //     });
-  //   }
-  // }
-  //
-  // ///The function getUserRealName gets the user's real name using the user id
-  // void getUserRealName() async {
-  //   var req2 = await http.get((Uri.parse(
-  //       EndPoints.mockBaseUrl + '/user/' + widget.userID + '/real-name')));
-  //   if (req2.statusCode == 200) {
-  //     String data = req2.body;
-  //     print(data);
-  //     info = jsonDecode(data)['data'];
-  //     setState(() {
-  //       widget.userRealName = info['firstName'];
-  //     });
-  //   }
-  // }
 
   ///The function getFaves gets the photo faves using the photo id
   getFaves() async {
@@ -143,19 +47,9 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin {
     // }
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    // callFunction();
-
-    // getUserName();
-    // getUserRealName();
-  }
-
   Future<int> callFunction() async {
-    _photo = await getPhotoDetails(widget.photoID);
-    print(_photo);
+    final user = Provider.of<MyModel>(context, listen: false);
+    _photo = await getPhotoDetails(widget.photoID, user.getToken());
 
     return 1;
     // await getDetails();
@@ -168,73 +62,83 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Future.wait([callFunction()]),
+        future: callFunction(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            //TODO: Check if you will change it
-            return Container(child: Text("Loading..."));
+            return LoadingPage();
           } else {
+            print(snapshot.data);
             return Container(
               color: Colors.white,
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height * 0.65,
+              width: 20.0,
               child: Column(
                 children: [
-                  // Container(
-                  //   height: 100.0,
-                  //   child: GestureDetector(
-                  //     // child: Image.asset("assets/zootopia.jpg"),
-                  //     child: Image(
-                  //       image: NetworkImage(_photo.postImage),
-                  //     ),
-                  //     onTap: () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //             builder: (context) => PhotoOnClicking(
-                  //                 photoID: widget.photoID,
-                  //                 image: _photo.postImage,
-                  //                 userImage: _photo.userImage,
-                  //                 username: _photo.userName,
-                  //                 userID: _photo.userID,
-                  //                 userRealName: _photo.userRealName,
-                  //                 privacy: _photo.privacy,
-                  //                 safety: _photo.safety,
-                  //                 views: _photo.views,
-                  //                 dateTaken: _photo.dateTaken,
-                  //                 caption: _photo.caption,
-                  //                 description: _photo.description,
-                  //                 tags: _photo.tags,
-                  //                 faves: _photo.postFaves,
-                  //                 comments: _photo.commentsCount.toString())),
-                  //       );
-                  //     },
-                  //   ),
-                  //   margin: EdgeInsets.all(5.0),
-                  // ),
-                  ListTile(
-                    leading: GestureDetector(
+                  Container(
+                    height: 100.0,
+                    child: GestureDetector(
+                      // child: Image.asset("assets/zootopia.jpg"),
+                      child: Image(
+                        image: NetworkImage(_photo.postImage),
+                      ),
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    YouPage(id: "608d55c7e512b74ee00791de")));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PhotoOnClicking(
+                                  photoID: widget.photoID,
+                                  image: _photo.postImage,
+                                  userImage: userImage,
+                                  username: _photo.userName,
+                                  userID: _photo.userID,
+                                  userRealName: _photo.userRealName,
+                                  privacy: false,
+                                  safety: 0,
+                                  views: _photo.views.toString(),
+                                  dateTaken: _photo.dateTaken,
+                                  caption: _photo.caption,
+                                  description: _photo.description,
+                                  tags: _photo.tags,
+                                  faves: _photo.postFaves,
+                                  comments: _photo.commentsCount.toString())),
+                        );
                       },
-                      child: CircleAvatar(
-                        radius: 23.0,
-                        backgroundImage: NetworkImage(userImage),
+                    ),
+                    margin: EdgeInsets.all(5.0),
+                  ),
+                  Card(
+                    elevation: 0.0,
+                    // shape: ShapeBorder,
+                    margin: EdgeInsets.zero,
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero),
+                      leading: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      YouPage(id: _photo.userID)));
+                        },
+                        child: CircleAvatar(
+                          radius: 23.0,
+                          backgroundImage: NetworkImage(userImage),
+                        ),
                       ),
+                      // ),
+                      title: Text(
+                        _photo.userName,
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.04,
+                            color: Colors.black),
+                      ),
+                      subtitle: Text(
+                        "caption",
+                        style: TextStyle(fontSize: 18.0, color: Colors.grey),
+                      ),
+                      trailing: Text(_photo.postDate),
                     ),
-                    // ),
-                    title: Text(
-                      _photo.userName,
-                      style: TextStyle(fontSize: 18.0, color: Colors.black),
-                    ),
-                    subtitle: Text(
-                      _photo.caption,
-                      style: TextStyle(fontSize: 18.0, color: Colors.grey),
-                    ),
-                    trailing: Text(_photo.postDate),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -250,13 +154,14 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FavesAndComments(
-                            chosenIcon: Icon(Icons.star_border_outlined),
+                            chosenIcon: Icon(Icons.star_border_outlined,
+                                color: Colors.grey),
                             faves: _photo.postFaves,
                             photoID: widget.photoID,
                             token: widget.token,
                             userID: _photo.userID),
                         Comments(
-                            chosenIcon: Icon(Icons.comment),
+                            chosenIcon: Icon(Icons.comment, color: Colors.grey),
                             faves: _photo.commentsCount.toString()),
                         Icon(
                           Icons.share_outlined,
@@ -271,30 +176,50 @@ class _PostState extends State<Post> with AutomaticKeepAliveClientMixin {
                     color: Colors.grey[300],
                     child: Column(
                       children: [
-                        ListTile(
-                          leading: Icon(
-                            Icons.star,
-                            size: 20.0,
+                        if (_photo.postFaves > 0)
+                          Card(
+                            margin: EdgeInsets.zero,
+                            child: ListTile(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero),
+                              leading: Icon(
+                                Icons.star,
+                                size: 20.0,
+                              ),
+                              // title: Text('people faved'),
+                              title: Text(
+                                "fave1" +
+                                    ', ' +
+                                    (_photo.postFaves == 1
+                                        ? ""
+                                        : "fave2" +
+                                            (_photo.postFaves > 2
+                                                    ? (" and " +
+                                                        _photo.postFaves
+                                                            .toString() +
+                                                        " others faved")
+                                                    : "")
+                                                .toString()),
+                              ),
+                            ),
                           ),
-                          // title: Text('people faved'),
-                          title: Text(widget.fave1 +
-                              ', ' +
-                              widget.fave2 +
-                              ' and ' +
-                              (((int.parse(_photo.postFaves)) - 2)).toString() +
-                              ' others faved'),
-                        ),
-                        ListTile(
-                          isThreeLine: true,
-                          leading: Icon(
-                            Icons.mode_comment,
-                            size: 20.0,
+                        if (_photo.commentsCount > 0)
+                          Card(
+                            margin: EdgeInsets.zero,
+                            child: ListTile(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero),
+                              isThreeLine: true,
+                              leading: Icon(
+                                Icons.mode_comment,
+                                size: 20.0,
+                              ),
+                              title: Text('commenter'),
+                              subtitle: Text("DA COMMENT"),
+                              trailing: Text(
+                                  '1 of ' + _photo.commentsCount.toString()),
+                            ),
                           ),
-                          title: Text('commenter'),
-                          subtitle: Text(_photo.comment1),
-                          trailing:
-                              Text('1 of ' + _photo.commentsCount.toString()),
-                        ),
                         SizedBox(
                           height: 20.0,
                           child: Container(color: Colors.black),
