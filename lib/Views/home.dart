@@ -13,6 +13,9 @@ String photoID = 'a12345';
 List<String> images = [];
 List<String> photoURLs = [];
 
+/// The [Home] class displays the explore posts on the user's home page
+/// Consists of a list of [Post] widgets that is updated on scrolling
+/// The [Home] sends the [photoID] to each [Post]
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -30,7 +33,7 @@ class _HomeState extends State<Home> {
   int _page = 1;
   int _postsPerPage = 4;
 
-  ///Function getPhotoIDs gets the photo IDs of explore photos
+  // ///Function getPhotoIDs gets the photo IDs of explore photos
   // void getPhotoIDs() async {
   //   var req2 = await http.get(
   //     (Uri.parse(EndPoints.mockBaseUrl + '/photo/explore')),

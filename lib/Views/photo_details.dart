@@ -2,6 +2,11 @@ import 'package:flickr/Views/you.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'photo_onclicking.dart';
+import 'you.dart';
+
+///The [PhotoDetails] class takes the needed information from the [PhotoOnClicking] class and displays the info accordingly
+///When the Name of the user, who took the photo is clicked, it navigates to this user's profile [YouPage] through passing his/her [userId]
 class PhotoDetails extends StatefulWidget {
   PhotoDetails(
       {@required this.title,
