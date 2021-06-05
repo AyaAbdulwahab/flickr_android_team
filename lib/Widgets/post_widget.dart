@@ -10,6 +10,16 @@ import 'package:flickr/Widgets/comments.dart';
 import 'package:flickr/Views/photo_onclicking.dart';
 import 'package:provider/provider.dart';
 
+import '../Models/photo_model.dart';
+import '../Views/photo_details.dart';
+// import '../Views/photo_details.dart';
+// import '../Views/photo_details.dart';
+// import '../Views/photo_details.dart';
+import '../Views/photo_details.dart';
+import '../Views/photo_onclicking.dart';
+
+/// The [Post] class takes the Photo [id] from the [Home] class and uses it to get all the required information for the post itself
+/// The user is navigated to [PhotoOnClicking] class when the photo is clicked, with all the required information about the photo
 class Post extends StatefulWidget {
   Post({
     @required this.photoID,

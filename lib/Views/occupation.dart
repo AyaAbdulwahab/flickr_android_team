@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
-
+///The [Occupation] class displays the occupation of the user
+///Allows editing the field
 class Occupation extends StatefulWidget {
   String occupation = '';
   Occupation({@required this.occupation});

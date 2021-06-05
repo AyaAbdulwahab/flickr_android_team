@@ -21,7 +21,7 @@ Future<dynamic> getCameraRoll(String token) async {
   }
 }
 
-///Gets the stream of public photos of a user using the [userId]
+///This function gets the stream of public photos of a user using their [userId]
 public(String userId) async {
   var req = await http
       .get((Uri.parse(EndPoints.baseUrl + '/user/' + userId + '/stream')));

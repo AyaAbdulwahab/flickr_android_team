@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
+///The [Description] class displays the description of the user
 class Description extends StatefulWidget {
   String description;
   Description({@required this.description});

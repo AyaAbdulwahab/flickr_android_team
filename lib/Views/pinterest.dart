@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
-
+///The [Pinterest] class displays the Pinterest account of the user
 class Pinterest extends StatefulWidget {
   String pinterest = '';
   Pinterest({@required this.pinterest});

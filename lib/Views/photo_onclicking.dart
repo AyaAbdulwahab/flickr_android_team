@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flickr/Views/photo_details.dart';
 import 'package:provider/provider.dart';
 
-///The [PhotoOnClicking] takes the required data about the photo and views the photo
+///The [PhotoOnClicking] class displays the photo and all the needed information about it
+///It takes the required data about the photo when it is clicked from the [Post] widget
+///When clicking on the more info icon, it navigates to [PhotoDetails]
 class PhotoOnClicking extends StatefulWidget {
   String photoID,
       image,

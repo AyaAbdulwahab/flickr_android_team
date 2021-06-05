@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
-///Gets all details of a photo using the [photoId]
+///This function gets all details of a photo using the [photoId]
 getPhotoDetails(String photoId, String token) async {
   var response =
       await http.get(Uri.parse(EndPoints.baseUrl + '/photo/' + photoId));
@@ -31,7 +31,7 @@ getPhotoDetails(String photoId, String token) async {
   }
 }
 
-/// The function addFave adds the photo from the user's faves using the [photoId] and the user's [token]
+/// This function adds the photo to the user's faves using the [photoId] and the user's [token]
 void addFave(String photoID, String token) async {
   var req2 = await Dio().post((EndPoints.baseUrl + '/user/faves/' + photoID),
       options: Options(
@@ -40,27 +40,13 @@ void addFave(String photoID, String token) async {
   print(req2.data);
 }
 
-/// The function removeFave removes the photo from the user's faves using the [photoId] and the user's [token]
+/// This function removes the photo from the user's faves using the [photoId] and the user's [token]
 void removeFave(String photoID, String token) async {
   var req2 = await Dio().delete((EndPoints.baseUrl + '/user/faves/' + photoID),
       options: Options(
         headers: {"authorization": "Bearer " + token},
       ));
   print(req2.data);
-
-  // print (req2.body);
-  // data: jsonEncode({
-  //   'newPhotoFaveCount': {
-  //     'favourites': int.parse(widget.faves)-1,
-  //     '_id':  widget.photoID,
-  //   },
-  //   "newUserFaveList": {
-  //     "favourites": [
-  //       widget.photoID
-  //     ],
-  //     "_id":  widget.userID
-  //   }
-  // });
 }
 
 /// [getImage] pickes and image from the [gallery] and returns a [File]

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/text_field_widget.dart';
 
-
+///The [Facebook] class displays the Facebook account of the user
 class Facebook extends StatefulWidget {
   String facebook = '';
   Facebook({@required this.facebook});

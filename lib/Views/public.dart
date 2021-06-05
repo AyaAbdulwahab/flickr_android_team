@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 
 int imagesNo = 0;
 
-///Class [Public] displays all the public images from the user's camera roll
+///The [Public] class displays all the public images from the user's camera roll
+///Just like the [Post] class, when the photo is clicked, the user is navigated to the [PhotoOnClicking] class and all the required data for the photo is passed
 class Public extends StatefulWidget {
   @override
   _PublicState createState() => _PublicState();

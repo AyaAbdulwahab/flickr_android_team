@@ -2,7 +2,8 @@ import 'package:flickr/View_Model/photo_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/////THE DATA FOR ADD AND REMOVE FAVES!!
+///The [FavesAndComments] class returns the faves icon and the number of faves of the post
+///It allows the user to add and remove the photo to/from favorites
 class FavesAndComments extends StatefulWidget {
   FavesAndComments(
       {@required this.chosenIcon,
