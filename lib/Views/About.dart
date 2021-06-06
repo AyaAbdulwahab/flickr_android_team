@@ -21,8 +21,9 @@ import 'package:provider/provider.dart';
 ///The [About] class allows the user to view his information and update it through directing the user to the chosen field's page
 class About extends StatefulWidget {
   bool isImmutable;
+  int photoC;
   String id;
-  About({this.isImmutable, this.id});
+  About({this.isImmutable, this.id, this.photoC});
   @override
   _AboutTestState createState() => _AboutTestState();
 }
@@ -76,7 +77,7 @@ class _AboutTestState extends State<About> {
       info = jsonDecode(data)['data'];
       // print("INFOOOOOOO: " + data);
       setState(() {
-        photoCount = info["photoCount"] ?? 0;
+        // photoCount = info["photoCount"] ?? 0;
         occupation = info["occupation"];
         oc = '';
         currentCity = info['currentCity'];
@@ -127,22 +128,6 @@ class _AboutTestState extends State<About> {
 
   ///This function gets the user's description using the user's [id] and [token]
   void getDescription() async {
-    final user = Provider.of<MyModel>(context, listen: false);
-    var req2 = await http.get(
-      (Uri.parse(EndPoints.baseUrl + '/user/' + widget.id + '/about-me')),
-    );
-    if (req2.statusCode == 200) {
-      String data = req2.body;
-      info = jsonDecode(data)['data'];
-      setState(() {
-        description = info["aboutMe"];
-        d = '';
-      });
-    }
-  }
-
-  ///This function gets the user's photoCount using the user's [id] and [token]
-  void getPhotoCount() async {
     final user = Provider.of<MyModel>(context, listen: false);
     var req2 = await http.get(
       (Uri.parse(EndPoints.baseUrl + '/user/' + widget.id + '/about-me')),
@@ -208,12 +193,13 @@ class _AboutTestState extends State<About> {
     }
   }
 
-
   @override
   void initState() {
     super.initState();
     getData();
     getDescription();
+    final user = Provider.of<MyModel>(context, listen: false);
+    photoCount = widget.photoC;
   }
 
   @override

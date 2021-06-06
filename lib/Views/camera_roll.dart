@@ -232,7 +232,17 @@ class _CameraRollState extends State<CameraRoll> {
                                             color: Colors.white,
                                           )),
                                       IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            // for (var i = 0;
+                                            //     i < isSelected.length;
+                                            //     i++) {
+                                            //   if (isSelected[i]) {
+                                            //     await deletePhoto(
+                                            //         photos[i]["_id"],
+                                            //         user.getToken());
+                                            //   }
+                                            // }
+                                          },
                                           icon: Icon(
                                             Icons.delete,
                                             color: Colors.white,

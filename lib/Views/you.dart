@@ -1,4 +1,5 @@
 import 'package:flickr/Models/user_model.dart';
+import 'package:flickr/View_Model/user_func_view_model.dart';
 import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:flickr/Views/about.dart';
 import 'package:flickr/Views/albums.dart';
@@ -62,13 +63,15 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
       future: Future.wait([
         getUsername(widget.id, user.getToken()),
         getNoOfFollowers(widget.id, user.getToken()),
-        getFollowers(widget.id, user.getToken())
+        getFollowers(widget.id, user.getToken()),
+        getPhotosCount(user.getToken())
       ]),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           _username = snapshot.data[0] ?? " ";
           noOfFollowering = snapshot.data[1] ?? 0;
           List followers = snapshot.data[2] ?? [];
+          int photoCount = snapshot.data[3] ?? 0;
           print(followers);
           if (user.getID() == widget.id) {
             youBar = [
@@ -271,31 +274,34 @@ class _YouPageState extends State<YouPage> with TickerProviderStateMixin {
                         ? TabBarView(controller: _tabController, children: [
                             About(
                                 isImmutable: user.getID() == widget.id,
-                                id: widget.id),
+                                id: widget.id,
+                                photoC: photoCount),
                             Center(
                               child: Text(
                                   'A place holder for the ${youBar[1]} Page'),
                             ),
                             CameraRoll(),
-                            Public(),
-                            // Center(
-                            //   child: Text(
-                            //       'A place holder for the ${youBar[3]} Page'),
-                            // ),
-                            Albums(),
+                            Public(id: widget.id),
+                            Albums(id: widget.id),
                             Center(
                               child: Text(
                                   'A place holder for the ${youBar[5]} Page'),
                             )
                           ])
                         : TabBarView(controller: _tabController, children: [
-                            for (var i = 0; i < 3; i++)
-                              Center(
-                                child: Text(
-                                    'A place holder for the ${youBar[i]} Page'),
-                              ),
+                            Public(
+                              id: widget.id,
+                            ),
+                            Albums(id: widget.id),
+
+                            // for (var i = 0; i < 3; i++)
+                            Center(
+                              child: Text(
+                                  'A place holder for the ${youBar[2]} Page'),
+                            ),
                             About(
                                 isImmutable: user.getID() == widget.id,
+                                photoC: photoCount,
                                 id: widget.id)
                           ])),
                 if (_isSelected)

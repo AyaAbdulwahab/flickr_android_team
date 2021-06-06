@@ -19,9 +19,10 @@ searchByUser(String searchText, int limit, int page, String token) async {
     'page': pg,
   };
 
-  String u = EndPoints.baseUrl.split('/').last;
+  List<String> tempUrl = EndPoints.baseUrl.split("/");
+  String u = tempUrl[tempUrl.length - 2];
 
-  var uri = Uri.http(u, '/user/search', queryParams);
+  var uri = Uri.http(u, 'api/user/search', queryParams);
   final response = await http.get(
     uri,
     headers: {"authorization": "Bearer " + token},
@@ -53,9 +54,10 @@ searchByPhoto(String searchText, int limit, int page, String token) async {
     'limit': lim,
     'page': pg,
   };
-  String u = EndPoints.baseUrl.split('/').last;
+  List<String> tempUrl = EndPoints.baseUrl.split("/");
+  String u = tempUrl[tempUrl.length - 2];
 
-  var uri = Uri.http(u, '/photo/search', queryParams);
+  var uri = Uri.http(u, 'api/photo/search', queryParams);
   final response = await http.get(
     uri,
     headers: {"authorization": "Bearer " + token},

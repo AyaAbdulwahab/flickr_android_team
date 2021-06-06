@@ -20,12 +20,12 @@ getPhotoDetails(String photoId, String token) async {
     var data = jsonDecode(response.body)['data'];
     var userName;
     try {
-      userName = await getUsername(data["userId"], token);
+      userName = await getUsername(data["userId"]["_id"], token);
       print("USERAME: " + userName);
+      return PhotoDetails.fromJson(data, userName);
     } catch (e) {
       print(e);
     }
-    return PhotoDetails.fromJson(data, userName);
   } else {
     throw Exception("An error occurred during photoDetails request");
   }
@@ -76,5 +76,30 @@ Future sendPhoto(String token) async {
     print(response);
   } catch (e) {
     print(e);
+  }
+}
+
+/// [deletePhoto] deletes a user photo by taking the photo's Id and the user's token
+deletePhoto(String photoID, String token) async {
+  var req2 = await Dio().delete((EndPoints.baseUrl + '/photo/' + photoID),
+      options: Options(
+        headers: {"authorization": "Bearer " + token},
+      ));
+  return req2;
+}
+
+isFaved(String id, String photoID) async {
+  var resp =
+      await http.get(Uri.parse(EndPoints.baseUrl + '/user/' + id + '/faves'));
+  if (resp.statusCode == 200) {
+    var data = jsonDecode(resp.body)['data']['favourites'];
+
+    for (var i = 0; i < data.length; i++) {
+      if (data[i]["_id"] == photoID) return true;
+    }
+
+    return false;
+  } else {
+    return null;
   }
 }

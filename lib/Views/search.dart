@@ -361,8 +361,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                               //TODO: Request People
                               child: ListView.builder(
                                   padding: const EdgeInsets.all(8),
-                                  itemCount:
-                                      _usersResult.length + (_hasMore ? 1 : 0),
+                                  itemCount: _usersResult.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     if (index ==

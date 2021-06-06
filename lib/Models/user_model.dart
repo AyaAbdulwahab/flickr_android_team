@@ -30,6 +30,7 @@ class MyModel with ChangeNotifier {
   }
 
   void setToken(String token) {
+    print(token);
     _token = token;
   }
 
@@ -47,13 +48,3 @@ class MyModel with ChangeNotifier {
     notifyListeners();
   }
 }
-
-// To parse this JSON data, do
-//
-//     final welcome = welcomeFromJson(jsonString);
-
-// To parse this JSON data, do
-//
-//     final welcome = welcomeFromJson(jsonString);
-
-// String welcomeToJson(AllUsers data) => json.encode(data.toJson());

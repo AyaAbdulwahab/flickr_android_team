@@ -39,6 +39,7 @@ class PhotoDetails {
     this.dateTaken,
     this.postFaves,
     this.views,
+    this.permissions,
     this.commentsCount,
   });
 
@@ -50,6 +51,7 @@ class PhotoDetails {
   String caption; //also title
   String postDate;
   int postFaves;
+  bool permissions;
   int views;
   String token;
   String description;
@@ -58,20 +60,21 @@ class PhotoDetails {
   List<dynamic> tags;
 
   factory PhotoDetails.fromJson(Map<String, dynamic> json, String userName) {
-    List<dynamic> postComments = json['comments'];
+    List<dynamic> postComments = json['comments'] ?? [];
     return PhotoDetails(
-      userID: json['userId'],
-      userName: userName,
+      userID: json['userId']['_id'],
+      userName: json['userId']['firstName'] + " " + json['userId']['lastName'],
       userImage:
           'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
       postImage: json['sizes']['size']['original']['source'],
-      tags: json['tags'],
-      caption: json['title'],
-      description: json['description'],
+      tags: json['tags'] ?? [],
+      caption: json['title'] ?? "",
+      description: json['description'] ?? "",
       postDate: DateFormat.yMd().format(DateTime.parse(json['dateUploaded'])),
-      dateTaken: json['dateTaken'],
-      postFaves: json['favourites'],
+      dateTaken: json['dateTaken'] ?? "0",
+      postFaves: json['favourites'] ?? 0,
       views: json['views'],
+      permissions: json['permissions']['public'],
       commentsCount: postComments.length,
     );
   }

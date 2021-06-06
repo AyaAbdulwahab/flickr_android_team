@@ -10,6 +10,9 @@ List<UserAlbum> userAlbums = [];
 
 /// The [Albums] page is a tab in the user Profile where it displays their current albums with numbers of photos for each album
 class Albums extends StatefulWidget {
+  String id;
+  Albums({this.id});
+
   @override
   _AlbumsState createState() => _AlbumsState();
 }
@@ -24,7 +27,8 @@ class _AlbumsState extends State<Albums> {
   sendAlbumsRequest() async {
     try {
       final user = Provider.of<MyModel>(context, listen: false);
-      userAlbums = await getUserAlbums(user.getToken());
+      userAlbums = await getUserAlbums(
+          user.getID() == widget.id, widget.id, user.getToken());
       setState(() {
         userAlbums = userAlbums;
       });

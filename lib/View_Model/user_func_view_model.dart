@@ -21,18 +21,25 @@ Future<dynamic> getCameraRoll(String token) async {
   }
 }
 
+Future<int> getPhotosCount(String token) async {
+  List response = await getCameraRoll(token);
+  return response.length;
+}
+
 ///This function gets the stream of public photos of a user using their [userId]
-public(String userId) async {
-  var req = await http
-      .get((Uri.parse(EndPoints.baseUrl + '/user/' + userId + '/stream')));
-  // var req = await http.get((Uri.parse(
-  //     'https://run.mocky.io/v3/9d099f64-ac41-49ea-b53b-46f658eb2a78')));
+Future public(String userId, String token) async {
+  var req = await http.get(
+    (Uri.parse(EndPoints.baseUrl + '/user/' + userId + '/stream')),
+    headers: {"authorization": "Bearer " + token},
+  );
 
   if (req.statusCode == 200) {
     var data = jsonDecode(req.body)['data']['photos']['photos'];
+    print(data);
     // print(data);
     // var data= jsonDecode(response.body)['data']
     List<PhotosIDsPublic> photoIds = PhotosIDsPublic.parseList(data);
+    print(photoIds);
     return photoIds;
   } else {
     throw Exception("An error occurred during public request");
