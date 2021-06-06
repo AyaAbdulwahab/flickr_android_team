@@ -40,7 +40,7 @@ Future updatePrivacy(PrivacyInfo info, String token) async {
         ));
     var responseBody = response.data;
     if (response.statusCode == 200) {
-      return PrivacyInfo.fromJson(jsonDecode(responseBody));
+      return PrivacyInfo.fromJson(responseBody);
     } else {
       throw Exception('An error occured');
     }
