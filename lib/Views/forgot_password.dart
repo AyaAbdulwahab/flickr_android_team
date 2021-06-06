@@ -2,6 +2,8 @@ import 'package:flickr/View_Model/auth_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/authentication_app_bar.dart';
+import 'email_verification.dart';
+import 'email_verification.dart';
 
 /// The [ForgotPassword] page is where user enters their email to send an email for instructions on how to reset their password
 class ForgotPassword extends StatefulWidget {
@@ -23,6 +25,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     if (response.statusCode == 200) {
       print("Navigate");
       //TODO: Navigate to email_verification page
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                Verify(email: _email)));
+
     } else {
       setState(() {
         _invalidAlert = true;

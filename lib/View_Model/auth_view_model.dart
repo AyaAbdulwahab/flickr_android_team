@@ -47,7 +47,7 @@ logIn(String email, String password) async {
 
 /// Sends a POST request contain [email] in the body to send password reset instructions for the account associated with [email]
 Future<Response> forgotPassword(String email) async {
-  final response = await Dio().post(EndPoints.baseUrl + '/user/forget-password',
+  final response = await Dio().post(EndPoints.baseUrl + '/user/forgot-password',
       options: Options(
           validateStatus: (_) {
             return true;

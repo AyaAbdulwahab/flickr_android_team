@@ -1,15 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flickr/Widgets/authentication_app_bar.dart';
+import '../View_Model/auth_view_model.dart';
 
-const String email = "something@gmail.com";
 
+
+
+
+/// The [Verify] page is to verify that the email for forgot password is sent, and can resend the email if it wasn't already
 class Verify extends StatefulWidget {
+  String email;
+  Verify({@required this.email});
+
   @override
   _VerifyState createState() => _VerifyState();
 }
 
 class _VerifyState extends State<Verify> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,9 +59,9 @@ class _VerifyState extends State<Verify> {
                       text: TextSpan(
                         // text: email,
                         // style:DefaultTextStyle.of(context).style,
-                        children: const <TextSpan>[
+                        children:  <TextSpan>[
                           TextSpan(
-                              text: email,
+                              text: widget.email,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17.0,
@@ -85,12 +93,15 @@ class _VerifyState extends State<Verify> {
                       width: 360.0,
                       height: 40.0,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          forgotPassword(widget.email);
+                        },
                         child: Text("Resend email",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 15.0,
                             )),
+
                         style: TextButton.styleFrom(
                           primary: Colors.white,
                           backgroundColor: Colors.blue,
