@@ -6,14 +6,15 @@ import 'package:flickr/Constants/constants.dart';
 import 'package:flickr/Models/photo_model.dart';
 import 'package:flickr/View_Model/user_view_model.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:http/http.dart' show Client;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
 ///This function gets all details of a photo using the [photoId]
 getPhotoDetails(String photoId, String token) async {
+  Client client=Client();
   var response =
-      await http.get(Uri.parse(EndPoints.baseUrl + '/photo/' + photoId));
+      await client.get(Uri.parse(EndPoints.baseUrl + '/photo/' + photoId));
 
   if (response.statusCode == 200) {
     // print(response.body);

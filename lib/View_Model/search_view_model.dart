@@ -4,6 +4,7 @@ import 'package:flickr/Constants/constants.dart';
 import 'package:flickr/Models/photo_model.dart';
 import 'package:flickr/Models/search_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 
 /// Sends a GET request with [searchText], [limit] and [page] as query parameters in the URL, and [token] in the headers
 ///
@@ -22,7 +23,7 @@ searchByUser(String searchText, int limit, int page, String token) async {
   List<String> tempUrl = EndPoints.baseUrl.split("/");
   String u = tempUrl[tempUrl.length - 2];
 
-  var uri = Uri.http(u, 'api/user/search', queryParams);
+  var uri = Uri.https(u, 'api/user/search', queryParams);
   final response = await http.get(
     uri,
     headers: {"authorization": "Bearer " + token},
@@ -45,6 +46,7 @@ searchByUser(String searchText, int limit, int page, String token) async {
 /// Photos in the results are paginated according to page number [page], and limit per page [limit]
 /// /// Returns the result as a list of [SearchedPhoto]
 searchByPhoto(String searchText, int limit, int page, String token) async {
+  Client client=Client();
   String lim = "$limit";
   String pg = "$page";
   print("Searching for photos...");
@@ -58,7 +60,7 @@ searchByPhoto(String searchText, int limit, int page, String token) async {
   String u = tempUrl[tempUrl.length - 2];
 
   var uri = Uri.http(u, 'api/photo/search', queryParams);
-  final response = await http.get(
+  final response = await client.get(
     uri,
     headers: {"authorization": "Bearer " + token},
   );
@@ -76,7 +78,8 @@ searchByPhoto(String searchText, int limit, int page, String token) async {
 
 ///Gets the explore stream of photos to be displayed
 explore(int page, int limit) async {
-  var req = await http.get((Uri.parse(EndPoints.baseUrl + '/photo/explore')));
+  Client client=Client();
+  var req = await client.get((Uri.parse(EndPoints.baseUrl + '/photo/explore')));
   // print(req.body);
   // var req = await http.get((Uri.parse('https://run.mocky.io/v3/a38e87fd-8658-46fa-9e76-d3782f653c4f')));
 
