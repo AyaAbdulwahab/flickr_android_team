@@ -62,7 +62,7 @@ class _AboutTestState extends State<About> {
 
   // List<String> data= [];
 
-  /// This function gets the user information using the user [id] and [token]
+  /// The [getData] function gets the user information using the user's [id] and [token]
   void getData() async {
     final user = Provider.of<MyModel>(context, listen: false);
     print(user.getID());
@@ -126,7 +126,7 @@ class _AboutTestState extends State<About> {
     }
   }
 
-  ///This function gets the user's description using the user's [id] and [token]
+  ///The [getDescription] function gets the user's description using the user's [id] and [token]
   void getDescription() async {
     final user = Provider.of<MyModel>(context, listen: false);
     var req2 = await http.get(
@@ -142,7 +142,7 @@ class _AboutTestState extends State<About> {
     }
   }
 
-  ///This function updates the user info and it is called whenever a field is edited using the user's [token]
+  ///The [updateInfo] function updates the user info and it is called whenever a field is edited using the user's [token]
   ///Contains two patch requests; one for the description and the other for the rest of the data
   Future<Map<String, dynamic>> updateInfo(String oc, String h, String c,
       String d, String cV, String eV, String country) async {

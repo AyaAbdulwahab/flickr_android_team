@@ -21,12 +21,13 @@ Future<dynamic> getCameraRoll(String token) async {
   }
 }
 
+///The [getPhotosCount] gets the Photo count of a user using [token]
 Future<int> getPhotosCount(String token) async {
   List response = await getCameraRoll(token);
   return response.length;
 }
 
-///This function gets the stream of public photos of a user using their [userId]
+///The [public] function gets the stream of public photos of a user using their [userId]
 Future public(String userId, String token) async {
   var req = await http.get(
     (Uri.parse(EndPoints.baseUrl + '/user/' + userId + '/stream')),

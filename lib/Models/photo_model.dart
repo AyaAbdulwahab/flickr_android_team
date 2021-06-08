@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-///This class contains the list of photo IDs that are returned from the explore view request
+///The [PhotoIDs] model contains the list of photo IDs that are returned from the explore view request
 class PhotosIDs {
   PhotosIDs({this.id});
   String id;
@@ -12,7 +12,7 @@ class PhotosIDs {
   }
 }
 
-///This class contains the list of photo IDs that are returned from the public view request
+///The [PhotosIDsPublic] contains the list of photo IDs that are returned from the public view request
 class PhotosIDsPublic {
   PhotosIDsPublic({this.id});
   String id;
@@ -24,7 +24,7 @@ class PhotosIDsPublic {
   }
 }
 
-///This class contains all the details of a photo that return from the Photo Info request
+///The [PhotoDetails] contains all the details of a photo that return from the Photo Info request
 class PhotoDetails {
   PhotoDetails({
     this.userID,

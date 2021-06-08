@@ -10,7 +10,7 @@ import 'package:http/http.dart' show Client;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
-///This function gets all details of a photo using the [photoId]
+///The [getPhotoDetails] function gets all details of a photo using the [photoId]
 getPhotoDetails(String photoId, String token) async {
   Client client=Client();
   var response =
@@ -32,7 +32,7 @@ getPhotoDetails(String photoId, String token) async {
   }
 }
 
-/// This function adds the photo to the user's faves using the [photoId] and the user's [token]
+/// The [addFave] function adds the photo to the user's faves using the [photoId] and the user's [token]
 void addFave(String photoID, String token) async {
   var req2 = await Dio().post((EndPoints.baseUrl + '/user/faves/' + photoID),
       options: Options(
@@ -41,7 +41,7 @@ void addFave(String photoID, String token) async {
   print(req2.data);
 }
 
-/// This function removes the photo from the user's faves using the [photoId] and the user's [token]
+/// The [removeFave] function removes the photo from the user's faves using the [photoId] and the user's [token]
 void removeFave(String photoID, String token) async {
   var req2 = await Dio().delete((EndPoints.baseUrl + '/user/faves/' + photoID),
       options: Options(
@@ -89,6 +89,7 @@ deletePhoto(String photoID, String token) async {
   return req2;
 }
 
+///The [isFaved] function returns a boolean that represents whether or not a user with ID [id] faved the photo with ID [photoID]
 isFaved(String id, String photoID) async {
   var resp =
       await http.get(Uri.parse(EndPoints.baseUrl + '/user/' + id + '/faves'));
