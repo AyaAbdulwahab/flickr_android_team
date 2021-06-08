@@ -13,6 +13,7 @@ String photoID = 'a12345';
 List<String> images = [];
 List<String> photoURLs = [];
 
+
 /// The [Home] class displays the explore posts on the user's home page
 /// Consists of a list of [Post] widgets that is updated on scrolling
 /// The [Home] sends the [photoID] to each [Post]

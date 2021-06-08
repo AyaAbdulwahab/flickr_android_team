@@ -24,7 +24,7 @@ searchByUser(String searchText, int limit, int page, String token) async {
   String u = tempUrl[tempUrl.length - 2];
 
   var uri = Uri.https(u, 'api/user/search', queryParams);
-  final response = await client.get(
+  final response = await http.get(
     uri,
     headers: {"authorization": "Bearer " + token},
   );
@@ -60,7 +60,7 @@ searchByPhoto(String searchText, int limit, int page, String token) async {
   String u = tempUrl[tempUrl.length - 2];
 
   var uri = Uri.http(u, 'api/photo/search', queryParams);
-  final response = await client.get(
+  final response = await http.get(
     uri,
     headers: {"authorization": "Bearer " + token},
   );
@@ -79,7 +79,7 @@ searchByPhoto(String searchText, int limit, int page, String token) async {
 ///Gets the explore stream of photos to be displayed
 explore(int page, int limit) async {
   Client client=Client();
-  var req = await client.get((Uri.parse(EndPoints.baseUrl + '/photo/explore')));
+  var req = await http.get((Uri.parse(EndPoints.baseUrl + '/photo/explore')));
   // print(req.body);
   // var req = await http.get((Uri.parse('https://run.mocky.io/v3/a38e87fd-8658-46fa-9e76-d3782f653c4f')));
 

@@ -14,7 +14,7 @@ import 'package:image_picker/image_picker.dart';
 getPhotoDetails(String photoId, String token) async {
   Client client=Client();
   var response =
-      await client.get(Uri.parse(EndPoints.baseUrl + '/photo/' + photoId));
+      await http.get(Uri.parse(EndPoints.baseUrl + '/photo/' + photoId));
 
   if (response.statusCode == 200) {
     // print(response.body);
@@ -93,7 +93,7 @@ deletePhoto(String photoID, String token) async {
 isFaved(String id, String photoID) async {
   Client client=Client();
   var resp =
-      await client.get(Uri.parse(EndPoints.baseUrl + '/user/' + id + '/faves'));
+      await http.get(Uri.parse(EndPoints.baseUrl + '/user/' + id + '/faves'));
   if (resp.statusCode == 200) {
     var data = jsonDecode(resp.body)['data']['favourites'];
 

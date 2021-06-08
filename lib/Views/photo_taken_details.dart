@@ -54,7 +54,7 @@ class _PhotoDetailsState extends State<PhotoTakenDetails> {
   List _icons = [
     Icons.location_on_outlined,
     Icons.photo_library_sharp,
-    Icons.tag_outlined,
+    // Icons.tag_outlined,
     Icons.lock_open_outlined
   ];
   @override

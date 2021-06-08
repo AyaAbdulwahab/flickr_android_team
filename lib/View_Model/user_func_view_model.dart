@@ -9,7 +9,7 @@ import 'package:http/http.dart' show Client;
 /// his/her [id] and [token]
 Future<dynamic> getCameraRoll(String token) async {
   Client client=Client();
-  var req = await client.get(
+  var req = await http.get(
     (Uri.parse(EndPoints.baseUrl + '/user/camera-roll')),
     headers: {"authorization": "Bearer " + token},
   );
@@ -32,7 +32,7 @@ Future<int> getPhotosCount(String token) async {
 ///The [public] function gets the stream of public photos of a user using their [userId]
 Future public(String userId, String token) async {
   Client client=Client();
-  var req = await client.get(
+  var req = await http.get(
     (Uri.parse(EndPoints.baseUrl + '/user/' + userId + '/stream')),
     headers: {"authorization": "Bearer " + token},
   );

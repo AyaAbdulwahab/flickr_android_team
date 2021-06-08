@@ -3,12 +3,13 @@ import 'package:flickr/View_Model/photo_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart' show Client;
+import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:mockito/mockito.dart';
 import '../lib/Constants/constants.dart';
 
 class MockPhotoDetails extends Mock implements Client {
 }
-class MockIsFaved extends Mock implements Client {
+class MockFave extends Mock implements Client {
 
 }
 
@@ -16,8 +17,7 @@ void main() {
 
   /// [isFaved] function success
   test('Return whether a photo is faved by a user', () async {
-    final client = MockIsFaved();
-    String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0";
+    final client = MockFave();
     String id = "608d55c7e512b74ee00791de";
     String photoId = "608d55c7e512b74ee00791de";
     when(client.get(Uri.parse(EndPoints.baseUrl + '/user/' + id + '/faves'),
@@ -27,7 +27,7 @@ void main() {
 
   /// [isFaved] function failure
   test('Return whether a photo is faved by a user', () async {
-    final client = MockIsFaved();
+    final client = MockFave();
     String id = " ";
     String photoId = "608d55c7e512b74ee00791de";
     when(client.get(Uri.parse(EndPoints.baseUrl + '/user/' + id + '/faves'),

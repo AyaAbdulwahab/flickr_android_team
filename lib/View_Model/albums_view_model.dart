@@ -11,9 +11,9 @@ Future<List<UserAlbum>> getUserAlbums(
   print('Requesting User Albums...');
   Client client=Client();
   final response = isMe
-      ? await client.get(Uri.parse(EndPoints.baseUrl + '/user/albums'),
+      ? await http.get(Uri.parse(EndPoints.baseUrl + '/user/albums'),
           headers: {"authorization": "Bearer " + token})
-      : await client.get(Uri.parse(EndPoints.baseUrl + '/user/' + id + '/albums'),
+      : await http.get(Uri.parse(EndPoints.baseUrl + '/user/' + id + '/albums'),
           headers: {"authorization": "Bearer " + token});
 
   var data = jsonDecode(response.body)['data'];

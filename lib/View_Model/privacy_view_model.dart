@@ -58,7 +58,7 @@ import 'package:http/http.dart' show Client;
    Future<PrivacyInfo> getPrivacy(String token) async {
     Client client = Client();
     print("PRIVACY GET REQUEST");
-    final response = await client.get(
+    final response = await http.get(
       Uri.parse(EndPoints.baseUrl + '/user/perm'),
       headers: {"authorization": "Bearer " + token},
     );
