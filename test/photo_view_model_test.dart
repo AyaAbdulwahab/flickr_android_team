@@ -14,16 +14,6 @@ class MockIsFaved extends Mock implements Client {
 
 void main() {
 
-  // ///[getPhotoDetails] function success
-  // test('Return Photo details', () async {
-  //   final client = MockPhotoDetails();
-  //   String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwOGQ1NWM3ZTUxMmI3NGVlMDA3OTFkYiIsImlhdCI6MTYyMTUwOTY5NywiZXhwIjoxNjI5Mjg1Njk3fQ.3WLVIdzDgIGpru3ybIxqWj9A9ROvtLG90dFuzHowuk0";
-  //   String id = "608d55c7e512b74ee00791de";
-  //   when(client.get(Uri.parse(EndPoints.baseUrl + '/photo/' + id),
-  //   )).thenAnswer((_) async => http.Response('Success', 200));
-  //   expect(await getPhotoDetails(id, token), isA<PhotoDetails>());
-  // });
-
   /// [isFaved] function success
   test('Return whether a photo is faved by a user', () async {
     final client = MockIsFaved();

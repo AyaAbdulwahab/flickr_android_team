@@ -19,12 +19,12 @@ searchByUser(String searchText, int limit, int page, String token) async {
     'limit': lim,
     'page': pg,
   };
-
+  Client client=Client();
   List<String> tempUrl = EndPoints.baseUrl.split("/");
   String u = tempUrl[tempUrl.length - 2];
 
   var uri = Uri.https(u, 'api/user/search', queryParams);
-  final response = await http.get(
+  final response = await client.get(
     uri,
     headers: {"authorization": "Bearer " + token},
   );

@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flickr/Constants/constants.dart';
 import 'package:flickr/Models/photo_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 
 /// This function get the number of followers of a user through
 /// his/her [id] and [token]
 Future<dynamic> getCameraRoll(String token) async {
-  var req = await http.get(
+  Client client=Client();
+  var req = await client.get(
     (Uri.parse(EndPoints.baseUrl + '/user/camera-roll')),
     headers: {"authorization": "Bearer " + token},
   );
@@ -29,7 +31,8 @@ Future<int> getPhotosCount(String token) async {
 
 ///The [public] function gets the stream of public photos of a user using their [userId]
 Future public(String userId, String token) async {
-  var req = await http.get(
+  Client client=Client();
+  var req = await client.get(
     (Uri.parse(EndPoints.baseUrl + '/user/' + userId + '/stream')),
     headers: {"authorization": "Bearer " + token},
   );

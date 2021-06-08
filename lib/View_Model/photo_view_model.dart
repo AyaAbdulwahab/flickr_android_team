@@ -91,8 +91,9 @@ deletePhoto(String photoID, String token) async {
 
 ///The [isFaved] function returns a boolean that represents whether or not a user with ID [id] faved the photo with ID [photoID]
 isFaved(String id, String photoID) async {
+  Client client=Client();
   var resp =
-      await http.get(Uri.parse(EndPoints.baseUrl + '/user/' + id + '/faves'));
+      await client.get(Uri.parse(EndPoints.baseUrl + '/user/' + id + '/faves'));
   if (resp.statusCode == 200) {
     var data = jsonDecode(resp.body)['data']['favourites'];
 
